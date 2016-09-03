@@ -70,7 +70,7 @@ class GigamonDriver (ResourceDriverInterface):
             self.log('recv returned: <<<' + str(r) + '>>>')
             if r:
                 rv += r
-            if not r or re.match(prompt_regex, rv):
+            if not r or len(re.findall(prompt_regex, rv)) > 0:
                 self.log('read complete: <<<' + str(rv) + '>>>')
                 return rv
 
