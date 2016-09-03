@@ -171,7 +171,7 @@ class GigamonDriver (ResourceDriverInterface):
                 path = '%s_%s_%d' % (context.resource.name.replace(' ', '-'),
                                      context.resource.model.replace(' ', '-'),
                                      int(time.time()))
-            if folder_path:
+            if folder_path and folder_path != 'none':
                 path = folder_path + '/' + path
 
             if '://' in path:

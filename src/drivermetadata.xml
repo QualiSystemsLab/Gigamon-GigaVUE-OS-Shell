@@ -42,7 +42,7 @@
                 <Parameter Name="configuration_type" Type="Lookup" AllowedValues="Startup,Running" Mandatory = "True"  DefaultValue="Running"
                            DisplayName="Configuration Type" Description="Specify whether the file should update the startup or running config. 'Startup' configuration is not supported on all switches."/>
                 <Parameter Name="folder_path" Type="String" Mandatory = "True" DisplayName="Folder Path" DefaultValue=""
-                           Description="The path in which the configuration file will be saved. The path should include the protocol type (for example tftp://asdf)"/>
+                           Description="The path in which the configuration file will be saved. The filename will be generated automaticall. The path should include the protocol type (for example tftp://asdf). Use 'none' to save in the root."/>
                   <Parameter Name="vrf_management_name" Type="String" Mandatory = "False" DisplayName="VRF Management Name" DefaultValue=""
                            Description="Optional. Virtual routing and Forwarding management name"/>
             </Parameters>
