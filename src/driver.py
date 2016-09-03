@@ -143,7 +143,7 @@ class GigamonDriver (ResourceDriverInterface):
                 self.ssh_command('configuration text fetch ' + path, '[^[#]# ')
 
             if running_saved == 'running':
-                self.ssh_command('configuration switch-to ' + os.path.basename(path), '[^[#]# ')
+                self.ssh_command('configuration text file %s apply' % (os.path.basename(path)), '[^[#]# ')
             else:
                 raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
         finally:
