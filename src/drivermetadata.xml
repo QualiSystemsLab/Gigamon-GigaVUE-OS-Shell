@@ -37,6 +37,12 @@
                            Description="The command to run. Note that commands that require a response are not supported."/>
             </Parameters>
         </Command>
+        <Command Name="run_custom_config_command" DisplayName="Send Custom Config Command" Tags="" Description="Executes a custom command on the device in 'configure terminal' mode">
+            <Parameters>
+                <Parameter Name="custom_command" Type="String" Mandatory = "True" DisplayName="Command" DefaultValue=""
+                           Description="The command to run. Note that commands that require a response are not supported."/>
+            </Parameters>
+        </Command>
         <Command Name="save" DisplayName="Save" Tags="" Description="Creates a configuration file and saves it to the provided destination">
             <Parameters>
                 <Parameter Name="configuration_type" Type="Lookup" AllowedValues="Startup,Running" Mandatory = "True"  DefaultValue="Running"

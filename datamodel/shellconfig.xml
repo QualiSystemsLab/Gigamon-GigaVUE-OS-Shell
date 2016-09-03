@@ -3,7 +3,7 @@
 <ResourceTemplates>
     <ResourceTemplate Name="Gigamon" Model="Gigamon" Driver="GigamonDriver">
         <Description></Description>
-        <AutoLoad Enable="false">
+        <AutoLoad Enable="true">
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
