@@ -86,7 +86,9 @@ class GigamonDriver (ResourceDriverInterface):
             self.ssh_write(command + '\n')
             rv = self.ssh_read(prompt_regex)
             if '\n%' in rv:
-                raise Exception('CLI error message: ' + rv)
+                es = 'CLI error message: ' + rv
+                self.log(es)
+                raise Exception(es)
             return rv
 
     def initialize(self, context):
@@ -132,6 +134,10 @@ class GigamonDriver (ResourceDriverInterface):
         self.ssh_command('configure terminal', '# ')
 
         if '://' in path:
+            try:
+                self.ssh_command('configuration delete ' + os.path.basename(path), '# ')
+            except:
+                pass
             self.ssh_command('configuration fetch ' + path, '# ')
 
         if running_saved == 'running':
