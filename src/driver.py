@@ -71,6 +71,8 @@ class GigamonDriver (ResourceDriverInterface):
             if r:
                 rv += r
             if not r or len(re.findall(prompt_regex, rv)) > 0:
+                if rv:
+                    rv = rv.replace('\r', '\n')
                 self.log('read complete: <<<' + str(rv) + '>>>')
                 return rv
 
