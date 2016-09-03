@@ -151,7 +151,9 @@ class GigamonDriver (ResourceDriverInterface):
 
     def save(self, context, cancellation_context, configuration_type, folder_path, vrf_management_name):
         """
-        Creates a configuration file and saves it to the provided destination
+        Creates a configuration file and saves it to the provided destination.
+        For a local file, specify the full filename to save. Folders may not be supported.
+        For a network location, specify a URL to a folder, e.g. tftp://ip/a
         :param ResourceCommandContext context: The context object for the command with resource and reservation info
         :param CancellationContext cancellation_context: Object to signal a request for cancellation. Must be enabled in drivermetadata.xml as well
         :param str configuration_type: Specify whether the file should update the startup or running config. Value can one
@@ -163,25 +165,22 @@ class GigamonDriver (ResourceDriverInterface):
         running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
 
         self.ssh_command('configure terminal', '[^[#]# ')
-
         try:
-            if self.fakedata:
-                path = 'fakename_fakemodel_faketime'
-            else:
-                path = '%s_%s_%d' % (context.resource.name.replace(' ', '-'),
-                                     context.resource.model.replace(' ', '-'),
-                                     int(time.time()))
-            if folder_path and folder_path != 'none':
-                path = folder_path + '/' + path
-
-            if '://' in path:
+            if '://' in folder_path:
+                if self.fakedata:
+                    path = 'fakename_fakemodel_faketime'
+                else:
+                    path = '%s/%s_%s_%d' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
+                                            context.resource.name.replace(' ', '-'),
+                                            context.resource.model.replace(' ', '-'),
+                                            int(time.time()))
                 self.ssh_command('configuration text generate active %s upload %s' % (running_saved, path), '[^[#]# ')
+                return path
             else:
-                path = os.path.basename(path)
-                self.ssh_command('configuration text generate active %s save %s' % (running_saved, path), '[^[#]# ')
+                self.ssh_command('configuration text generate active %s save %s' % (running_saved, folder_path), '[^[#]# ')
+                return folder_path
         finally:
             self.ssh_command('exit', '[^[#]# ')
-        return path
 
     def load_firmware(self, context, cancellation_context, file_path, remote_host):
         """
