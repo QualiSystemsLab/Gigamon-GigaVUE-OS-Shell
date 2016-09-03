@@ -71,8 +71,10 @@ class GigamonDriver (ResourceDriverInterface):
             if r:
                 rv += r
             if not r or re.match(prompt_regex, rv):
+                if rv:
+                    rv = rv.replace('\r', '\n')
                 self.log('read complete: <<<' + str(rv) + '>>>')
-                return rv.replace('\r', '\n')
+                return rv
 
     def ssh_command(self, command, prompt_regex):
         if self.fakedata:
