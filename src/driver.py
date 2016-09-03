@@ -71,8 +71,6 @@ class GigamonDriver (ResourceDriverInterface):
             if r:
                 rv += r
             if not r or re.match(prompt_regex, rv):
-                if rv:
-                    rv = rv.replace('\r', '\n')
                 self.log('read complete: <<<' + str(rv) + '>>>')
                 return rv
 
@@ -87,7 +85,7 @@ class GigamonDriver (ResourceDriverInterface):
         else:
             self.ssh_write(command + '\n')
             rv = self.ssh_read(prompt_regex)
-            if '\n%' in rv:
+            if '\n%' in rv.replace('\r', '\n'):
                 es = 'CLI error message: ' + rv
                 self.log(es)
                 raise Exception(es)
