@@ -62,7 +62,7 @@
         <Command Name="load_firmware" DisplayName="Load Firmware" Tags="" Description="Upload and updates firmware on the resource">
             <Parameters>
                 <Parameter Name="remote_host" Type="String" Mandatory = "True" DisplayName="Remote Host" DefaultValue=""
-                           Description="Path to tftp:// server where firmware file is stored"/>
+                           Description="Path to tftp server where firmware file is stored. Use 'none' for a local file."/>
                 <Parameter Name="file_path" Type="String" Mandatory = "True" DisplayName="File Path" DefaultValue=""
                            Description="Firmware file name"/>
             </Parameters>

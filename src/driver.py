@@ -179,13 +179,13 @@ class GigamonDriver (ResourceDriverInterface):
         :param str file_path: firmware file name
         """
         if '://' in file_path:
-            self.ssh_command('image fetch %s' % file_path, '# ')
+            self.ssh_command('image fetch %s' % file_path, '[^[#]# ')
         elif remote_host == 'none':
             pass
         else:
-            self.ssh_command('image fetch tftp://%s/%s' % (remote_host, file_path), '# ')
-        self.ssh_command('image install %s' % (os.path.basename(file_path)), '# ')
-        self.ssh_command('image boot next', '# ')
+            self.ssh_command('image fetch tftp://%s/%s' % (remote_host, file_path), '[^[#]# ')
+        self.ssh_command('image install %s' % (os.path.basename(file_path)), '[^[#]# ')
+        self.ssh_command('image boot next', '[^[#]# ')
 
     def run_custom_command(self, context, cancellation_context, custom_command):
         """
