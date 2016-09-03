@@ -26,8 +26,8 @@
       <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="478">
-              <caret line="172" column="110" selection-start-line="172" selection-start-column="110" selection-end-line="172" selection-end-column="110" />
+            <state relative-caret-position="342">
+              <caret line="158" column="122" selection-start-line="158" selection-start-column="122" selection-end-line="158" selection-end-column="122" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -39,7 +39,7 @@
         <entry file="file://$PROJECT_DIR$/src/drivermetadata.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="349">
-              <caret line="44" column="127" selection-start-line="44" selection-start-column="127" selection-end-line="44" selection-end-column="127" />
+              <caret line="44" column="27" selection-start-line="44" selection-start-column="27" selection-end-line="44" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -126,8 +126,8 @@
         <option value="$PROJECT_DIR$/datamodel/datamodel.xml" />
         <option value="$PROJECT_DIR$/src/requirements.txt" />
         <option value="$PROJECT_DIR$/tests/test_gigamon.py" />
-        <option value="$PROJECT_DIR$/src/drivermetadata.xml" />
         <option value="$PROJECT_DIR$/src/driver.py" />
+        <option value="$PROJECT_DIR$/src/drivermetadata.xml" />
       </list>
     </option>
   </component>
@@ -819,15 +819,15 @@
     <entry file="file://$PROJECT_DIR$/src/drivermetadata.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="349">
-          <caret line="44" column="127" selection-start-line="44" selection-start-column="127" selection-end-line="44" selection-end-column="127" />
+          <caret line="44" column="27" selection-start-line="44" selection-start-column="27" selection-end-line="44" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/driver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="172" column="110" selection-start-line="172" selection-start-column="110" selection-end-line="172" selection-end-column="110" />
+        <state relative-caret-position="342">
+          <caret line="158" column="122" selection-start-line="158" selection-start-column="122" selection-end-line="158" selection-end-column="122" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
