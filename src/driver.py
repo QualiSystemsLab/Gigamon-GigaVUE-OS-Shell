@@ -113,9 +113,9 @@ class GigamonDriver (ResourceDriverInterface):
                              '>')
             e = self.ssh_command('enable', '[#:]')
             if ':' in e:
-                self.ssh_command(api.DecryptPassword(context.resource.attributes['Enable Password']).Value, '# ')
-        self.ssh_command('cli session terminal type dumb', '# ')
-        self.ssh_command('cli session terminal length 999', '# ')
+                self.ssh_command(api.DecryptPassword(context.resource.attributes['Enable Password']).Value, '[^[#]# ')
+        self.ssh_command('cli session terminal type dumb', '[^[#]# ')
+        self.ssh_command('cli session terminal length 999', '[^[#]# ')
 
     # <editor-fold desc="Networking Standard Commands">
     def restore(self, context, cancellation_context, path, restore_method, configuration_type, vrf_management_name):
@@ -133,21 +133,21 @@ class GigamonDriver (ResourceDriverInterface):
 
         running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
 
-        self.ssh_command('configure terminal', '# ')
+        self.ssh_command('configure terminal', '[^[#]# ')
         try:
             if '://' in path:
                 try:
-                    self.ssh_command('configuration delete ' + os.path.basename(path), '# ')
+                    self.ssh_command('configuration delete ' + os.path.basename(path), '[^[#]# ')
                 except:
                     pass
-                self.ssh_command('configuration fetch ' + path, '# ')
+                self.ssh_command('configuration fetch ' + path, '[^[#]# ')
 
             if running_saved == 'running':
-                self.ssh_command('configuration switch-to ' + os.path.basename(path), '# ')
+                self.ssh_command('configuration switch-to ' + os.path.basename(path), '[^[#]# ')
             else:
                 raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
         finally:
-            self.ssh_command('exit', '# ')
+            self.ssh_command('exit', '[^[#]# ')
 
     def save(self, context, cancellation_context, configuration_type, folder_path, vrf_management_name):
         """
@@ -162,7 +162,7 @@ class GigamonDriver (ResourceDriverInterface):
         """
         running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
 
-        self.ssh_command('configure terminal', '# ')
+        self.ssh_command('configure terminal', '[^[#]# ')
 
         try:
             if self.fakedata:
@@ -175,12 +175,12 @@ class GigamonDriver (ResourceDriverInterface):
                 path = folder_path + '/' + path
 
             if '://' in path:
-                self.ssh_command('configuration text generate active %s upload %s' % (running_saved, path), '# ')
+                self.ssh_command('configuration text generate active %s upload %s' % (running_saved, path), '[^[#]# ')
             else:
                 path = os.path.basename(path)
-                self.ssh_command('configuration text generate active %s save %s' % (running_saved, path), '# ')
+                self.ssh_command('configuration text generate active %s save %s' % (running_saved, path), '[^[#]# ')
         finally:
-            self.ssh_command('exit', '# ')
+            self.ssh_command('exit', '[^[#]# ')
         return path
 
     def load_firmware(self, context, cancellation_context, file_path, remote_host):
@@ -208,7 +208,7 @@ class GigamonDriver (ResourceDriverInterface):
         :return: the command result text
         :rtype: str
         """
-        return self.ssh_command(custom_command, '# ')
+        return self.ssh_command(custom_command, '[^[#]# ')
 
     def run_custom_config_command(self, context, cancellation_context, custom_command):
         """
@@ -220,9 +220,9 @@ class GigamonDriver (ResourceDriverInterface):
         :rtype: str
         """
 
-        self.ssh_command('configure terminal', '# ')
-        rv = self.ssh_command(custom_command, '# ')
-        self.ssh_command('exit', '# ')
+        self.ssh_command('configure terminal', '[^[#]# ')
+        rv = self.ssh_command(custom_command, '[^[#]# ')
+        self.ssh_command('exit', '[^[#]# ')
         return rv
 
     def shutdown(self, context, cancellation_context):
@@ -376,7 +376,7 @@ class GigamonDriver (ResourceDriverInterface):
         sub_resources = []
         attributes = [AutoLoadAttribute('', "Vendor", 'Gigamon')]
 
-        for line in self.ssh_command('show version', '# ').split('\n'):
+        for line in self.ssh_command('show version', '[^[#]# ').split('\n'):
             if 'Product model:' in line:
                 attributes.append(AutoLoadAttribute('', "Model", line.replace('Product model:', '').strip()))
             if 'Version summary:' in line:
@@ -384,7 +384,7 @@ class GigamonDriver (ResourceDriverInterface):
 
         chassisaddr = 'bad_chassis_addr'
         patt2attr = {}
-        for line in self.ssh_command('show chassis', '# ').split('\n'):
+        for line in self.ssh_command('show chassis', '[^[#]# ').split('\n'):
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
                 sub_resources.append(AutoLoadResource(model='Generic Chassis',
@@ -402,7 +402,7 @@ class GigamonDriver (ResourceDriverInterface):
                     patt2attr.pop(patt, None)
 
         chassisaddr = 'bad_chassis_addr'
-        for line in self.ssh_command('show card', '# ').split('\n'):
+        for line in self.ssh_command('show card', '[^[#]# ').split('\n'):
             if 'Oper Status' in line:
                 continue
             if 'Box ID' in line:
@@ -427,7 +427,7 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute(cardaddr, "Version", d['hw_rev']))
                 attributes.append(AutoLoadAttribute(cardaddr, "Serial Number", d['serial_num']))
 
-        o = self.ssh_command('show port', '# ')
+        o = self.ssh_command('show port', '[^[#]# ')
         o = o.replace('\r', '')
         # self.log('o1=<<<' + o + '>>>')
         o = '\n'.join(o.split('----\n')[1:]).split('\n----')[0]
