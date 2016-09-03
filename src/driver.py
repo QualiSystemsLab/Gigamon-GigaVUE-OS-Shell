@@ -134,20 +134,20 @@ class GigamonDriver (ResourceDriverInterface):
         running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
 
         self.ssh_command('configure terminal', '# ')
+        try:
+            if '://' in path:
+                try:
+                    self.ssh_command('configuration delete ' + os.path.basename(path), '# ')
+                except:
+                    pass
+                self.ssh_command('configuration fetch ' + path, '# ')
 
-        if '://' in path:
-            try:
-                self.ssh_command('configuration delete ' + os.path.basename(path), '# ')
-            except:
-                pass
-            self.ssh_command('configuration fetch ' + path, '# ')
-
-        if running_saved == 'running':
-            self.ssh_command('configuration switch-to ' + os.path.basename(path), '# ')
-        else:
-            raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
-
-        self.ssh_command('exit', '# ')
+            if running_saved == 'running':
+                self.ssh_command('configuration switch-to ' + os.path.basename(path), '# ')
+            else:
+                raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
+        finally:
+            self.ssh_command('exit', '# ')
 
     def save(self, context, cancellation_context, configuration_type, folder_path, vrf_management_name):
         """
@@ -164,22 +164,23 @@ class GigamonDriver (ResourceDriverInterface):
 
         self.ssh_command('configure terminal', '# ')
 
-        if self.fakedata:
-            path = 'fakename_fakemodel_faketime'
-        else:
-            path = '%s_%s_%d' % (context.resource.name.replace(' ', '-'),
-                                 context.resource.model.replace(' ', '-'),
-                                 int(time.time()))
-        if folder_path:
-            path = folder_path + '/' + path
+        try:
+            if self.fakedata:
+                path = 'fakename_fakemodel_faketime'
+            else:
+                path = '%s_%s_%d' % (context.resource.name.replace(' ', '-'),
+                                     context.resource.model.replace(' ', '-'),
+                                     int(time.time()))
+            if folder_path:
+                path = folder_path + '/' + path
 
-        if '://' in path:
-            self.ssh_command('configuration text generate active %s upload %s' % (running_saved, path), '# ')
-        else:
-            path = os.path.basename(path)
-            self.ssh_command('configuration text generate active %s save %s' % (running_saved, path), '# ')
-
-        self.ssh_command('exit', '# ')
+            if '://' in path:
+                self.ssh_command('configuration text generate active %s upload %s' % (running_saved, path), '# ')
+            else:
+                path = os.path.basename(path)
+                self.ssh_command('configuration text generate active %s save %s' % (running_saved, path), '# ')
+        finally:
+            self.ssh_command('exit', '# ')
         return path
 
     def load_firmware(self, context, cancellation_context, file_path, remote_host):
