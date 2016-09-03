@@ -137,7 +137,7 @@ class GigamonDriver (ResourceDriverInterface):
         try:
             if '://' in path:
                 try:
-                    self.ssh_command('configuration delete ' + os.path.basename(path), '[^[#]# ')
+                    self.ssh_command('configuration text file %s delete' % (os.path.basename(path)), '[^[#]# ')
                 except:
                     pass
                 self.ssh_command('configuration text fetch ' + path, '[^[#]# ')
