@@ -462,7 +462,8 @@ class GigamonDriver (ResourceDriverInterface):
                              r'(?P<discovery>\S*)',
                              portline)
                 if not m:
-                    self.log('regex failure on line <<<' + portline + '>>>')
+                    if portline:
+                        self.log('regex failure on line <<<' + portline + '>>>')
                     continue
                 # raise Exception('Failed to parse "show port" data: Line: <<<%s>>> All output: <<<%s>>>' % (portline, o))
 
