@@ -64,7 +64,7 @@
                 <Parameter Name="remote_host" Type="String" Mandatory = "True" DisplayName="Remote Host" DefaultValue=""
                            Description="Path to tftp server where firmware file is stored. Use 'none' for a local file."/>
                 <Parameter Name="file_path" Type="String" Mandatory = "True" DisplayName="File Path" DefaultValue=""
-                           Description="Firmware file name"/>
+                           Description="Firmware local file name or URL (including tftp://, ftp://, http://, etc.)"/>
             </Parameters>
         </Command>
     </Layout>

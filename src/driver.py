@@ -84,7 +84,10 @@ class GigamonDriver (ResourceDriverInterface):
                 return ''
         else:
             self.ssh_write(command + '\n')
-            return self.ssh_read(prompt_regex)
+            rv = self.ssh_read(prompt_regex)
+            if '\n%' in rv:
+                raise Exception('CLI error message: ' + rv)
+            return rv
 
     def initialize(self, context):
         """
