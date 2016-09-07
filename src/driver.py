@@ -141,6 +141,7 @@ class GigamonDriver (ResourceDriverInterface):
         self._ssh_command('configure terminal', '[^[#]# ')
         try:
             if '://' in path:
+                self._ssh_command('configuration switch-to initial', '[^[#]# ')
                 try:
                     self._ssh_command('configuration delete %s' % (os.path.basename(path)), '[^[#]# ')
                 except:
