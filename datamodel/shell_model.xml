@@ -8,7 +8,7 @@
         </AttributeInfo>
     </ShellAttributes>
 
-    <ShellModel Family="Switch">
+    <ShellModel Family="Visibility Fabric">
         <ResourceModel Name="Gigamon" Description="" SupportsConcurrentCommands="false">
             <AttachedAttributes>
                 <AttachedAttribute Name="User" IsOverridable="true" IsLocal="true">

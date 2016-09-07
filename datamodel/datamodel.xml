@@ -223,7 +223,7 @@
     </AttributeInfo>
   </Attributes>
   <ResourceFamilies>
-    <ResourceFamily Name="Switch" Description="" IsSearchable="true" IsPowerSwitch="true">
+    <ResourceFamily Name="Visibility Fabric" Description="" IsSearchable="true" IsPowerSwitch="true">
       <AttachedAttributes />
       <AttributeValues />
       <Models>
