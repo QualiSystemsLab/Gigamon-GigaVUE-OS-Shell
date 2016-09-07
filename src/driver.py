@@ -137,13 +137,13 @@ class GigamonDriver (ResourceDriverInterface):
         try:
             if '://' in path:
                 try:
-                    self._ssh_command('configuration text file %s delete' % (os.path.basename(path)), '[^[#]# ')
+                    self._ssh_command('configuration delete %s' % (os.path.basename(path)), '[^[#]# ')
                 except:
                     pass
-                self._ssh_command('configuration text fetch ' + path, '[^[#]# ')
+                self._ssh_command('configuration fetch ' + path, '[^[#]# ')
 
             if running_saved == 'running':
-                self._ssh_command('configuration text file %s apply' % (os.path.basename(path)), '[^[#]# ')
+                self._ssh_command('configuration switch-to %s' % (os.path.basename(path)), '[^[#]# ')
             else:
                 raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
         finally:
@@ -162,23 +162,21 @@ class GigamonDriver (ResourceDriverInterface):
         :return The configuration file name.
         :rtype: str
         """
-        running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
+        running_saved = 'active' if configuration_type.lower() == 'running' else 'initial'
 
         self._ssh_command('configure terminal', '[^[#]# ')
         try:
             if '://' in folder_path:
                 if self.fakedata:
-                    path = 'fakename_fakemodel_faketime'
+                    path = 'fakepath/fakename_fakemodel.txt'
                 else:
-                    path = '%s/%s_%s_%d' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
+                    path = '%s/%s_%s.txt' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
                                             context.resource.name.replace(' ', '-'),
-                                            context.resource.model.replace(' ', '-'),
-                                            int(time.time()))
-                self._ssh_command('configuration text generate active %s upload %s' % (running_saved, path), '[^[#]# ')
+                                            context.resource.model.replace(' ', '-'))
+                self._ssh_command('configuration upload %s %s' % (running_saved, path), '[^[#]# ')
                 return path
             else:
-                self._ssh_command('configuration text generate active %s save %s' % (running_saved, folder_path), '[^[#]# ')
-                return folder_path
+                raise Exception('Destination folder path must include a URL scheme such as tftp://')
         finally:
             self._ssh_command('exit', '[^[#]# ')
 
@@ -231,6 +229,28 @@ class GigamonDriver (ResourceDriverInterface):
         :param CancellationContext cancellation_context: Object to signal a request for cancellation. Must be enabled in drivermetadata.xml as well
         """
         pass
+
+    def reset(self, context, cancellation_context):
+        """
+        Resets the device to factory settings
+        :param ResourceCommandContext context: The context object for the command with resource and reservation info
+        :param CancellationContext cancellation_context: Object to signal a request for cancellation. Must be enabled in drivermetadata.xml as well
+        """
+        self._ssh_command('configure terminal', '[^[#]# ')
+
+        self._ssh_command('reset factory only-traffic', ': ')
+        self._ssh_command('YES', '.')
+
+        retries = 0
+        while retries < 60:
+            time.sleep(10)
+            retries += 1
+            try:
+                self.initialize(context)
+                return
+            except:
+                pass
+        raise Exception('Device did not come up within 5 minutes after reset')
 
     # </editor-fold>
 

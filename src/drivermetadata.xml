@@ -73,5 +73,6 @@
                            Description="Firmware local file name or URL (including tftp://, ftp://, http://, etc.)"/>
             </Parameters>
         </Command>
+        <Command Name="reset" DisplayName="Reset" Tags="" Description="Resets the device to factory settings"/>
     </Layout>
 </Driver>
