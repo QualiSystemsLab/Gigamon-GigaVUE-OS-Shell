@@ -255,7 +255,7 @@
           <AttributeValue Name="Serial Number" Value="" />
         </AttributeValues>
 			<ParentModels>
-				<ParentModelName>Gigamon</ParentModelName>
+				<ParentModelName>Generic Gigamon</ParentModelName>
 			</ParentModels>
 			<Drivers />
 			<Scripts />
