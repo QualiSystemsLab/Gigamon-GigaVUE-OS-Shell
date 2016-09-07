@@ -99,9 +99,9 @@ class GigamonDriver (ResourceDriverInterface):
         This is a good place to load and cache the driver configuration, initiate sessions etc.
         :param InitCommandContext context: the context the command runs on
         """
+        self._log('initialize called')
+
         if not self.fakedata:
-            self._log(str(dir(context)))
-            self._log(str(dir(context.connectivity)))
             api = CloudShellAPISession(context.connectivity.server_address,
                                        token_id=context.connectivity.admin_auth_token,
                                        port=context.connectivity.cloudshell_api_port)
@@ -244,16 +244,17 @@ class GigamonDriver (ResourceDriverInterface):
         time.sleep(30)
 
         retries = 0
-        while retries < 60:
-            self._log('Waiting 10 seconds...')
-            time.sleep(10)
-            retries += 1
+        while retries < 30:
             try:
+                self._log('Trying to connect...')
                 self.initialize(context)
                 self._log('Reconnected to device')
                 return
-            except:
-                self._log('Not ready')
+            except Exception as e:
+                self._log('Not ready: ' + str(e))
+                self._log('Waiting 10 seconds...')
+                time.sleep(10)
+                retries += 1
         raise Exception('Device did not come up within 5 minutes after reset')
 
     # </editor-fold>
