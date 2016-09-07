@@ -141,8 +141,13 @@ class GigamonDriver (ResourceDriverInterface):
         self._ssh_command('configure terminal', '[^[#]# ')
         try:
             if '://' in path:
+                bupfile = 'quali_backup_%d' % int(time.time())
                 try:
-                    self._ssh_command('configuration switch-to initial', '[^[#]# ')
+                    self._ssh_command('configuration copy %s %s' % (os.path.basename(path), bupfile), '[^[#]# ')
+                except:
+                    pass
+                try:
+                    self._ssh_command('configuration switch-to %s' % bupfile, '[^[#]# ')
                 except:
                     pass
                 try:
