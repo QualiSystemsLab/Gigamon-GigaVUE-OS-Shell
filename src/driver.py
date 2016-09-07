@@ -133,6 +133,7 @@ class GigamonDriver (ResourceDriverInterface):
 
         running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
 
+        path = path.replace('.cfg', '.txt')
         # path = '%s/%s_%s.txt' % (path if not path.endswith('/') else path[0:-1],
         #                          context.resource.name.replace(' ', '-'),
         #                          context.resource.model.replace(' ', '-'))
