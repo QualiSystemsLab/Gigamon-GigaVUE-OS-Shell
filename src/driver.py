@@ -108,8 +108,8 @@ class GigamonDriver (ResourceDriverInterface):
 
             self._ssh_connect(context.resource.address,
                               22,
-                              context.resource.attributes['User'],
-                              api.DecryptPassword(context.resource.attributes['Password']).Value,
+                              context.resource.attributes['SSH_USERNAME'],
+                              api.DecryptPassword(context.resource.attributes['SSH_PASSWORD']).Value,
                              '>')
             e = self._ssh_command('enable', '[#:]')
             if ':' in e:
