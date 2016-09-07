@@ -240,17 +240,18 @@ class GigamonDriver (ResourceDriverInterface):
 
         self._ssh_command('reset factory only-traffic', ': ')
         self._ssh_command('YES', '.')
-
-        retries = 0
-        while retries < 60:
-            time.sleep(10)
-            retries += 1
-            try:
-                self.initialize(context)
-                return
-            except:
-                pass
-        raise Exception('Device did not come up within 5 minutes after reset')
+        # time.sleep(60)
+        #
+        # retries = 0
+        # while retries < 60:
+        #     time.sleep(10)
+        #     retries += 1
+        #     try:
+        #         self.initialize(context)
+        #         return
+        #     except:
+        #         pass
+        # raise Exception('Device did not come up within 6 minutes after reset')
 
     # </editor-fold>
 
