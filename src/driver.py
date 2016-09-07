@@ -33,7 +33,7 @@ class GigamonDriver (ResourceDriverInterface):
 
     def _log(self, message):
         with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(message+'\r\n')
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ': ' + message+'\r\n')
 
     def _ssh_connect(self, host, port, username, password, prompt_regex):
         if self.fakedata:
