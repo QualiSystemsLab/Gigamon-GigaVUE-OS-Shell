@@ -183,7 +183,10 @@ class GigamonDriver (ResourceDriverInterface):
                 # make tmp.txt the Active.txt again
                 m.append(self._ssh_command('configuration copy tmp.txt Active.txt', '[^[#]# '))
                 m.append(self._ssh_command('configuration switch-to Active.txt', '[^[#]# '))
-            m.append(self._ssh_command('configuration delete tmp.txt', '[^[#]# '))
+            try:
+                m.append(self._ssh_command('configuration delete tmp.txt', '[^[#]# '))
+            except Exception as e:
+                m.append(str(e))
             api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
         except Exception as e2:
             m.append(str(e2))
@@ -598,7 +601,7 @@ class GigamonDriver (ResourceDriverInterface):
     def health_check(self, context, cancellation_context):
         """
         Checks if the device is up and connectable
-        :return: None
+        :return: Health check on resource ___ passed|failed
         :exception Exception: Raises an error if cannot connect
         """
         api = CloudShellAPISession(context.connectivity.server_address,
