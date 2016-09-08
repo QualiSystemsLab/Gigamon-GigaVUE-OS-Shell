@@ -507,11 +507,8 @@ class GigamonDriver (ResourceDriverInterface):
         try:
             o = self._ssh_command('show port', '[^[#]# ')
         except Exception as e:
-            self._log('show port caught exception 1')
             if 'no chassis configured' not in str(e):
-                self._log('show port caught exception 2')
                 raise e
-            self._log('show port caught exception 3')
             o = ''
         if o:
             o = o.replace('\r', '')
@@ -574,8 +571,10 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute(portaddr, "Auto Negotiation",
                                                     'True' if d['auto_neg'] == 'on' else 'False'))
 
-        self._log('Returning from get_inventory()')
-        return AutoLoadDetails(sub_resources, attributes)
+        rv = AutoLoadDetails(sub_resources, attributes)
+        for attr in rv.attributes:
+            self._log('%s: %s = %s' % (attr.relative_address, attr.attribute_name, attr.attribute_value))
+        return rv
 
     # </editor-fold>
 
