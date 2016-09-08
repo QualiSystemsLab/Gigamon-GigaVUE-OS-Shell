@@ -102,18 +102,18 @@ class GigamonDriver (ResourceDriverInterface):
         self._log('initialize called')
 
         if not self.fakedata:
-            api = CloudShellAPISession(context.connectivity.server_address,
+            self.api = CloudShellAPISession(context.connectivity.server_address,
                                        token_id=context.connectivity.admin_auth_token,
                                        port=context.connectivity.cloudshell_api_port)
 
             self._ssh_connect(context.resource.address,
                               22,
                               context.resource.attributes['SSH_USERNAME'],
-                              api.DecryptPassword(context.resource.attributes['SSH_PASSWORD']).Value,
+                              self.api.DecryptPassword(context.resource.attributes['SSH_PASSWORD']).Value,
                              '>')
             e = self._ssh_command('enable', '[#:]')
             if ':' in e:
-                self._ssh_command(api.DecryptPassword(context.resource.attributes['Enable Password']).Value, '[^[#]# ')
+                self._ssh_command(self.api.DecryptPassword(context.resource.attributes['Enable Password']).Value, '[^[#]# ')
         self._ssh_command('cli session terminal type dumb', '[^[#]# ')
         self._ssh_command('cli session terminal length 999', '[^[#]# ')
 
@@ -128,38 +128,55 @@ class GigamonDriver (ResourceDriverInterface):
         :param str configuration_type: Specify whether the file should update the startup or running config.
         :param str vrf_management_name: Optional. Virtual routing and Forwarding management name
         """
+        running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
+
+        if running_saved != 'running':
+            raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
+
         if restore_method == 'append':
             raise Exception('Restore method "append" is not implemented. Only "override" is implemented.')
 
-        running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
+        if '://' not in path:
+            raise Exception('Path must include URL scheme such as tftp://')
 
         path = path.replace('.cfg', '.txt')
-        # path = '%s/%s_%s.txt' % (path if not path.endswith('/') else path[0:-1],
-        #                          context.resource.name.replace(' ', '-'),
-        #                          context.resource.model.replace(' ', '-'))
+
+        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Restoring config')
 
         self._ssh_command('configure terminal', '[^[#]# ')
         try:
-            if '://' in path:
-                bupfile = 'quali_backup_%d' % int(time.time())
-                try:
-                    self._ssh_command('configuration copy %s %s' % (os.path.basename(path), bupfile), '[^[#]# ')
-                except:
-                    pass
-                try:
-                    self._ssh_command('configuration switch-to %s' % bupfile, '[^[#]# ')
-                except:
-                    pass
-                try:
-                    self._ssh_command('configuration delete %s' % (os.path.basename(path)), '[^[#]# ')
-                except:
-                    pass
-                self._ssh_command('configuration fetch ' + path, '[^[#]# ')
+            self._ssh_command('configuration fetch ' + path, '[^[#]# ')
+            try:
+                self._ssh_command('configuration copy Active.txt tmp.txt', '[^[#]# ')
+            except:
+                pass
+            try:
+                self._ssh_command('configuration switch-to tmp.txt', '[^[#]# ')
+            except:
+                pass
+            try:
+                self._ssh_command('configuration delete Active.txt', '[^[#]# ')
+            except:
+                pass
 
-            if running_saved == 'running':
-                self._ssh_command('configuration switch-to %s' % (os.path.basename(path)), '[^[#]# ')
-            else:
-                raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
+            self._ssh_command('configuration move %s Active.txt ' % (os.path.basename(path)), '[^[#]# ')
+
+            try:
+                self._ssh_command('configuration switch-to Active.txt', '[^[#]# ')
+            except:
+                # switch-to failed, tmp.txt still active
+                try:
+                    # get rid of new bad Active.txt
+                    self._ssh_command('configuration delete Active.txt', '[^[#]# ')
+                except:
+                    pass
+                # make tmp.txt the Active.txt again
+                self._ssh_command('configuration copy tmp.txt Active.txt', '[^[#]# ')
+                self._ssh_command('configuration switch-to Active.txt', '[^[#]# ')
+            self._ssh_command('configuration delete tmp.txt', '[^[#]# ')
+            self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+        except Exception as e:
+            self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % str(e))
         finally:
             self._ssh_command('exit', '[^[#]# ')
 
@@ -178,19 +195,24 @@ class GigamonDriver (ResourceDriverInterface):
         """
         running_saved = 'active' if configuration_type.lower() == 'running' else 'initial'
 
+        if '://' not in folder_path:
+            raise Exception('Destination folder path must include a URL scheme such as tftp://')
+
+        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Saving config')
+
         self._ssh_command('configure terminal', '[^[#]# ')
         try:
-            if '://' in folder_path:
-                if self.fakedata:
-                    path = 'fakepath/fakename_fakemodel.txt'
-                else:
-                    path = '%s/%s_%s.txt' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
-                                            context.resource.name.replace(' ', '-'),
-                                            context.resource.model.replace(' ', '-'))
-                self._ssh_command('configuration upload %s %s' % (running_saved, path), '[^[#]# ')
-                return path
+            if self.fakedata:
+                path = 'fakepath/fakename_fakemodel.txt'
             else:
-                raise Exception('Destination folder path must include a URL scheme such as tftp://')
+                path = '%s/%s_%s.txt' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
+                                        context.resource.name.replace(' ', '-'),
+                                        context.resource.model.replace(' ', '-'))
+            self._ssh_command('configuration upload %s %s' % (running_saved, path), '[^[#]# ')
+            self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config saved at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+            return path
+        except Exception as e:
+            self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to save config: %s' % str(e))
         finally:
             self._ssh_command('exit', '[^[#]# ')
 
@@ -201,14 +223,19 @@ class GigamonDriver (ResourceDriverInterface):
         :param str remote_host: path to tftp server where firmware file is stored
         :param str file_path: firmware file name
         """
-        if '://' in file_path:
-            self._ssh_command('image fetch %s' % file_path, '[^[#]# ')
-        elif remote_host == 'none':
-            pass
-        else:
-            self._ssh_command('image fetch tftp://%s/%s' % (remote_host, file_path), '[^[#]# ')
-        self._ssh_command('image install %s' % (os.path.basename(file_path)), '[^[#]# ')
-        self._ssh_command('image boot next', '[^[#]# ')
+        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Loading firmware %s' % file_path)
+        try:
+            if '://' in file_path:
+                self._ssh_command('image fetch %s' % file_path, '[^[#]# ')
+            elif remote_host == 'none':
+                pass
+            else:
+                self._ssh_command('image fetch tftp://%s/%s' % (remote_host, file_path), '[^[#]# ')
+            self._ssh_command('image install %s' % (os.path.basename(file_path)), '[^[#]# ')
+            self._ssh_command('image boot next', '[^[#]# ')
+            self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Loaded firmware %s at %s' % (file_path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())))
+        except Exception as e:
+            self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load firmware: %s' % str(e))
 
     def run_custom_command(self, context, cancellation_context, custom_command):
         """
@@ -250,6 +277,7 @@ class GigamonDriver (ResourceDriverInterface):
         :param ResourceCommandContext context: The context object for the command with resource and reservation info
         :param CancellationContext cancellation_context: Object to signal a request for cancellation. Must be enabled in drivermetadata.xml as well
         """
+        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Resetting switch')
         self._ssh_command('configure terminal', '[^[#]# ')
 
         self._ssh_command('reset factory only-traffic', ': ')
@@ -263,12 +291,14 @@ class GigamonDriver (ResourceDriverInterface):
                 self._log('Trying to connect...')
                 self.initialize(context)
                 self._log('Reconnected to device')
+                self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Switch finished resetting at %s ' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
                 return
             except Exception as e:
                 self._log('Not ready: ' + str(e))
                 self._log('Waiting 10 seconds...')
                 time.sleep(10)
                 retries += 1
+        self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Switch did not come up within 5 minutes after reset')
         raise Exception('Device did not come up within 5 minutes after reset')
 
     # </editor-fold>
