@@ -601,7 +601,14 @@ class GigamonDriver (ResourceDriverInterface):
         :return: None
         :exception Exception: Raises an error if cannot connect
         """
-        pass
+        api = CloudShellAPISession(context.connectivity.server_address,
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port)
+
+        rv = 'Health check on resource %s passed' % context.resource.fullname
+        api.SetResourceLiveStatus(context.resource.fullname,  'Online', rv)
+        return rv
+
 
     # </editor-fold>
 
