@@ -10,8 +10,22 @@
 
     <ShellModel Family="Visibility Fabric">
         <ResourceModel Name="Generic Gigamon" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -19,8 +33,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVM" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -28,8 +56,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVUE 2404" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -37,8 +79,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVUE HB1" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -46,8 +102,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVUE HC2" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -55,8 +125,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVUE HD4" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -64,8 +148,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVUE HD8" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -73,8 +171,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVUE TA1" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
@@ -82,8 +194,22 @@
             <Scripts />
         </ResourceModel>
         <ResourceModel Name="GigaVUE TA40" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+            <AttachedAttributes>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>

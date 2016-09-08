@@ -343,22 +343,22 @@
                 <AttributeValue Name="HTTPS_ADDRESS" Value="" />
                 <AttributeValue Name="Firmware Version" Value="" />
 
-                <AttributeValue Name="User" Value="" />
-                <AttributeValue Name="Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
-                <AttributeValue Name="Enable Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
-                <AttributeValue Name="System Name" Value="" />
-                <AttributeValue Name="Contact Name" Value="" />
-                <AttributeValue Name="OS Version" Value="" />
-                <AttributeValue Name="Vendor" Value="" />
-                <AttributeValue Name="Location" Value="" />
-                <AttributeValue Name="Model" Value="" />
-                <AttributeValue Name="Backup Location" Value="" />
-                <AttributeValue Name="Console Server IP Address" Value="" />
-                <AttributeValue Name="Console User" Value="" />
-                <AttributeValue Name="Console Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
-                <AttributeValue Name="Console Port" Value="0" />
-                <AttributeValue Name="CLI Connection Type" Value="Auto" />
-                <AttributeValue Name="Power Management" Value="False" />
+                <!--<AttributeValue Name="User" Value="" />-->
+                <!--<AttributeValue Name="Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />-->
+                <!--<AttributeValue Name="Enable Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />-->
+                <!--<AttributeValue Name="System Name" Value="" />-->
+                <!--<AttributeValue Name="Contact Name" Value="" />-->
+                <!--<AttributeValue Name="OS Version" Value="" />-->
+                <!--<AttributeValue Name="Model" Value="" />-->
+                <!--<AttributeValue Name="Vendor" Value="" />-->
+                <!--<AttributeValue Name="Location" Value="" />-->
+                <!--<AttributeValue Name="Backup Location" Value="" />-->
+                <!--<AttributeValue Name="Console Server IP Address" Value="" />-->
+                <!--<AttributeValue Name="Console User" Value="" />-->
+                <!--<AttributeValue Name="Console Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />-->
+                <!--<AttributeValue Name="Console Port" Value="0" />-->
+                <!--<AttributeValue Name="CLI Connection Type" Value="Auto" />-->
+                <!--<AttributeValue Name="Power Management" Value="False" />-->
             </AttributeValues>
             <Models>
             </Models>
