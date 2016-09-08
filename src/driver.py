@@ -482,7 +482,7 @@ class GigamonDriver (ResourceDriverInterface):
                 continue
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
-                if chassisaddr == 'not configured':
+                if chassisaddr.lower() == 'not configured':
                     chassisaddr = 'bad_chassis_addr'
             #    1     yes     up           PRT-HC0-X24     132-00BD      1BD0-0189   A1-a2
             m = re.match(r'(?P<slot>\S+)\s+'

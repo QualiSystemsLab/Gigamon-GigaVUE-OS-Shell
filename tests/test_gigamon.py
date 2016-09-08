@@ -39,38 +39,46 @@ Swap:              0 MB used / 0 MB free / 0 MB total
 
     ''',
     'show chassis': '''
+
 Chassis:
   Box ID            : -*
-  Hostname          : HC2-C01-35
-  Config            : yes
-  Mode              : normal
+  Hostname          : GigaVUE-HD8
+  Config            : -
+  Mode              : -
   Oper Status       : up
-  HW Type           : HC2-Chassis
+  HW Type           : HD8-Chassis
   Vendor            : Gigamon
-  Product Code      : 132-00AZ
-  Serial Num        : C0262
-  HW Rev            : A4
-  SW Rev            : 4.6.01.01
+  Product Code      : 132-0098
+  Serial Num        : 80035
+  HW Rev            : A2
+  SW Rev            : 4.7.00
 
 Backplane:
-  HW type           : HC2-Mid-Plane
-  Product Code      : 132-00AM
-  Serial Num        : 1AM0-0173
+  HW type           : HD8-Backplane
+  Product Code      : 132-0043
+  Serial Num        : 1430-0455
   HW Rev            : A0
 
 Fan Tray:
-  HW type           : HC2-Fan-Tray
-  Product Code      : 132-00B0
-  Serial Num        : 1B00-012A
-  HW Rev            : A0
+  HW type           : HD8-FAN-TRAY
+  Product Code      : 132-0044
+  Serial Num        : 1440-0042
+  HW Rev            : A1
   Status            : on
 
-Power Module:
-  HW type           : HC2-Power-Supply-PDB
-  Product Code      : 132-00CH
-  Serial Num        : 1CH0-0899
-  HW Rev            : 1.0
-  Status            : top=on bottom=on
+Power Module 1:
+  HW type           : HD8-Power-Supply-PDB
+  Product Code      : 132-0049
+  Serial Num        : 1490-0093
+  HW Rev            : A1
+  Status            : on
+
+Power Module 2:
+  HW type           : HD8-Power-Supply-PDB
+  Product Code      : 132-0049
+  Serial Num        : 1490-0098
+  HW Rev            : A1
+  Status            : on
 
 ''',
     'show chassis2': '''
@@ -142,15 +150,19 @@ Power Module:
   Status            : top=on bottom=on
     ''',
     'show card': '''
-Box ID: not configured
-Slot  Config  Oper Status      HW Type     Product Code  Serial Num  HW Rev
----------------------------------------------------------------------------
-cc1   yes     up           HC2-Main-Board  132-00AN      1AN0-00CB   B1-25
-1     yes     up           PRT-HC0-X24     132-00BD      1BD0-0189   A1-a2
-2     yes     up           BPS-HC0-D25A4G  132-00BQ      1BQ0-002E   2.1-1
-3     yes     up           BPS-HC0-D25B4G  132-00BF      1BF0-0638   A2-1
-4     yes     mismatch     SMT-HC0-X16     132-00BK      1BD0-0024   2.2-a2
-5     yes     up           SMT-HC0-R       132-00AT      1AT0-0158   A0-5
+Box ID: Not configured
+Slot  Config  Oper Status      HW Type      Product Code  Serial Num  HW Rev
+----------------------------------------------------------------------------
+1     no      inserted     H-GigaSMART      132-00AD      1AD0-0009   A3-a2
+2     no      inserted     GigaPORT-X12G04  132-0045      1450-0218   C2-a6
+3     no      inserted     GigaPORT-X04G44  132-0046      1460-0226   E1-a2
+4     no      inserted     GigaPORT-Q02X32  132-0087      1870-0183   B2-a2
+cc1   no      inserted     H-CCv2           132-0089      1890-1482   D0-df
+cc2   no      inserted     H-CCv2           132-0089      1890-1423   D0
+5     no      down         H-GigaSMART      132-00AD      1AD0-0030   A3-a2
+6     no      inserted     GigaPORT-X12G04  132-0045      1450-0256   C2-a6
+7     no      inserted     GigaPORT-X12G04  132-0045      1450-0192   C2-a6
+8     no      inserted     GigaPORT-X12G04  132-0045      1450-0255   C2-a6
 
 ''',
     'show card2': '''
@@ -177,7 +189,8 @@ cc2   yes     up           HC2-Main-Board  132-00AN      1AN0-00CB   B1-25
 
 
     ''',
-    'show port': '''% no chassis configured.''',
+    'show port': '''% There is no chassis configured.
+''',
     'show port3': '''HB1-C01-38 # show port
 ========================================================================================================================
                                  Link    Xcvr Pwr (dBm)  Pwr   Xcvr         Auto                  Force  Port
@@ -322,8 +335,14 @@ d.fakedata = fakedata
 
 inv = d.get_inventory(None)
 
+print 'Resources:'
+for res in inv.resources:
+    print '%s %s %s' % (res.model, res.name, res.relative_address)
+
+print 'Attributes:'
 for attr in inv.attributes:
     print '%s: %s = %s' % (attr.relative_address, attr.attribute_name, attr.attribute_value)
+print 'End'
 #
 # savefolders = [
 #     'ftp://user:password@server/a/b/c',
