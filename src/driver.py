@@ -133,6 +133,7 @@ class GigamonDriver (ResourceDriverInterface):
         :param str configuration_type: Specify whether the file should update the startup or running config.
         :param str vrf_management_name: Optional. Virtual routing and Forwarding management name
         """
+        self._log('restore called with inputs path=%s restore_method=%s configuration_type=%s vrf_management_name=%s' % (path, restore_method, configuration_type, vrf_management_name))
         running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
 
         if running_saved != 'running':
