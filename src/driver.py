@@ -503,8 +503,11 @@ class GigamonDriver (ResourceDriverInterface):
         try:
             o = self._ssh_command('show port', '[^[#]# ')
         except Exception as e:
+            self._log('show port caught exception 1')
             if 'no chassis configured' not in str(e):
+                self._log('show port caught exception 2')
                 raise e
+            self._log('show port caught exception 3')
             o = ''
         if o:
             o = o.replace('\r', '')
