@@ -390,6 +390,15 @@
                     </AttributeValues>
                     <ParentModels>
                         <ParentModelName>Generic Gigamon</ParentModelName>
+                        <ParentModelName>GigaVM</ParentModelName>
+                        <ParentModelName>GigaVUE 2404</ParentModelName>
+                        <ParentModelName>GigaVUE HB1</ParentModelName>
+                        <ParentModelName>GigaVUE HC2</ParentModelName>
+                        <ParentModelName>GigaVUE HD4</ParentModelName>
+                        <ParentModelName>GigaVUE HD8</ParentModelName>
+                        <ParentModelName>GigaVUE TA1</ParentModelName>
+                        <ParentModelName>GigaVUE TA40</ParentModelName>
+                        <ParentModelName>GigaVUE TA10</ParentModelName>
                     </ParentModels>
                     <Drivers />
                     <Scripts />
@@ -585,7 +594,16 @@
                         <AttributeValue Name="Protocol Type" Value="Transparent" />
                     </AttributeValues>
                     <ParentModels>
-                        <ParentModelName>Gigamon</ParentModelName>
+                        <ParentModelName>Generic Gigamon</ParentModelName>
+                        <ParentModelName>GigaVM</ParentModelName>
+                        <ParentModelName>GigaVUE 2404</ParentModelName>
+                        <ParentModelName>GigaVUE HB1</ParentModelName>
+                        <ParentModelName>GigaVUE HC2</ParentModelName>
+                        <ParentModelName>GigaVUE HD4</ParentModelName>
+                        <ParentModelName>GigaVUE HD8</ParentModelName>
+                        <ParentModelName>GigaVUE TA1</ParentModelName>
+                        <ParentModelName>GigaVUE TA40</ParentModelName>
+                        <ParentModelName>GigaVUE TA10</ParentModelName>
                     </ParentModels>
                     <Drivers />
                     <Scripts />

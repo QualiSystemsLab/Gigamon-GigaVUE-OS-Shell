@@ -90,6 +90,14 @@
             </Drivers>
             <Scripts />
         </ResourceModel>
-
+        <ResourceModel Name="GigaVUE TA10" Description="" SupportsConcurrentCommands="false">
+            <AttachedAttributes />
+            <AttributeValues />
+            <ParentModels />
+            <Drivers>
+                <DriverName>GigamonDriver</DriverName>
+            </Drivers>
+            <Scripts />
+        </ResourceModel>
     </ShellModel>
 </Shell>
