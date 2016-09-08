@@ -7,8 +7,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVM" Model="GigaVM" Driver="GigamonDriver">
@@ -17,8 +17,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE 2404" Model="GigaVUE 2404" Driver="GigamonDriver">
@@ -27,8 +27,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE HB1" Model="GigaVUE HB1" Driver="GigamonDriver">
@@ -37,8 +37,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE HC2" Model="GigaVUE HC2" Driver="GigamonDriver">
@@ -47,8 +47,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE HD4" Model="GigaVUE HD4" Driver="GigamonDriver">
@@ -57,8 +57,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE HD8" Model="GigaVUE HD8" Driver="GigamonDriver">
@@ -67,8 +67,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE TA1" Model="GigaVUE TA1" Driver="GigamonDriver">
@@ -77,8 +77,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE TA40" Model="GigaVUE TA40" Driver="GigamonDriver">
@@ -87,8 +87,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
     <ResourceTemplate Name="GigaVUE TA10" Model="GigaVUE TA10" Driver="GigamonDriver">
@@ -97,8 +97,8 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="User" Value="" />
-            <Attribute Name="Password" Value="" />
+            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
 </ResourceTemplates>
