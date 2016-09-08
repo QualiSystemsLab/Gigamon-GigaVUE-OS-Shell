@@ -48,7 +48,7 @@ class GigamonDriver (ResourceDriverInterface):
                     password=password,
                     look_for_keys=True)
         self.channel = self.ssh.invoke_shell()
-        self._ssh_read(prompt_regex)  # eat banner
+        return self._ssh_read(prompt_regex)  # eat banner
 
     def _ssh_write(self, command):
         if self.fakedata:
@@ -106,11 +106,15 @@ class GigamonDriver (ResourceDriverInterface):
                                        token_id=context.connectivity.admin_auth_token,
                                        port=context.connectivity.cloudshell_api_port)
 
-            self._ssh_connect(context.resource.address,
+            o = self._ssh_connect(context.resource.address,
                               22,
                               context.resource.attributes['SSH_USERNAME'],
                               self.api.DecryptPassword(context.resource.attributes['SSH_PASSWORD']).Value,
-                             '>')
+                             '>|security purposes')
+
+            if 'security purposes' in o:
+                raise Exception('Switch password needs to be initialized: %s' % o)
+
             e = self._ssh_command('enable', '[#:]')
             if ':' in e:
                 self._ssh_command(self.api.DecryptPassword(context.resource.attributes['Enable Password']).Value, '[^[#]# ')
