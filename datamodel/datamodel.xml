@@ -279,57 +279,57 @@
                     <AllowedValues />
                 </AttachedAttribute>
 
-                <AttachedAttribute Name="User" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Password" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Power Management" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Enable Password" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="System Name" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Contact Name" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Location" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Backup Location" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Sessions Concurrency Limit" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Console Server IP Address" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Console User" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Console Password" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Console Port" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="CLI Connection Type" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
+                <!--<AttachedAttribute Name="User" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Password" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Power Management" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Enable Password" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="System Name" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Contact Name" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Location" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Backup Location" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Sessions Concurrency Limit" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Console Server IP Address" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Console User" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Console Password" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="Console Port" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="CLI Connection Type" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
             </AttachedAttributes>
             <AttributeValues>
                 <AttributeValue Name="CONSOLE_IP" Value="" />
