@@ -1,105 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ShellsConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.qualisystems.com/ResourceManagement/ShellsConfigurationSchema.xsd">
-<ResourceTemplates>
-    <ResourceTemplate Name="Generic Gigamon" Model="Generic Gigamon" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVM" Model="GigaVM" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE 2404" Model="GigaVUE 2404" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE HB1" Model="GigaVUE HB1" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE HC2" Model="GigaVUE HC2" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE HD4" Model="GigaVUE HD4" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE HD8" Model="GigaVUE HD8" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE TA1" Model="GigaVUE TA1" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE TA40" Model="GigaVUE TA40" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-    <ResourceTemplate Name="GigaVUE TA10" Model="GigaVUE TA10" Driver="GigamonDriver">
-        <Description></Description>
-        <AutoLoad Enable="true">
-            <Description>Description for autoload </Description>
-        </AutoLoad>
-        <Attributes>
-            <Attribute Name="SSH_USERNAME" Value="" />
-            <Attribute Name="SSH_PASSWORD" Value="" />
-        </Attributes>
-    </ResourceTemplate>
-</ResourceTemplates>
+    <ResourceTemplates>
+        <ResourceTemplate Name="GigaVUE-OS" Model="GigaVUE-OS" Driver="GigamonDriver">
+            <Description></Description>
+            <AutoLoad Enable="true">
+                <Description>Automatically import the attributes and structure of the device</Description>
+            </AutoLoad>
+            <Attributes>
+                <Attribute Name="User" Value="" />
+                <Attribute Name="Password" Value="" />
+            </Attributes>
+        </ResourceTemplate>
+    </ResourceTemplates>
 </ShellsConfiguration>

@@ -1,42 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DataModelInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.qualisystems.com/ResourceManagement/DataModelSchema.xsd">
   <Attributes>
-      <AttributeInfo Name="SSH_IP" Type="String" DefaultValue="" IsReadOnly="false">
-          <Rules>
-              <Rule Name="Configuration" />
-          </Rules>
-      </AttributeInfo>
-      <AttributeInfo Name="SSH_USERNAME" Type="String" DefaultValue="" IsReadOnly="false">
-          <Rules>
-              <Rule Name="Configuration" />
-          </Rules>
-      </AttributeInfo>
-      <AttributeInfo Name="SSH_PASSWORD" Type="Password" DefaultValue="3M3u7nkDzxWb0aJ/IZYeWw==" IsReadOnly="false">
-          <Rules>
-              <Rule Name="Configuration" />
-          </Rules>
-      </AttributeInfo>
-
-      <AttributeInfo Name="CONSOLE_IP" Type="String" DefaultValue="" IsReadOnly="false">
-          <Rules>
-              <Rule Name="Configuration" />
-          </Rules>
-      </AttributeInfo>
-      <AttributeInfo Name="CONSOLE_PORT" Type="String" DefaultValue="" IsReadOnly="false">
-          <Rules>
-              <Rule Name="Configuration" />
-          </Rules>
-      </AttributeInfo>
-      <AttributeInfo Name="CONSOLE_USERNAME" Type="String" DefaultValue="" IsReadOnly="false">
-          <Rules>
-              <Rule Name="Configuration" />
-          </Rules>
-      </AttributeInfo>
-      <AttributeInfo Name="CONSOLE_PASSWORD" Type="Password" DefaultValue="3M3u7nkDzxWb0aJ/IZYeWw==" IsReadOnly="false">
-          <Rules>
-              <Rule Name="Configuration" />
-          </Rules>
-      </AttributeInfo>
 
       <AttributeInfo Name="GUACAMOLE_SERVER" Type="String" DefaultValue="" IsReadOnly="false">
           <Rules>
@@ -48,15 +12,13 @@
               <Rule Name="Configuration" />
           </Rules>
       </AttributeInfo>
-      <AttributeInfo Name="Firmware Version" Type="String" DefaultValue="" IsReadOnly="true">
-          <Rules Override="false">
-              <Rule Name="Setting" />
-              <Rule Name="Available For Abstract Resources" />
-              <Rule Name="Displayed In Search Filters" />
+
+
+      <AttributeInfo Name="User" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Configuration" />
           </Rules>
       </AttributeInfo>
-
-
       <AttributeInfo Name="Password" Type="Password" DefaultValue="3M3u7nkDzxWb0aJ/IZYeWw==" IsReadOnly="false">
           <Rules>
               <Rule Name="Configuration" />
@@ -127,6 +89,36 @@
           <Rules Override="false">
               <Rule Name="Setting" />
               <Rule Name="Available For Abstract Resources" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="SNMP Read Community" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Configuration" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="SNMP Write Community" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Configuration" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="SNMP V3 Password" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Configuration" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="SNMP V3 Private Key" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Configuration" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="SNMP V3 User" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Configuration" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="SNMP Version" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Configuration" />
           </Rules>
       </AttributeInfo>
       <AttributeInfo Name="Sessions Concurrency Limit" Type="Numeric" DefaultValue="1" IsReadOnly="false">
@@ -244,122 +236,9 @@
       </AttributeInfo>
   </Attributes>
     <ResourceFamilies>
-        <ResourceFamily Name="Visibility Fabric" Description="" IsSearchable="true" IsPowerSwitch="true">
-            <AttachedAttributes>
-                <AttachedAttribute Name="CONSOLE_IP" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="CONSOLE_PORT" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="CONSOLE_USERNAME" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="CONSOLE_PASSWORD" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-
-                <AttachedAttribute Name="SSH_IP" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="SSH_USERNAME" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="SSH_PASSWORD" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-
-                <AttachedAttribute Name="GUACAMOLE_SERVER" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="HTTPS_ADDRESS" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-                <AttachedAttribute Name="Firmware Version" IsOverridable="true" IsLocal="true">
-                    <AllowedValues />
-                </AttachedAttribute>
-
-                <!--<AttachedAttribute Name="User" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Password" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Power Management" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Enable Password" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="System Name" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Contact Name" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Location" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Backup Location" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Sessions Concurrency Limit" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Console Server IP Address" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Console User" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Console Password" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Console Port" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="CLI Connection Type" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-            </AttachedAttributes>
-            <AttributeValues>
-                <AttributeValue Name="CONSOLE_IP" Value="" />
-                <AttributeValue Name="CONSOLE_PORT" Value="" />
-                <AttributeValue Name="CONSOLE_USERNAME" Value="" />
-                <AttributeValue Name="CONSOLE_PASSWORD" Value="" />
-                <AttributeValue Name="SSH_IP" Value="" />
-                <AttributeValue Name="SSH_USERNAME" Value="" />
-                <AttributeValue Name="SSH_PASSWORD" Value="" />
-                <AttributeValue Name="GUACAMOLE_SERVER" Value="" />
-                <AttributeValue Name="HTTPS_ADDRESS" Value="" />
-                <AttributeValue Name="Firmware Version" Value="" />
-
-                <!--<AttributeValue Name="User" Value="" />-->
-                <!--<AttributeValue Name="Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />-->
-                <!--<AttributeValue Name="Enable Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />-->
-                <!--<AttributeValue Name="System Name" Value="" />-->
-                <!--<AttributeValue Name="Contact Name" Value="" />-->
-                <!--<AttributeValue Name="OS Version" Value="" />-->
-                <!--<AttributeValue Name="Model" Value="" />-->
-                <!--<AttributeValue Name="Vendor" Value="" />-->
-                <!--<AttributeValue Name="Location" Value="" />-->
-                <!--<AttributeValue Name="Backup Location" Value="" />-->
-                <!--<AttributeValue Name="Console Server IP Address" Value="" />-->
-                <!--<AttributeValue Name="Console User" Value="" />-->
-                <!--<AttributeValue Name="Console Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />-->
-                <!--<AttributeValue Name="Console Port" Value="0" />-->
-                <!--<AttributeValue Name="CLI Connection Type" Value="Auto" />-->
-                <!--<AttributeValue Name="Power Management" Value="False" />-->
-            </AttributeValues>
+        <ResourceFamily Name="Switch" Description="" IsSearchable="true" IsPowerSwitch="true">
+            <AttachedAttributes />
+            <AttributeValues />
             <Models>
             </Models>
             <Categories />
@@ -389,16 +268,7 @@
                         <AttributeValue Name="Serial Number" Value="" />
                     </AttributeValues>
                     <ParentModels>
-                        <ParentModelName>Generic Gigamon</ParentModelName>
-                        <ParentModelName>GigaVM</ParentModelName>
-                        <ParentModelName>GigaVUE 2404</ParentModelName>
-                        <ParentModelName>GigaVUE HB1</ParentModelName>
-                        <ParentModelName>GigaVUE HC2</ParentModelName>
-                        <ParentModelName>GigaVUE HD4</ParentModelName>
-                        <ParentModelName>GigaVUE HD8</ParentModelName>
-                        <ParentModelName>GigaVUE TA1</ParentModelName>
-                        <ParentModelName>GigaVUE TA40</ParentModelName>
-                        <ParentModelName>GigaVUE TA10</ParentModelName>
+                        <ParentModelName>GigaVUE-OS</ParentModelName>
                     </ParentModels>
                     <Drivers />
                     <Scripts />
@@ -594,16 +464,7 @@
                         <AttributeValue Name="Protocol Type" Value="Transparent" />
                     </AttributeValues>
                     <ParentModels>
-                        <ParentModelName>Generic Gigamon</ParentModelName>
-                        <ParentModelName>GigaVM</ParentModelName>
-                        <ParentModelName>GigaVUE 2404</ParentModelName>
-                        <ParentModelName>GigaVUE HB1</ParentModelName>
-                        <ParentModelName>GigaVUE HC2</ParentModelName>
-                        <ParentModelName>GigaVUE HD4</ParentModelName>
-                        <ParentModelName>GigaVUE HD8</ParentModelName>
-                        <ParentModelName>GigaVUE TA1</ParentModelName>
-                        <ParentModelName>GigaVUE TA40</ParentModelName>
-                        <ParentModelName>GigaVUE TA10</ParentModelName>
+                        <ParentModelName>GigaVUE-OS</ParentModelName>
                     </ParentModels>
                     <Drivers />
                     <Scripts />

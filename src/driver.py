@@ -107,17 +107,18 @@ class GigamonDriver (ResourceDriverInterface):
                                        port=context.connectivity.cloudshell_api_port)
 
             o = self._ssh_connect(context.resource.address,
-                              22,
-                              context.resource.attributes['SSH_USERNAME'],
-                              self.api.DecryptPassword(context.resource.attributes['SSH_PASSWORD']).Value,
-                             '>|security purposes')
+                                  22,
+                                  context.resource.attributes['User'],
+                                  self.api.DecryptPassword(context.resource.attributes['Password']).Value,
+                                  '>|security purposes')
 
             if 'security purposes' in o:
                 raise Exception('Switch password needs to be initialized: %s' % o)
 
             e = self._ssh_command('enable', '[#:]')
             if ':' in e:
-                self._ssh_command(self.api.DecryptPassword(context.resource.attributes['Enable Password']).Value, '[^[#]# ')
+                self._ssh_command(self.api.DecryptPassword(context.resource.attributes['Enable Password']).Value,
+                                  '[^[#]# ')
         self._ssh_command('cli session terminal type dumb', '[^[#]# ')
         self._ssh_command('cli session terminal length 999', '[^[#]# ')
 
@@ -446,11 +447,13 @@ class GigamonDriver (ResourceDriverInterface):
         '''
 
         sub_resources = []
-        attributes = []
+        attributes = [AutoLoadAttribute('', "Vendor", 'Gigamon')]
 
         for line in self._ssh_command('show version', '[^[#]# ').split('\n'):
             if 'Version summary:' in line:
-                attributes.append(AutoLoadAttribute('', "Firmware Version", line.replace('Version summary:', '').strip()))
+                attributes.append(AutoLoadAttribute('', "OS Version", line.replace('Version summary:', '').strip()))
+            if 'Product model:' in line:
+                attributes.append(AutoLoadAttribute('', "Model", line.replace('Product model:', '').strip()))
 
         chassisaddr = 'bad_chassis_addr'
         patt2attr = {}

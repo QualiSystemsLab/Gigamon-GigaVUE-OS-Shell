@@ -1,7 +1,7 @@
 shell:
     name: Gigamon
-    author: Anonymous
+    author: Quali
     email: info@quali.com
-    description: Describe the purpose of your CloudShell shell
+    description: Autoload and configuration management for GigaVUE-OS devices
     version: 0.1.0
     driver_name: GigamonDriver

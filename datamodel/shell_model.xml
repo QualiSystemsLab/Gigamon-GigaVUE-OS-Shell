@@ -1,98 +1,109 @@
 <Shell>
 
-    <ShellAttributes>
-        <AttributeInfo Name="User" Type="String" DefaultValue="" IsReadOnly="false">
-            <Rules>
-                <Rule Name="Configuration" />
-            </Rules>
-        </AttributeInfo>
-    </ShellAttributes>
+    <ShellAttributes />
 
-    <ShellModel Family="Visibility Fabric">
-        <ResourceModel Name="Generic Gigamon" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVM" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE 2404" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE HB1" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE HC2" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE HD4" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE HD8" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE TA1" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE TA40" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
-            <ParentModels />
-            <Drivers>
-                <DriverName>GigamonDriver</DriverName>
-            </Drivers>
-            <Scripts />
-        </ResourceModel>
-        <ResourceModel Name="GigaVUE TA10" Description="" SupportsConcurrentCommands="false">
-            <AttachedAttributes />
-            <AttributeValues />
+    <ShellModel Family="Switch">
+        <ResourceModel Name="GigaVUE-OS" Description="" SupportsConcurrentCommands="false">
+            <AttachedAttributes>
+                <AttachedAttribute Name="GUACAMOLE_SERVER" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="HTTPS_ADDRESS" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+
+                <AttachedAttribute Name="User" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Password" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Power Management" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Enable Password" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="System Name" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Contact Name" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="OS Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Vendor" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Location" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Backup Location" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Model" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="SNMP Read Community" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="SNMP Write Community" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="SNMP V3 Password" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="SNMP V3 Private Key" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="SNMP V3 User" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="SNMP Version" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Sessions Concurrency Limit" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Console Server IP Address" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Console User" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Console Password" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Console Port" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="CLI Connection Type" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="GUACAMOLE_SERVER" Value="" />
+                <AttributeValue Name="HTTPS_ADDRESS" Value="" />
+
+                <AttributeValue Name="User" Value="" />
+                <AttributeValue Name="Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
+                <AttributeValue Name="Enable Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
+                <AttributeValue Name="System Name" Value="" />
+                <AttributeValue Name="Contact Name" Value="" />
+                <AttributeValue Name="OS Version" Value="" />
+                <AttributeValue Name="Model" Value="" />
+                <AttributeValue Name="Vendor" Value="" />
+                <AttributeValue Name="Location" Value="" />
+                <AttributeValue Name="Backup Location" Value="" />
+                <AttributeValue Name="Console Server IP Address" Value="" />
+                <AttributeValue Name="Console User" Value="" />
+                <AttributeValue Name="Console Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
+                <AttributeValue Name="Console Port" Value="0" />
+                <AttributeValue Name="CLI Connection Type" Value="Auto" />
+                <AttributeValue Name="Power Management" Value="False" />
+            </AttributeValues>
             <ParentModels />
             <Drivers>
                 <DriverName>GigamonDriver</DriverName>
