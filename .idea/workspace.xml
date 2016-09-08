@@ -23,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="driver.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2209">
-              <caret line="293" column="174" selection-start-line="293" selection-start-column="174" selection-end-line="293" selection-end-column="174" />
+            <state relative-caret-position="358">
+              <caret line="444" column="22" selection-start-line="444" selection-start-column="22" selection-end-line="444" selection-end-column="22" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -95,7 +95,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shell_model.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="shell_model.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datamodel/shell_model.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3519">
@@ -136,9 +136,9 @@
         <option value="$PROJECT_DIR$/tests/test_gigamon.py" />
         <option value="$PROJECT_DIR$/src/drivermetadata.xml" />
         <option value="$PROJECT_DIR$/datamodel/shellconfig.xml" />
-        <option value="$PROJECT_DIR$/src/driver.py" />
         <option value="$PROJECT_DIR$/datamodel/datamodel.xml" />
         <option value="$PROJECT_DIR$/datamodel/shell_model.xml" />
+        <option value="$PROJECT_DIR$/src/driver.py" />
       </list>
     </option>
   </component>
@@ -901,16 +901,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/driver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2209">
-          <caret line="293" column="174" selection-start-line="293" selection-start-column="174" selection-end-line="293" selection-end-column="174" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datamodel/metadata.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -932,6 +922,16 @@
         <state relative-caret-position="3519">
           <caret line="207" column="0" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/driver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="444" column="22" selection-start-line="444" selection-start-column="22" selection-end-line="444" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

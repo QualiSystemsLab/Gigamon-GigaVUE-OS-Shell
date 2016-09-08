@@ -442,13 +442,11 @@ class GigamonDriver (ResourceDriverInterface):
         '''
 
         sub_resources = []
-        attributes = [AutoLoadAttribute('', "Vendor", 'Gigamon')]
+        attributes = []
 
         for line in self._ssh_command('show version', '[^[#]# ').split('\n'):
-            if 'Product model:' in line:
-                attributes.append(AutoLoadAttribute('', "Model", line.replace('Product model:', '').strip()))
             if 'Version summary:' in line:
-                attributes.append(AutoLoadAttribute('', "OS Version", line.replace('Version summary:', '').strip()))
+                attributes.append(AutoLoadAttribute('', "Firmware Version", line.replace('Version summary:', '').strip()))
 
         chassisaddr = 'bad_chassis_addr'
         patt2attr = {}
