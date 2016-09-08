@@ -151,40 +151,43 @@ class GigamonDriver (ResourceDriverInterface):
                            port=context.connectivity.cloudshell_api_port)
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Restoring config')
 
-        self._ssh_command('configure terminal', '[^[#]# ')
+        m = []
+        m.append(self._ssh_command('configure terminal', '[^[#]# '))
         try:
-            self._ssh_command('configuration fetch ' + path, '[^[#]# ')
+            m.append(self._ssh_command('configuration fetch ' + path, '[^[#]# '))
             try:
-                self._ssh_command('configuration copy Active.txt tmp.txt', '[^[#]# ')
-            except:
-                pass
+                m.append(self._ssh_command('configuration copy Active.txt tmp.txt', '[^[#]# '))
+            except Exception as e:
+                m.append(str(e))
             try:
-                self._ssh_command('configuration switch-to tmp.txt', '[^[#]# ')
-            except:
-                pass
+                m.append(self._ssh_command('configuration switch-to tmp.txt', '[^[#]# '))
+            except Exception as e:
+                m.append(str(e))
             try:
-                self._ssh_command('configuration delete Active.txt', '[^[#]# ')
-            except:
-                pass
+                m.append(self._ssh_command('configuration delete Active.txt', '[^[#]# '))
+            except Exception as e:
+                m.append(str(e))
 
-            self._ssh_command('configuration move %s Active.txt ' % (os.path.basename(path)), '[^[#]# ')
+            m.append(self._ssh_command('configuration move %s Active.txt ' % (os.path.basename(path)), '[^[#]# '))
 
             try:
-                self._ssh_command('configuration switch-to Active.txt', '[^[#]# ')
-            except:
+                m.append(self._ssh_command('configuration switch-to Active.txt', '[^[#]# '))
+            except Exception as e:
+                m.append(str(e))
                 # switch-to failed, tmp.txt still active
                 try:
                     # get rid of new bad Active.txt
-                    self._ssh_command('configuration delete Active.txt', '[^[#]# ')
-                except:
-                    pass
+                    m.append(self._ssh_command('configuration delete Active.txt', '[^[#]# '))
+                except Exception as e:
+                    m.append(str(e))
                 # make tmp.txt the Active.txt again
-                self._ssh_command('configuration copy tmp.txt Active.txt', '[^[#]# ')
-                self._ssh_command('configuration switch-to Active.txt', '[^[#]# ')
-            self._ssh_command('configuration delete tmp.txt', '[^[#]# ')
+                m.append(self._ssh_command('configuration copy tmp.txt Active.txt', '[^[#]# '))
+                m.append(self._ssh_command('configuration switch-to Active.txt', '[^[#]# '))
+            m.append(self._ssh_command('configuration delete tmp.txt', '[^[#]# '))
             api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
-        except Exception as e:
-            api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % str(e))
+        except Exception as e2:
+            m.append(str(e2))
+            api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % '\n'.join(m))
         finally:
             self._ssh_command('exit', '[^[#]# ')
 
