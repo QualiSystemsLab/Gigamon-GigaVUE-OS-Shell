@@ -102,14 +102,14 @@ class GigamonDriver (ResourceDriverInterface):
         self._log('initialize called')
 
         if not self.fakedata:
-            self.api = CloudShellAPISession(context.connectivity.server_address,
+            api = CloudShellAPISession(context.connectivity.server_address,
                                        token_id=context.connectivity.admin_auth_token,
                                        port=context.connectivity.cloudshell_api_port)
 
             o = self._ssh_connect(context.resource.address,
                                   22,
                                   context.resource.attributes['User'],
-                                  self.api.DecryptPassword(context.resource.attributes['Password']).Value,
+                                  api.DecryptPassword(context.resource.attributes['Password']).Value,
                                   '>|security purposes')
 
             if 'security purposes' in o:
@@ -117,7 +117,7 @@ class GigamonDriver (ResourceDriverInterface):
 
             e = self._ssh_command('enable', '[#:]')
             if ':' in e:
-                self._ssh_command(self.api.DecryptPassword(context.resource.attributes['Enable Password']).Value,
+                self._ssh_command(api.DecryptPassword(context.resource.attributes['Enable Password']).Value,
                                   '[^[#]# ')
         self._ssh_command('cli session terminal type dumb', '[^[#]# ')
         self._ssh_command('cli session terminal length 999', '[^[#]# ')
@@ -146,7 +146,10 @@ class GigamonDriver (ResourceDriverInterface):
 
         path = path.replace('.cfg', '.txt')
 
-        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Restoring config')
+        api = CloudShellAPISession(context.connectivity.server_address,
+                           token_id=context.connectivity.admin_auth_token,
+                           port=context.connectivity.cloudshell_api_port)
+        api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Restoring config')
 
         self._ssh_command('configure terminal', '[^[#]# ')
         try:
@@ -179,9 +182,9 @@ class GigamonDriver (ResourceDriverInterface):
                 self._ssh_command('configuration copy tmp.txt Active.txt', '[^[#]# ')
                 self._ssh_command('configuration switch-to Active.txt', '[^[#]# ')
             self._ssh_command('configuration delete tmp.txt', '[^[#]# ')
-            self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+            api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
         except Exception as e:
-            self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % str(e))
+            api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % str(e))
         finally:
             self._ssh_command('exit', '[^[#]# ')
 
@@ -203,7 +206,10 @@ class GigamonDriver (ResourceDriverInterface):
         if '://' not in folder_path:
             raise Exception('Destination folder path must include a URL scheme such as tftp://')
 
-        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Saving config')
+        api = CloudShellAPISession(context.connectivity.server_address,
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port)
+        api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Saving config')
 
         self._ssh_command('configure terminal', '[^[#]# ')
         try:
@@ -214,10 +220,10 @@ class GigamonDriver (ResourceDriverInterface):
                                         context.resource.name.replace(' ', '-'),
                                         context.resource.model.replace(' ', '-'))
             self._ssh_command('configuration upload %s %s' % (running_saved, path), '[^[#]# ')
-            self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config saved at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+            api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config saved at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
             return path
         except Exception as e:
-            self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to save config: %s' % str(e))
+            api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to save config: %s' % str(e))
         finally:
             self._ssh_command('exit', '[^[#]# ')
 
@@ -228,7 +234,10 @@ class GigamonDriver (ResourceDriverInterface):
         :param str remote_host: path to tftp server where firmware file is stored
         :param str file_path: firmware file name
         """
-        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Loading firmware %s' % file_path)
+        api = CloudShellAPISession(context.connectivity.server_address,
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port)
+        api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Loading firmware %s' % file_path)
         try:
             if '://' in file_path:
                 self._ssh_command('image fetch %s' % file_path, '[^[#]# ')
@@ -238,9 +247,9 @@ class GigamonDriver (ResourceDriverInterface):
                 self._ssh_command('image fetch tftp://%s/%s' % (remote_host, file_path), '[^[#]# ')
             self._ssh_command('image install %s' % (os.path.basename(file_path)), '[^[#]# ')
             self._ssh_command('image boot next', '[^[#]# ')
-            self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Loaded firmware %s at %s' % (file_path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())))
+            api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Loaded firmware %s at %s' % (file_path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())))
         except Exception as e:
-            self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load firmware: %s' % str(e))
+            api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load firmware: %s' % str(e))
 
     def run_custom_command(self, context, cancellation_context, custom_command):
         """
@@ -282,7 +291,10 @@ class GigamonDriver (ResourceDriverInterface):
         :param ResourceCommandContext context: The context object for the command with resource and reservation info
         :param CancellationContext cancellation_context: Object to signal a request for cancellation. Must be enabled in drivermetadata.xml as well
         """
-        self.api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Resetting switch')
+        api = CloudShellAPISession(context.connectivity.server_address,
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port)
+        api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Resetting switch')
         self._ssh_command('configure terminal', '[^[#]# ')
 
         self._ssh_command('reset factory only-traffic', ': ')
@@ -296,14 +308,14 @@ class GigamonDriver (ResourceDriverInterface):
                 self._log('Trying to connect...')
                 self.initialize(context)
                 self._log('Reconnected to device')
-                self.api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Switch finished resetting at %s ' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+                api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Switch finished resetting at %s ' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
                 return
             except Exception as e:
                 self._log('Not ready: ' + str(e))
                 self._log('Waiting 10 seconds...')
                 time.sleep(10)
                 retries += 1
-        self.api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Switch did not come up within 5 minutes after reset')
+        api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Switch did not come up within 5 minutes after reset')
         raise Exception('Device did not come up within 5 minutes after reset')
 
     # </editor-fold>
