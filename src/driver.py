@@ -595,7 +595,7 @@ class GigamonDriver (ResourceDriverInterface):
 
     # <editor-fold desc="Health Check">
 
-    def health_check(self,cancellation_context):
+    def health_check(self, context, cancellation_context):
         """
         Checks if the device is up and connectable
         :return: None
