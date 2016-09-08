@@ -570,6 +570,7 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute(portaddr, "Auto Negotiation",
                                                     'True' if d['auto_neg'] == 'on' else 'False'))
 
+        self._log('Returning from get_inventory()')
         return AutoLoadDetails(sub_resources, attributes)
 
     # </editor-fold>
