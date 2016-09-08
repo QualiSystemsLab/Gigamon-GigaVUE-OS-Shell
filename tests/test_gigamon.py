@@ -40,6 +40,41 @@ Swap:              0 MB used / 0 MB free / 0 MB total
     ''',
     'show chassis': '''
 Chassis:
+  Box ID            : -*
+  Hostname          : HC2-C01-35
+  Config            : yes
+  Mode              : normal
+  Oper Status       : up
+  HW Type           : HC2-Chassis
+  Vendor            : Gigamon
+  Product Code      : 132-00AZ
+  Serial Num        : C0262
+  HW Rev            : A4
+  SW Rev            : 4.6.01.01
+
+Backplane:
+  HW type           : HC2-Mid-Plane
+  Product Code      : 132-00AM
+  Serial Num        : 1AM0-0173
+  HW Rev            : A0
+
+Fan Tray:
+  HW type           : HC2-Fan-Tray
+  Product Code      : 132-00B0
+  Serial Num        : 1B00-012A
+  HW Rev            : A0
+  Status            : on
+
+Power Module:
+  HW type           : HC2-Power-Supply-PDB
+  Product Code      : 132-00CH
+  Serial Num        : 1CH0-0899
+  HW Rev            : 1.0
+  Status            : top=on bottom=on
+
+''',
+    'show chassis2': '''
+Chassis:
   Box ID            : 1*
   Hostname          : HC2-C01-35
   Config            : yes
@@ -107,6 +142,18 @@ Power Module:
   Status            : top=on bottom=on
     ''',
     'show card': '''
+Box ID: not configured
+Slot  Config  Oper Status      HW Type     Product Code  Serial Num  HW Rev
+---------------------------------------------------------------------------
+cc1   yes     up           HC2-Main-Board  132-00AN      1AN0-00CB   B1-25
+1     yes     up           PRT-HC0-X24     132-00BD      1BD0-0189   A1-a2
+2     yes     up           BPS-HC0-D25A4G  132-00BQ      1BQ0-002E   2.1-1
+3     yes     up           BPS-HC0-D25B4G  132-00BF      1BF0-0638   A2-1
+4     yes     mismatch     SMT-HC0-X16     132-00BK      1BD0-0024   2.2-a2
+5     yes     up           SMT-HC0-R       132-00AT      1AT0-0158   A0-5
+
+''',
+    'show card2': '''
 Box ID: 1
 Slot  Config  Oper Status      HW Type     Product Code  Serial Num  HW Rev
 ---------------------------------------------------------------------------
@@ -130,7 +177,8 @@ cc2   yes     up           HC2-Main-Board  132-00AN      1AN0-00CB   B1-25
 
 
     ''',
-    'show port': '''HB1-C01-38 # show port
+    'show port': '''% no chassis configured.''',
+    'show port3': '''HB1-C01-38 # show port
 ========================================================================================================================
                                  Link    Xcvr Pwr (dBm)  Pwr   Xcvr         Auto                  Force  Port
 Port      Type         Admin     Status  (min     max )  THld  Type         Neg    Speed  Duplex  LnkUp  Relay    Dscvry

@@ -460,6 +460,8 @@ class GigamonDriver (ResourceDriverInterface):
         for line in self._ssh_command('show chassis', '[^[#]# ').split('\n'):
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
+                if chassisaddr == '-':
+                    continue
                 sub_resources.append(AutoLoadResource(model='Generic Chassis',
                                                       name='Chassis ' + chassisaddr,
                                                       relative_address=chassisaddr))
@@ -480,6 +482,8 @@ class GigamonDriver (ResourceDriverInterface):
                 continue
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
+                if chassisaddr == 'not configured':
+                    chassisaddr = 'bad_chassis_addr'
             #    1     yes     up           PRT-HC0-X24     132-00BD      1BD0-0189   A1-a2
             m = re.match(r'(?P<slot>\S+)\s+'
                          r'(?P<config>\S+)\s+'
@@ -489,7 +493,7 @@ class GigamonDriver (ResourceDriverInterface):
                          r'(?P<serial_num>\S+)\s+'
                          r'(?P<hw_rev>\S+)',
                          line)
-            if m:
+            if m and chassisaddr != 'bad_chassis_addr':
                 d = m.groupdict()
                 cardaddr = chassisaddr + '/' + d['slot']
                 sub_resources.append(AutoLoadResource(model='Generic Module',
