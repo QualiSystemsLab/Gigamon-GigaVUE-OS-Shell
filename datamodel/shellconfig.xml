@@ -7,7 +7,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -17,7 +17,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -27,7 +27,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -37,7 +37,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -47,7 +47,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -57,7 +57,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -67,7 +67,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -77,7 +77,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -87,7 +87,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
@@ -97,7 +97,7 @@
             <Description>Description for autoload </Description>
         </AutoLoad>
         <Attributes>
-            <Attribute Name="SSH_USER" Value="" />
+            <Attribute Name="SSH_USERNAME" Value="" />
             <Attribute Name="SSH_PASSWORD" Value="" />
         </Attributes>
     </ResourceTemplate>
