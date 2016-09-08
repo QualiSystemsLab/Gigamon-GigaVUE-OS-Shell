@@ -500,29 +500,21 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute(cardaddr, "Version", d['hw_rev']))
                 attributes.append(AutoLoadAttribute(cardaddr, "Serial Number", d['serial_num']))
 
-        o = self._ssh_command('show port', '[^[#]# ')
-        o = o.replace('\r', '')
-        # self.log('o1=<<<' + o + '>>>')
-        o = '\n'.join(o.split('----\n')[1:]).split('\n----')[0]
-        # self.log('o2=<<<' + o + '>>>')
-        for portline in o.split('\n'):
-            m = re.match(r'(?P<address>\S+)\s+'
-                         r'(?P<type>\S+)\s+'
-                         r'(?P<alias>\S+)\s+'
-                         r'(?P<admin_enabled>enabled|disabled)\s+'
-                         r'(?P<link_status>down|up|-)\s+'
-                         r'(?P<min_max_thld_power>[-0-9. ]+)\s+'
-                         r'(?P<xcvr_type>.+)\s+'
-                         r'(?P<auto_neg>on|off|N/A)\s+'
-                         r'(?P<speed>[-0-9]+)\s+'
-                         r'(?P<duplex>\S+)\s+'
-                         r'(?P<force_up>on|off)\s+'
-                         r'(?P<port_relay>\S+)\s*'
-                         r'(?P<discovery>\S*)',
-                         portline)
-            if not m:
+        try:
+            o = self._ssh_command('show port', '[^[#]# ')
+        except Exception as e:
+            if 'no chassis configured' not in str(e):
+                raise e
+            o = ''
+        if o:
+            o = o.replace('\r', '')
+            # self.log('o1=<<<' + o + '>>>')
+            o = '\n'.join(o.split('----\n')[1:]).split('\n----')[0]
+            # self.log('o2=<<<' + o + '>>>')
+            for portline in o.split('\n'):
                 m = re.match(r'(?P<address>\S+)\s+'
                              r'(?P<type>\S+)\s+'
+                             r'(?P<alias>\S+)\s+'
                              r'(?P<admin_enabled>enabled|disabled)\s+'
                              r'(?P<link_status>down|up|-)\s+'
                              r'(?P<min_max_thld_power>[-0-9. ]+)\s+'
@@ -535,31 +527,45 @@ class GigamonDriver (ResourceDriverInterface):
                              r'(?P<discovery>\S*)',
                              portline)
                 if not m:
-                    if portline:
-                        self._log('regex failure on line <<<' + portline + '>>>')
-                    continue
-                # raise Exception('Failed to parse "show port" data: Line: <<<%s>>> All output: <<<%s>>>' % (portline, o))
+                    m = re.match(r'(?P<address>\S+)\s+'
+                                 r'(?P<type>\S+)\s+'
+                                 r'(?P<admin_enabled>enabled|disabled)\s+'
+                                 r'(?P<link_status>down|up|-)\s+'
+                                 r'(?P<min_max_thld_power>[-0-9. ]+)\s+'
+                                 r'(?P<xcvr_type>.+)\s+'
+                                 r'(?P<auto_neg>on|off|N/A)\s+'
+                                 r'(?P<speed>[-0-9]+)\s+'
+                                 r'(?P<duplex>\S+)\s+'
+                                 r'(?P<force_up>on|off)\s+'
+                                 r'(?P<port_relay>\S+)\s*'
+                                 r'(?P<discovery>\S*)',
+                                 portline)
+                    if not m:
+                        if portline:
+                            self._log('regex failure on line <<<' + portline + '>>>')
+                        continue
+                    # raise Exception('Failed to parse "show port" data: Line: <<<%s>>> All output: <<<%s>>>' % (portline, o))
 
-            d = m.groupdict()
+                d = m.groupdict()
 
-            portaddr = d['address']
-            portnum = portaddr.split('/')[-1]
-            self._log('Port ' + portaddr)
-            sub_resources.append(AutoLoadResource(model='Generic Port',
-                                                  name='Port ' + portnum,
-                                                  relative_address=portaddr))
+                portaddr = d['address']
+                portnum = portaddr.split('/')[-1]
+                self._log('Port ' + portaddr)
+                sub_resources.append(AutoLoadResource(model='Generic Port',
+                                                      name='Port ' + portnum,
+                                                      relative_address=portaddr))
 
-            attributes.append(AutoLoadAttribute(portaddr, "Port Description",
-                                                '%s - xcvr %s - %s' % (d['type'].strip(), d['xcvr_type'].strip(), d.get('alias', 'noalias'))))
-            if re.match(r'[0-9]+', d['speed']):
-                attributes.append(AutoLoadAttribute(portaddr, "Bandwidth", 
-                                                    d['speed']))
+                attributes.append(AutoLoadAttribute(portaddr, "Port Description",
+                                                    '%s - xcvr %s - %s' % (d['type'].strip(), d['xcvr_type'].strip(), d.get('alias', 'noalias'))))
+                if re.match(r'[0-9]+', d['speed']):
+                    attributes.append(AutoLoadAttribute(portaddr, "Bandwidth",
+                                                        d['speed']))
 
-            attributes.append(AutoLoadAttribute(portaddr, "Duplex",
-                                                'Full' if d['duplex'] == 'full' else 'Half'))
-            
-            attributes.append(AutoLoadAttribute(portaddr, "Auto Negotiation",
-                                                'True' if d['auto_neg'] == 'on' else 'False'))
+                attributes.append(AutoLoadAttribute(portaddr, "Duplex",
+                                                    'Full' if d['duplex'] == 'full' else 'Half'))
+
+                attributes.append(AutoLoadAttribute(portaddr, "Auto Negotiation",
+                                                    'True' if d['auto_neg'] == 'on' else 'False'))
 
         return AutoLoadDetails(sub_resources, attributes)
 
