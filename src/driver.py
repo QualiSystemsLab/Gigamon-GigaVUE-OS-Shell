@@ -240,6 +240,7 @@ class GigamonDriver (ResourceDriverInterface):
             if self.fakedata:
                 path = 'fakepath/fakename_fakemodel.txt'
             else:
+                self._log('Attributes: %s' % str(context.resource.attributes))
                 model = context.resource.attributes.get('Model', '')
                 if not model:
                     model = context.resource.model
