@@ -14,10 +14,6 @@ from cloudshell.shell.core.driver_context import CancellationContext
 
 import os
 from cloudshell.api.cloudshell_api import CloudShellAPISession
-from cloudshell.api.cloudshell_api import *
-
-a=Reser
-
 
 import time
 
