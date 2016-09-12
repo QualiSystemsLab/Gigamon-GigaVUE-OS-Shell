@@ -1,7 +1,22 @@
 <Shell>
 
-    <ShellAttributes />
-
+    <ShellAttributes>
+        <AttributeInfo Name="Alias" Type="String" DefaultValue="" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Setting" />
+            </Rules>
+        </AttributeInfo>
+        <AttributeInfo Name="Transceiver Type" Type="String" DefaultValue="" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Setting" />
+            </Rules>
+        </AttributeInfo>
+        <AttributeInfo Name="Port Role" Type="String" DefaultValue="" IsReadOnly="false">
+            <Rules>
+                <Rule Name="Setting" />
+            </Rules>
+        </AttributeInfo>
+    </ShellAttributes>
     <ShellModel Family="Switch">
         <ResourceModel Name="GigaVUE-OS" Description="" SupportsConcurrentCommands="false">
             <AttachedAttributes>
@@ -9,6 +24,16 @@
                     <AllowedValues />
                 </AttachedAttribute>
                 <AttachedAttribute Name="HTTPS_ADDRESS" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+
+                <AttachedAttribute Name="Alias" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Transceiver Type" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Port Role" IsOverridable="true" IsLocal="true">
                     <AllowedValues />
                 </AttachedAttribute>
 
@@ -86,6 +111,10 @@
             <AttributeValues>
                 <AttributeValue Name="GUACAMOLE_SERVER" Value="" />
                 <AttributeValue Name="HTTPS_ADDRESS" Value="" />
+
+                <AttributeValue Name="Alias" Value="" />
+                <AttributeValue Name="Transceiver Type" Value="" />
+                <AttributeValue Name="Port Role" Value="" />
 
                 <AttributeValue Name="User" Value="" />
                 <AttributeValue Name="Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />

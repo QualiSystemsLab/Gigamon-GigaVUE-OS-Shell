@@ -76,8 +76,8 @@ class GigamonDriver (ResourceDriverInterface):
             if r:
                 rv += r
             if rv:
-                t = re.sub(r'\x1b\[\d+m', '', rv)
-                t = re.sub(r'\x1b', '', t)
+                t = re.sub(r'(\x9b|\x1b)([0-9]*|[0-9]*;[0-9]*)[a-zA-Z]', '', rv)
+                # t = re.sub(r'\x1b', '', t)
                 t = t.replace('\b', '')
             else:
                 t = ''
@@ -628,8 +628,10 @@ class GigamonDriver (ResourceDriverInterface):
                                                       name='Port ' + portnum,
                                                       relative_address=portaddr))
 
-                attributes.append(AutoLoadAttribute(portaddr, "Port Description",
-                                                    '%s - xcvr %s - %s' % (d['type'].strip(), d['xcvr_type'].strip(), d.get('alias', 'noalias'))))
+                attributes.append(AutoLoadAttribute(portaddr, "Port Role", d['type'].strip()))
+                attributes.append(AutoLoadAttribute(portaddr, "Alias", d.get('alias', 'noalias')))
+                attributes.append(AutoLoadAttribute(portaddr, "Transceiver Type", d['xcvr_type'].strip()))
+
                 if re.match(r'[0-9]+', d['speed']):
                     attributes.append(AutoLoadAttribute(portaddr, "Bandwidth",
                                                         d['speed']))
