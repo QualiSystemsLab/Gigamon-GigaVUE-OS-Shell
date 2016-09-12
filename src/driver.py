@@ -574,6 +574,27 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute(cardaddr, "Serial Number", d['serial_num']))
 
         try:
+            o = self._ssh_command(ssh, channel, 'show port alias', '[^[#]# ')
+        except Exception as e:
+            if 'no chassis configured' not in str(e):
+                raise e
+            o = ''
+        addr2alias = {}
+        if o:
+            o = o.replace('\r', '')
+            # self.log('o1=<<<' + o + '>>>')
+            o = '\n'.join(o.split('----\n')[1:]).split('\n----')[0]
+            for aliasline in o.split('\n'):
+                m = re.match(r'(?P<address>\S+)\s+'
+                             r'(?P<type>\S+)\s+'
+                             r'(?P<alias>\S.*)',
+                             aliasline)
+                if not m:
+                    continue
+                d = m.groupdict()
+                addr2alias[d['address']] = d['alias']
+
+        try:
             o = self._ssh_command(ssh, channel, 'show port', '[^[#]# ')
         except Exception as e:
             if 'no chassis configured' not in str(e):
@@ -629,10 +650,10 @@ class GigamonDriver (ResourceDriverInterface):
                                                       relative_address=portaddr))
 
                 attributes.append(AutoLoadAttribute(portaddr, "Port Role", d['type'].strip()))
-                a = d.get('alias', '')
-                if a == '-':
-                    a = ''
-                attributes.append(AutoLoadAttribute(portaddr, "Alias", a))
+
+                if portaddr in addr2alias:
+                    attributes.append(AutoLoadAttribute(portaddr, "Alias", addr2alias[portaddr]))
+
                 attributes.append(AutoLoadAttribute(portaddr, "Transceiver Type", d['xcvr_type'].strip()))
 
                 if re.match(r'[0-9]+', d['speed']):
