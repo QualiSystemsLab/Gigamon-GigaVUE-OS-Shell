@@ -12,17 +12,18 @@
               <Rule Name="Configuration" />
           </Rules>
       </AttributeInfo>
-      <AttributeInfo Name="Alias" Type="String" DefaultValue="" IsReadOnly="false">
+
+      <AttributeInfo Name="Alias" Type="String" DefaultValue="" IsReadOnly="true">
           <Rules>
               <Rule Name="Setting" />
           </Rules>
       </AttributeInfo>
-      <AttributeInfo Name="Transceiver Type" Type="String" DefaultValue="" IsReadOnly="false">
+      <AttributeInfo Name="Transceiver Type" Type="String" DefaultValue="" IsReadOnly="true">
           <Rules>
               <Rule Name="Setting" />
           </Rules>
       </AttributeInfo>
-      <AttributeInfo Name="Port Role" Type="String" DefaultValue="" IsReadOnly="false">
+      <AttributeInfo Name="Port Role" Type="String" DefaultValue="" IsReadOnly="true">
           <Rules>
               <Rule Name="Setting" />
           </Rules>
