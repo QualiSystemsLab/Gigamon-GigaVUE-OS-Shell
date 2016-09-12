@@ -76,7 +76,7 @@ class GigamonDriver (ResourceDriverInterface):
             if r:
                 rv += r
             if rv:
-                t = re.sub(r'\x1b\[\d+m', '', rv)
+                t = re.sub(r'\x1b\[\d+m', '', rv).replace(r'\x1b', '').replace('\b', '')
             else:
                 t = ''
             if not r or len(re.findall(prompt_regex, t)) > 0:
@@ -84,7 +84,7 @@ class GigamonDriver (ResourceDriverInterface):
                 if rv:
                     rv = rv.replace('\r', '\n')
 
-                    rv = rv.replace('\r', '\n')
+                    rv = rv.replace('\x', '\n')
                 self._log('read complete: <<<' + str(rv) + '>>>')
                 return rv
 
