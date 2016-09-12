@@ -629,7 +629,10 @@ class GigamonDriver (ResourceDriverInterface):
                                                       relative_address=portaddr))
 
                 attributes.append(AutoLoadAttribute(portaddr, "Port Role", d['type'].strip()))
-                attributes.append(AutoLoadAttribute(portaddr, "Alias", d.get('alias', 'noalias')))
+                a = d.get('alias', '')
+                if a == '-':
+                    a = ''
+                attributes.append(AutoLoadAttribute(portaddr, "Alias", a))
                 attributes.append(AutoLoadAttribute(portaddr, "Transceiver Type", d['xcvr_type'].strip()))
 
                 if re.match(r'[0-9]+', d['speed']):
