@@ -75,8 +75,15 @@ class GigamonDriver (ResourceDriverInterface):
             self._log('recv returned: <<<' + str(r) + '>>>')
             if r:
                 rv += r
-            if not r or len(re.findall(prompt_regex, rv)) > 0:
+            if rv:
+                t = re.sub(r'\x1b\[\d+m', '', rv)
+            else:
+                t = ''
+            if not r or len(re.findall(prompt_regex, t)) > 0:
+                rv = t
                 if rv:
+                    rv = rv.replace('\r', '\n')
+
                     rv = rv.replace('\r', '\n')
                 self._log('read complete: <<<' + str(rv) + '>>>')
                 return rv
@@ -126,7 +133,7 @@ class GigamonDriver (ResourceDriverInterface):
         if ':' in e:
             self._ssh_command(ssh, channel, api.DecryptPassword(context.resource.attributes['Enable Password']).Value,
                               '[^[#]# ')
-        self._ssh_command(ssh, channel, 'cli session terminal type dumb', '[^[#]# ')
+        # self._ssh_command(ssh, channel, 'cli session terminal type dumb', '[^[#]# ')
         self._ssh_command(ssh, channel, 'cli session terminal length 999', '[^[#]# ')
         return ssh, channel, o
 
