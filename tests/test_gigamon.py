@@ -149,7 +149,7 @@ Power Module:
   HW Rev            : 1.0
   Status            : top=on bottom=on
     ''',
-    'show card': '''
+    'show card7': '''
 Box ID: Not configured
 Slot  Config  Oper Status      HW Type      Product Code  Serial Num  HW Rev
 ----------------------------------------------------------------------------
@@ -165,7 +165,7 @@ cc2   no      inserted     H-CCv2           132-0089      1890-1423   D0
 8     no      inserted     GigaPORT-X12G04  132-0045      1450-0255   C2-a6
 
 ''',
-    'show card2': '''
+    'show card': '''
 Box ID: 1
 Slot  Config  Oper Status      HW Type     Product Code  Serial Num  HW Rev
 ---------------------------------------------------------------------------
@@ -189,9 +189,160 @@ cc2   yes     up           HC2-Main-Board  132-00AN      1AN0-00CB   B1-25
 
 
     ''',
-    'show port': '''% There is no chassis configured.
+    'show port4': '''
+
+
+===============================================================================================================================================
+
+                                                Link    Xcvr Pwr (dBm)  Pwr       Xcvr         Auto                      Force  Port
+
+Port      Type        Alias        Admin        Status  (min     max )  THld      Type         Neg        Speed  Duplex  LnkUp  Relay    Dscvry
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+1/1/x1    hybrid      -            enabled      up               -4.94            sfp sx       off         1000  full    off    N/A      off
+
+1/1/x2    hybrid      -            enabled      up               -5.07            sfp sx       off         1000  full    off    N/A      off
+
+1/1/x3    hybrid      -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x4    hybrid      -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x5    network     -            enabled      up               -5.23            sfp sx       off         1000  full    off    N/A      off
+
+1/1/x6    tool        -            disabled     -               -26.20  --        sfp sx       off            -  -       off    N/A      off
+
+1/1/x7    tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x8    tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x9    tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x10   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x11   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x12   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x13   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x14   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x15   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x16   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x17   network     Ostinat...   enabled      up                   -            sfp cu       on          1000  full    off    N/A      off
+
+1/1/x18   tool        WireSha...   enabled      up                   -            sfp cu       on          1000  full    off    N/A      off
+
+1/1/x19   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x20   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x21   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x22   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x23   hybrid      -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x24   tool        -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x25   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x26   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x27   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x28   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/1/x29   tool        To-HC2-...   enabled      up               -2.17            sfp+ sr      off        10000  full    off    N/A      off
+
+1/1/x30   tool        To-HC2-...   enabled      up               -3.92            sfp+ sr      off        10000  full    off    N/A      off
+
+1/1/x31   tool        To-HC2-...   enabled      up               -2.23            sfp+ sr      off        10000  full    off    N/A      off
+
+1/1/x32   tool        To-HC2-...   enabled      up               -2.15            sfp+ sr      off        10000  full    off    N/A      off
+
+1/2/x1    network     -            disabled     -               -29.21  --        sfp sx       off            -  -       off    N/A      off
+
+1/2/x2    network     -            disabled     -               -26.78  --        sfp sx       off            -  -       off    N/A      off
+
+1/2/x3    network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x4    network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x5    network     -            disabled     -               -27.96  --        sfp sx       off            -  -       off    N/A      off
+
+1/2/x6    network     -            disabled     -               -24.44  --        sfp sx       off            -  -       off    N/A      off
+
+1/2/x7    network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x8    network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x9    network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x10   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x11   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x12   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x13   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x14   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x15   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x16   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x17   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x18   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x19   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x20   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x21   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x22   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x23   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x24   network     -            disabled     -                    -            none         off            -  -       off    N/A      off
+
+1/2/x25   tool        To-HC2-...   enabled      up               -5.14            sfp sx       off         1000  full    off    N/A      off
+
+1/2/x26   tool        To-HC2-...   enabled      up               -4.80            sfp sx       off         1000  full    off    N/A      off
+
+1/2/x27   tool        To-HC2-...   enabled      up               -4.55            sfp sx       off         1000  full    off    N/A      off
+
+1/2/x28   tool        To-HC2-...   enabled      up               -4.53            sfp sx       off         1000  full    off    N/A      off
+
+1/2/x29   network     -            enabled      up               -5.60            sfp sx       off         1000  full    off    N/A      off
+
+1/2/x30   network     -            enabled      up               -5.85            sfp sx       off         1000  full    off    N/A      off
+
+1/2/x31   network     -            enabled      up               -4.97            sfp sx       off         1000  full    off    N/A      off
+
+1/2/x32   network     -            enabled      up               -5.17            sfp sx       off         1000  full    off    N/A      off
+
+1/4/e1    gs          N/A          enabled      down                 -            N/A          N/A        40000  full    off    N/A
+
+1/4/e2    gs          N/A          enabled      up                   -            N/A          N/A        40000  full    off    N/A
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Legend : Power THld :  ++ High Alarm    + High Alert    -- Low Alarm    - Low Alert
+
+
 ''',
-    'show port3': '''HB1-C01-38 # show port
+    'show port0': '''% There is no chassis configured.
+''',
+    'show port': '''HB1-C01-38 # show port
 ========================================================================================================================
                                  Link    Xcvr Pwr (dBm)  Pwr   Xcvr         Auto                  Force  Port
 Port      Type         Admin     Status  (min     max )  THld  Type         Neg    Speed  Duplex  LnkUp  Relay    Dscvry

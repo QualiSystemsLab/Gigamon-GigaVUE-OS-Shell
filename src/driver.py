@@ -633,6 +633,8 @@ class GigamonDriver (ResourceDriverInterface):
                                                     'True' if d['auto_neg'] == 'on' else 'False'))
 
         rv = AutoLoadDetails(sub_resources, attributes)
+        for res in rv.resources:
+            self._log('model=%s name=%s address=%s uniqueid=%s' % (res.model, res.name, res.relative_address, res.unique_identifier))
         for attr in rv.attributes:
             self._log('%s: %s = %s' % (attr.relative_address, attr.attribute_name, attr.attribute_value))
         self._disconnect(ssh, channel)
