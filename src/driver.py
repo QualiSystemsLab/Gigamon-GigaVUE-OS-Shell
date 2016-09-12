@@ -86,7 +86,6 @@ class GigamonDriver (ResourceDriverInterface):
                 if rv:
                     rv = rv.replace('\r', '\n')
 
-                    rv = rv.replace('\x', '\n')
                 self._log('read complete: <<<' + str(rv) + '>>>')
                 return rv
 
