@@ -17,6 +17,7 @@
             </Rules>
         </AttributeInfo>
     </ShellAttributes>
+
     <ShellModel Family="Switch">
         <ResourceModel Name="GigaVUE-OS" Description="" SupportsConcurrentCommands="false">
             <AttachedAttributes>
@@ -139,5 +140,73 @@
             </Drivers>
             <Scripts />
         </ResourceModel>
+    </ShellModel>
+    <ShellModel>
+        <Model Name="Gigamon Port" Description="" SupportsConcurrentCommands="false">
+            <AttachedAttributes>
+                <AttachedAttribute Name="Alias" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Port Role" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Transceiver Type" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <!--<AttachedAttribute Name="MAC Address" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="L2 Protocol Type" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="IPv4 Address" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <!--<AttachedAttribute Name="IPv6 Address" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <AttachedAttribute Name="Port Description" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <AttachedAttribute Name="Bandwidth" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <!--<AttachedAttribute Name="MTU" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <AttachedAttribute Name="Duplex" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <!--<AttachedAttribute Name="Adjacent" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+                <AttachedAttribute Name="Auto Negotiation" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
+                <!--<AttachedAttribute Name="Protocol Type" IsOverridable="true" IsLocal="true">-->
+                    <!--<AllowedValues />-->
+                <!--</AttachedAttribute>-->
+            </AttachedAttributes>
+            <AttributeValues>
+                <AttributeValue Name="MAC Address" Value="" />
+                <AttributeValue Name="L2 Protocol Type" Value="" />
+                <AttributeValue Name="IPv4 Address" Value="" />
+                <AttributeValue Name="IPv6 Address" Value="" />
+                <AttributeValue Name="Port Description" Value="" />
+                <AttributeValue Name="Bandwidth" Value="0" />
+                <AttributeValue Name="MTU" Value="0" />
+                <AttributeValue Name="Duplex" Value="Half" />
+                <AttributeValue Name="Protocol Type" Value="Transparent" />
+                <AttributeValue Name="Adjacent" Value="" />
+                <AttributeValue Name="Auto Negotiation" Value="False" />
+            </AttributeValues>
+            <ParentModels>
+                <ParentModelName>Generic Chassis</ParentModelName>
+                <ParentModelName>Generic Module</ParentModelName>
+                <ParentModelName>Generic Sub Module</ParentModelName>
+            </ParentModels>
+            <Drivers />
+            <Scripts />
+        </Model>
     </ShellModel>
 </Shell>
