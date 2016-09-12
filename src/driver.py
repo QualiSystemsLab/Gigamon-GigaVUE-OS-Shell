@@ -624,7 +624,7 @@ class GigamonDriver (ResourceDriverInterface):
                 portaddr = d['address']
                 portnum = portaddr.split('/')[-1]
                 self._log('Port ' + portaddr)
-                sub_resources.append(AutoLoadResource(model='Gigamon Port',
+                sub_resources.append(AutoLoadResource(model='Generic Port',
                                                       name='Port ' + portnum,
                                                       relative_address=portaddr))
 

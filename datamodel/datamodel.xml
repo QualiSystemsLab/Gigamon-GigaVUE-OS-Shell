@@ -12,6 +12,21 @@
               <Rule Name="Configuration" />
           </Rules>
       </AttributeInfo>
+      <AttributeInfo Name="Alias" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Setting" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="Transceiver Type" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Setting" />
+          </Rules>
+      </AttributeInfo>
+      <AttributeInfo Name="Port Role" Type="String" DefaultValue="" IsReadOnly="false">
+          <Rules>
+              <Rule Name="Setting" />
+          </Rules>
+      </AttributeInfo>
 
 
       <AttributeInfo Name="User" Type="String" DefaultValue="" IsReadOnly="false">
@@ -312,6 +327,17 @@
             <Models>
                 <ResourceModel Name="Generic Port" Description="" SupportsConcurrentCommands="false">
                     <AttachedAttributes>
+
+                        <AttachedAttribute Name="Alias" IsOverridable="true" IsLocal="true">
+                            <AllowedValues />
+                        </AttachedAttribute>
+                        <AttachedAttribute Name="Transceiver Type" IsOverridable="true" IsLocal="true">
+                            <AllowedValues />
+                        </AttachedAttribute>
+                        <AttachedAttribute Name="Port Role" IsOverridable="true" IsLocal="true">
+                            <AllowedValues />
+                        </AttachedAttribute>
+
                         <AttachedAttribute Name="MAC Address" IsOverridable="true" IsLocal="true">
                             <AllowedValues />
                         </AttachedAttribute>
@@ -347,6 +373,10 @@
                         </AttachedAttribute>
                     </AttachedAttributes>
                     <AttributeValues>
+                        <AttributeValue Name="Alias" Value="" />
+                        <AttributeValue Name="Transceiver Type" Value="" />
+                        <AttributeValue Name="Port Role" Value="" />
+
                         <AttributeValue Name="MAC Address" Value="" />
                         <AttributeValue Name="L2 Protocol Type" Value="" />
                         <AttributeValue Name="IPv4 Address" Value="" />

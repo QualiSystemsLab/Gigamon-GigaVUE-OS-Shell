@@ -27,7 +27,7 @@
       <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
+            <state relative-caret-position="331">
               <caret line="626" column="73" selection-start-line="626" selection-start-column="73" selection-end-line="626" selection-end-column="73" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
@@ -81,8 +81,8 @@
       <file leaf-file-name="shell_model.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datamodel/shell_model.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="152" column="57" selection-start-line="152" selection-start-column="57" selection-end-line="152" selection-end-column="57" />
+            <state relative-caret-position="264">
+              <caret line="141" column="24" selection-start-line="141" selection-start-column="24" selection-end-line="141" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -91,8 +91,8 @@
       <file leaf-file-name="datamodel.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datamodel/datamodel.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="372" column="0" selection-start-line="308" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
+            <state relative-caret-position="303">
+              <caret line="378" column="0" selection-start-line="378" selection-start-column="0" selection-end-line="378" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -129,8 +129,8 @@
         <option value="$PROJECT_DIR$/datamodel/shellconfig.xml" />
         <option value="$PROJECT_DIR$/shell.yml" />
         <option value="$PROJECT_DIR$/src/drivermetadata.xml" />
-        <option value="$PROJECT_DIR$/datamodel/datamodel.xml" />
         <option value="$PROJECT_DIR$/tests/test_gigamon.py" />
+        <option value="$PROJECT_DIR$/datamodel/datamodel.xml" />
         <option value="$PROJECT_DIR$/datamodel/shell_model.xml" />
         <option value="$PROJECT_DIR$/src/driver.py" />
       </list>
@@ -954,23 +954,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/datamodel/datamodel.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="372" column="0" selection-start-line="308" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
+        <state relative-caret-position="303">
+          <caret line="378" column="0" selection-start-line="378" selection-start-column="0" selection-end-line="378" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/datamodel/shell_model.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="152" column="57" selection-start-line="152" selection-start-column="57" selection-end-line="152" selection-end-column="57" />
+        <state relative-caret-position="264">
+          <caret line="141" column="24" selection-start-line="141" selection-start-column="24" selection-end-line="141" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/driver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
+        <state relative-caret-position="331">
           <caret line="626" column="73" selection-start-line="626" selection-start-column="73" selection-end-line="626" selection-end-column="73" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
