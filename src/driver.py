@@ -576,7 +576,7 @@ class GigamonDriver (ResourceDriverInterface):
         try:
             o = self._ssh_command(ssh, channel, 'show port alias', '[^[#]# ')
         except Exception as e:
-            if 'no port alias configured' not in str(e):
+            if 'no port alias configured' not in str(e) and 'no chassis configured' not in str(e):
                 raise e
             o = ''
         addr2alias = {}
