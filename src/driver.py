@@ -78,7 +78,7 @@ class GigamonDriver (ResourceDriverInterface):
             if rv:
                 t = rv
                 t = re.sub(r'(\x9b|\x1b)[[?;0-9]*[a-zA-Z]', '', t)
-                t = re.sub(r'\x1b[>=]', '', t)
+                t = re.sub(r'(\x9b|\x1b)[>=]', '', t)
                 t = re.sub('.\b', '', t) # not r''
             else:
                 t = ''
