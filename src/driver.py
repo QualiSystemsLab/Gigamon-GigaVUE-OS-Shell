@@ -78,7 +78,7 @@ class GigamonDriver (ResourceDriverInterface):
             if rv:
                 t = re.sub(r'(\x9b|\x1b)[[?0-9]*(;[[?0-9]*)*([a-zA-Z]|\x9b=|\x1b>=)', '', rv)
                 t = re.sub(r'(\x9b|\x1b)[>=]', '', t)
-                t = re.sub(r'.\b', '', t)
+                t = t.replace(r' \b', '')
             else:
                 t = ''
             if not r or len(re.findall(prompt_regex, t)) > 0:
