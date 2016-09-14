@@ -521,7 +521,7 @@ class GigamonDriver (ResourceDriverInterface):
 
         rtrav(api.GetResourceDetails(context.resource.fullname))
 
-    def ApplyConnectivityChanges(self, context, request):
+    def _disabledApplyConnectivityChanges(self, context, request):
         """
         Configures VLANs on multiple ports or port-channels
         :param ResourceCommandContext context: The context object for the command with resource and reservation info
