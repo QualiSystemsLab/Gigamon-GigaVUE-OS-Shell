@@ -123,7 +123,10 @@ class GigamonDriver (ResourceDriverInterface):
 
     def _connect(self, context):
         if not self._qs_logger:
-            self._qs_logger = get_qs_logger(context.reservation.reservation_id, 'GigaVUE-OS', context.resource.fullname)
+            try:
+                self._qs_logger = get_qs_logger(context.reservation.reservation_id, 'GigaVUE-OS', context.resource.fullname)
+            except:
+                pass
 
         if self.fakedata:
             return None, None, None
