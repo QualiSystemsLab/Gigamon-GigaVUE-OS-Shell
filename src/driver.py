@@ -561,7 +561,7 @@ class GigamonDriver (ResourceDriverInterface):
                         self._log('Ignoring exception: %s' % str(e))
                     self._ssh_command(ssh, channel, 'port %s type network' % src_port, '[^[#]# ')
                     self._ssh_command(ssh, channel, 'port %s type network' % dst_port, '[^[#]# ')
-                    self._ssh_command(ssh, channel, 'no port %s ingress-vlan-tag %s' % (src_port, vlan), '[^[#]# ')
+                    self._ssh_command(ssh, channel, 'no port %s ingress-vlan-tag' % src_port, '[^[#]# ')
                 finally:
                     self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
 
