@@ -128,7 +128,7 @@ class GigamonDriver (ResourceDriverInterface):
             try:
                 self._qs_logger = get_qs_logger(context.reservation.reservation_id, 'GigaVUE-OS', context.resource.fullname)
             except:
-                pass
+                self._qs_logger = get_qs_logger('out-of-reservation', 'GigaVUE-OS', context.resource.fullname)
 
         if self.fakedata:
             return None, None, None
