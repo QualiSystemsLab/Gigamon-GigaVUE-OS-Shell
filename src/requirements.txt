@@ -2,3 +2,4 @@ cloudshell-shell-core>=2.3.0,<2.4.0
 jsonpickle==0.9.3
 cloudshell-automation-api>=7.1.0.34
 paramiko
+CloudShell-Networking>=3.0.19

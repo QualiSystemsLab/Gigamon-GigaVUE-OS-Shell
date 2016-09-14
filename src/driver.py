@@ -1,10 +1,11 @@
 import json
 import re
 
-# from cloudshell.shell.core.interfaces.save_restore import OrchestrationSaveResult
-# from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifact
-# from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifactInfo
-# from cloudshell.shell.core.interfaces.save_restore import OrchestrationRestoreRules
+import datetime
+from cloudshell.shell.core.interfaces.save_restore import OrchestrationSaveResult
+from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifact
+from cloudshell.shell.core.interfaces.save_restore import OrchestrationSavedArtifactInfo
+from cloudshell.shell.core.interfaces.save_restore import OrchestrationRestoreRules
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.driver_context import InitCommandContext
 from cloudshell.shell.core.driver_context import ResourceCommandContext
@@ -157,8 +158,8 @@ class GigamonDriver (ResourceDriverInterface):
         :param str vrf_management_name: Optional. Virtual routing and Forwarding management name
         """
         self._log('restore called with inputs path=%s restore_method=%s configuration_type=%s vrf_management_name=%s' % (path, restore_method, configuration_type, vrf_management_name))
-        running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
 
+        running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
         if running_saved != 'running':
             raise Exception('Restoring config for "startup" is not implemented. Only "running" is implemented.')
 
@@ -420,7 +421,26 @@ class GigamonDriver (ResourceDriverInterface):
 
         return OrchestrationSaveResult(saved_artifacts_info)
         '''
-        pass
+
+        p = json.loads(custom_params)
+        if 'folder_path' not in p:
+            raise Exception('Input JSON should be {"folder_path": "tftp://host/path"}')
+
+        identifier_url = self.save(
+            context=context,
+            cancellation_context=cancellation_context,
+            configuration_type=p.get('configuration_type', 'running'),
+            folder_path=p['folder_path'],
+            vrf_management_name='no-vrf'
+        )
+        created_date = datetime.datetime.utcnow()
+        orchestration_saved_artifact = OrchestrationSavedArtifact('tftp', identifier_url)
+        saved_artifacts_info = OrchestrationSavedArtifactInfo(
+            resource_name="some_resource",
+            created_date=created_date,
+            restore_rules=OrchestrationRestoreRules(requires_same_resource=True),
+            saved_artifact=orchestration_saved_artifact)
+        return OrchestrationSaveResult(saved_artifacts_info)
 
     def orchestration_restore(self, context, cancellation_context, saved_details):
         """
@@ -450,7 +470,16 @@ class GigamonDriver (ResourceDriverInterface):
         saved_details_object = json.loads(saved_details)
         return saved_details_object[u'saved_artifact'][u'identifier']
         '''
-        pass
+        saved_details_object = json.loads(saved_details)
+        url = saved_details_object['saved_artifact']['identifier']
+        self.restore(
+            context=context,
+            cancellation_context=cancellation_context,
+            path=url,
+            restore_method='overwrite',
+            configuration_type='running',
+            vrf_management_name='no-vrf'
+        )
 
     # </editor-fold>
 

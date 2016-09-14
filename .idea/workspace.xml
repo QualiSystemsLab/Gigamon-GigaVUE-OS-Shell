@@ -24,14 +24,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/driver.py">
+      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/requirements.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="562" column="24" selection-start-line="562" selection-start-column="24" selection-end-line="562" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="68">
+              <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -118,6 +116,18 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="driver.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/driver.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-4050">
+              <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="IdeDocumentHistory">
@@ -125,13 +135,13 @@
       <list>
         <option value="$PROJECT_DIR$/cloudshell_config.yml" />
         <option value="$PROJECT_DIR$/deployment.xml" />
-        <option value="$PROJECT_DIR$/src/requirements.txt" />
         <option value="$PROJECT_DIR$/datamodel/shellconfig.xml" />
         <option value="$PROJECT_DIR$/shell.yml" />
         <option value="$PROJECT_DIR$/tests/test_gigamon.py" />
         <option value="$PROJECT_DIR$/datamodel/datamodel.xml" />
         <option value="$PROJECT_DIR$/datamodel/shell_model.xml" />
         <option value="$PROJECT_DIR$/src/drivermetadata.xml" />
+        <option value="$PROJECT_DIR$/src/requirements.txt" />
         <option value="$PROJECT_DIR$/src/driver.py" />
       </list>
     </option>
@@ -887,13 +897,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="35" selection-start-line="2" selection-start-column="35" selection-end-line="2" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shell.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -968,10 +971,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/driver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="562" column="24" selection-start-line="562" selection-start-column="24" selection-end-line="562" selection-end-column="24" />
+        <state relative-caret-position="-4050">
+          <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
