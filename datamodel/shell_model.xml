@@ -1,21 +1,6 @@
 <Shell>
 
     <ShellAttributes>
-        <!--<AttributeInfo Name="Alias" Type="String" DefaultValue="" IsReadOnly="false">-->
-            <!--<Rules>-->
-                <!--<Rule Name="Setting" />-->
-            <!--</Rules>-->
-        <!--</AttributeInfo>-->
-        <!--<AttributeInfo Name="Transceiver Type" Type="String" DefaultValue="" IsReadOnly="false">-->
-            <!--<Rules>-->
-                <!--<Rule Name="Setting" />-->
-            <!--</Rules>-->
-        <!--</AttributeInfo>-->
-        <!--<AttributeInfo Name="Port Role" Type="String" DefaultValue="" IsReadOnly="false">-->
-            <!--<Rules>-->
-                <!--<Rule Name="Setting" />-->
-            <!--</Rules>-->
-        <!--</AttributeInfo>-->
     </ShellAttributes>
 
     <ShellModel Family="Switch">
@@ -141,72 +126,4 @@
             <Scripts />
         </ResourceModel>
     </ShellModel>
-    <!--<ShellModel>-->
-        <!--<Model Name="Gigamon Port" Description="" SupportsConcurrentCommands="false">-->
-            <!--<AttachedAttributes>-->
-                <!--<AttachedAttribute Name="Alias" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Port Role" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Transceiver Type" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--&lt;!&ndash;<AttachedAttribute Name="MAC Address" IsOverridable="true" IsLocal="true">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<AllowedValues />&ndash;&gt;-->
-                <!--&lt;!&ndash;</AttachedAttribute>&ndash;&gt;-->
-                <!--&lt;!&ndash;<AttachedAttribute Name="L2 Protocol Type" IsOverridable="true" IsLocal="true">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<AllowedValues />&ndash;&gt;-->
-                <!--&lt;!&ndash;</AttachedAttribute>&ndash;&gt;-->
-                <!--&lt;!&ndash;<AttachedAttribute Name="IPv4 Address" IsOverridable="true" IsLocal="true">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<AllowedValues />&ndash;&gt;-->
-                <!--&lt;!&ndash;</AttachedAttribute>&ndash;&gt;-->
-                <!--&lt;!&ndash;<AttachedAttribute Name="IPv6 Address" IsOverridable="true" IsLocal="true">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<AllowedValues />&ndash;&gt;-->
-                <!--&lt;!&ndash;</AttachedAttribute>&ndash;&gt;-->
-                <!--<AttachedAttribute Name="Port Description" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--<AttachedAttribute Name="Bandwidth" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--&lt;!&ndash;<AttachedAttribute Name="MTU" IsOverridable="true" IsLocal="true">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<AllowedValues />&ndash;&gt;-->
-                <!--&lt;!&ndash;</AttachedAttribute>&ndash;&gt;-->
-                <!--<AttachedAttribute Name="Duplex" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--&lt;!&ndash;<AttachedAttribute Name="Adjacent" IsOverridable="true" IsLocal="true">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<AllowedValues />&ndash;&gt;-->
-                <!--&lt;!&ndash;</AttachedAttribute>&ndash;&gt;-->
-                <!--<AttachedAttribute Name="Auto Negotiation" IsOverridable="true" IsLocal="true">-->
-                    <!--<AllowedValues />-->
-                <!--</AttachedAttribute>-->
-                <!--&lt;!&ndash;<AttachedAttribute Name="Protocol Type" IsOverridable="true" IsLocal="true">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<AllowedValues />&ndash;&gt;-->
-                <!--&lt;!&ndash;</AttachedAttribute>&ndash;&gt;-->
-            <!--</AttachedAttributes>-->
-            <!--<AttributeValues>-->
-                <!--<AttributeValue Name="MAC Address" Value="" />-->
-                <!--<AttributeValue Name="L2 Protocol Type" Value="" />-->
-                <!--<AttributeValue Name="IPv4 Address" Value="" />-->
-                <!--<AttributeValue Name="IPv6 Address" Value="" />-->
-                <!--<AttributeValue Name="Port Description" Value="" />-->
-                <!--<AttributeValue Name="Bandwidth" Value="0" />-->
-                <!--<AttributeValue Name="MTU" Value="0" />-->
-                <!--<AttributeValue Name="Duplex" Value="Half" />-->
-                <!--<AttributeValue Name="Protocol Type" Value="Transparent" />-->
-                <!--<AttributeValue Name="Adjacent" Value="" />-->
-                <!--<AttributeValue Name="Auto Negotiation" Value="False" />-->
-            <!--</AttributeValues>-->
-            <!--<ParentModels>-->
-                <!--<ParentModelName>Generic Chassis</ParentModelName>-->
-                <!--<ParentModelName>Generic Module</ParentModelName>-->
-                <!--<ParentModelName>Generic Sub Module</ParentModelName>-->
-            <!--</ParentModels>-->
-            <!--<Drivers />-->
-            <!--<Scripts />-->
-        <!--</Model>-->
-    <!--</ShellModel>-->
 </Shell>
