@@ -16,6 +16,7 @@ from cloudshell.shell.core.driver_context import CancellationContext
 
 import os
 from cloudshell.api.cloudshell_api import CloudShellAPISession
+from cloudshell.core.logger.qs_logger import get_qs_logger, log_execution_info
 
 import time
 
@@ -30,12 +31,15 @@ class GigamonDriver (ResourceDriverInterface):
         ctor must be without arguments, it is created with reflection at run time
         """
         self.fakedata = None
-        self._log('__init__ called')
         self._fulladdr2alias = {}
+        self._qs_logger = None
 
     def _log(self, message):
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ': ' + message+'\r\n')
+        if self._qs_logger:
+            self._qs_logger.info(message)
+        else:
+            with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+                f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + message+'\r\n')
 
     def _ssh_disconnect(self, ssh, channel):
         self._log('disconnnect')
@@ -118,8 +122,12 @@ class GigamonDriver (ResourceDriverInterface):
         pass
 
     def _connect(self, context):
+        if not self._qs_logger:
+            self._qs_logger = get_qs_logger(context.reservation.reservation_id, 'GigaVUE-OS', context.resource.fullname)
+
         if self.fakedata:
             return None, None, None
+
         api = CloudShellAPISession(context.connectivity.server_address,
                                    token_id=context.connectivity.admin_auth_token,
                                    port=context.connectivity.cloudshell_api_port)
