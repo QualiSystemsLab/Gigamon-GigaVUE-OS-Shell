@@ -498,14 +498,14 @@ class GigamonDriver (ResourceDriverInterface):
             if vlan not in vlan2srcdst:
                 vlan2srcdst[vlan] = {}
             if self._addr2alias.get(addr, 'none').startswith('To_ESX'):
-                vlan2srcdst[vlan]['src'] = {'addr': addr, 'actionId': action['actionId']}
+                vlan2srcdst[vlan]['dst'] = {'addr': addr, 'actionId': action['actionId']}
             else:
-                if 'dst' in vlan2srcdst[vlan]:
+                if 'src' in vlan2srcdst[vlan]:
                     raise Exception('Neither port (%s, %s) was marked on the switch with alias prefix "To_ESX". '
                                     'Ensure that one of the ports has an alias with prefix "To_ESX" '
                                     'and run Autoload again in Resource Manager.' %
-                                    (addr, vlan2srcdst[vlan]['dst']['addr']))
-                vlan2srcdst[vlan]['dst'] = {'addr': addr, 'actionId': action['actionId']}
+                                    (addr, vlan2srcdst[vlan]['src']['addr']))
+                vlan2srcdst[vlan]['src'] = {'addr': addr, 'actionId': action['actionId']}
             if action['type'] in ['setVlan', 'removeVlan']:
                 vlan2srcdst[vlan]['type'] = action['type']
 
