@@ -1,3 +1,4 @@
+import json
 import re
 
 # from cloudshell.shell.core.interfaces.save_restore import OrchestrationSaveResult
@@ -29,6 +30,7 @@ class GigamonDriver (ResourceDriverInterface):
         """
         self.fakedata = None
         self._log('__init__ called')
+        self._addr2alias = {}
 
     def _log(self, message):
         with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
@@ -86,7 +88,6 @@ class GigamonDriver (ResourceDriverInterface):
                 rv = t
                 if rv:
                     rv = rv.replace('\r', '\n')
-
                 self._log('read complete: <<<' + str(rv) + '>>>')
                 return rv
 
@@ -455,9 +456,28 @@ class GigamonDriver (ResourceDriverInterface):
 
     # <editor-fold desc="Connectivity Provider Interface (Optional)">
 
-    '''
+
     # The ApplyConnectivityChanges function is intended to be used for using switches as connectivity providers
     # for other devices. If the Switch shell is intended to be used a DUT only there is no need to implement it
+
+    def _refresh_aliases(self, context):
+        """
+        :param ResourceCommandContext context: The context object for the command with resource and reservation info
+        """
+        api = CloudShellAPISession(context.connectivity.server_address,
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port)
+
+        self._addr2alias = {}
+
+        def rtrav(d):
+            for attr in d.ResourceAttributes:
+                if attr.Name == 'Alias':
+                    self._addr2alias[d.FullAddress] = attr.Value
+            for dd in d.ChildResources:
+                rtrav(dd)
+
+        rtrav(api.GetResourceDetails(context.resource.fullname))
 
     def ApplyConnectivityChanges(self, context, request):
         """
@@ -468,9 +488,88 @@ class GigamonDriver (ResourceDriverInterface):
         :rtype: str
         """
 
-        pass
+        if len(self._addr2alias) == 0:
+            self._refresh_aliases(context)
 
-    '''
+        vlan2srcdst = {}
+        for action in json.loads(request)['driverRequest']['actions']:
+            vlan = action['connectionParams']['vlanId']
+            addr = action['actionTarget']['fullAddress']
+            if vlan not in vlan2srcdst:
+                vlan2srcdst[vlan] = {}
+            if self._addr2alias.get(addr, 'none').startswith('To_ESX'):
+                vlan2srcdst[vlan]['src'] = {'addr': addr, 'actionId': action['actionId']}
+            else:
+                if 'dst' in vlan2srcdst[vlan]:
+                    raise Exception('Neither port (%s, %s) was marked on the switch with alias prefix "To_ESX". '
+                                    'Ensure that one of the ports has an alias with prefix "To_ESX" '
+                                    'and run Autoload again in Resource Manager.' %
+                                    (addr, vlan2srcdst[vlan]['dst']['addr']))
+                vlan2srcdst[vlan]['dst'] = {'addr': addr, 'actionId': action['actionId']}
+            if action['type'] in ['setVlan', 'removeVlan']:
+                vlan2srcdst[vlan]['type'] = action['type']
+
+        rv = {
+            'driverResponse': {
+                'actionResults': []
+            }
+        }
+        ssh, channel, _ = self._connect(context)
+
+        for vlan in vlan2srcdst:
+            src_port = vlan2srcdst[vlan]['src']['addr']
+            src_action_id = vlan2srcdst[vlan]['src']['actionId']
+            dst_port = vlan2srcdst[vlan]['dst']['addr']
+            dst_action_id = vlan2srcdst[vlan]['dst']['actionId']
+
+            src_port = '/'.join(src_port.split('/')[1:])
+            dst_port = '/'.join(dst_port.split('/')[1:])
+
+            command = vlan2srcdst[vlan]['type']
+
+            alias = 'quali_%s_to_%s' % (src_port.replace('/', '_'), dst_port.replace('/', '_'))
+
+            try:
+                self._ssh_command(ssh, channel, 'configure terminal', '[^[#]# ')
+            except Exception as e:
+                self._log('Ignoring exception: %s' % str(e))
+
+            if command == 'setVlan':
+                try:
+                    self._ssh_command(ssh, channel, 'port %s type network' % src_port, '[^[#]# ')
+                    self._ssh_command(ssh, channel, 'port %s type tool' % dst_port, '[^[#]# ')
+                    self._ssh_command(ssh, channel, 'map alias %s' % alias, '[^[#]# ')
+                    try:
+                        self._ssh_command(ssh, channel, 'type regular byRule', '[^[#]# ')
+                        self._ssh_command(ssh, channel, 'roles replace admin to owner_roles', '[^[#]# ')
+                        self._ssh_command(ssh, channel, 'rule add pass macsrc 0000.0000.0000 0000.0000.0000', '[^[#]# ')
+                        self._ssh_command(ssh, channel, 'to %s' % dst_port, '[^[#]# ')
+                        self._ssh_command(ssh, channel, 'from %s' % src_port, '[^[#]# ')
+                    finally:
+                        self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
+                    o = self._ssh_command(ssh, channel, 'show map', '[^[#]# ')
+                    if alias not in o:
+                        raise Exception('Connection %s - %s failed: %s' % (src_port, dst_port, o))
+                    self._ssh_command(ssh, channel, 'port %s ingress-vlan-tag %s' % (src_port, vlan), '[^[#]# ')
+                finally:
+                    self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
+            else:
+                try:
+                    try:
+                        self._ssh_command(ssh, channel, 'no map alias %s' % alias, '[^[#]# ')
+                    except Exception as e:
+                        self._log('Ignoring exception: %s' % str(e))
+                    self._ssh_command(ssh, channel, 'port %s type network' % src_port, '[^[#]# ')
+                    self._ssh_command(ssh, channel, 'port %s type network' % dst_port, '[^[#]# ')
+                    self._ssh_command(ssh, channel, 'no port %s ingress-vlan-tag %s' % (src_port, vlan), '[^[#]# ')
+                finally:
+                    self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
+
+            rv['driverResponse']['actionResults'].append({'actionId': src_action_id, 'errorMessage': '', 'infoMessage': '', 'success': 'True', 'type': command, 'updateInterface': 'None'})
+            rv['driverResponse']['actionResults'].append({'actionId': dst_action_id, 'errorMessage': '', 'infoMessage': '', 'success': 'True', 'type': command, 'updateInterface': 'None'})
+
+        self._disconnect(ssh, channel)
+        return json.dumps(rv)
 
     # </editor-fold>
 
