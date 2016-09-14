@@ -808,6 +808,8 @@ class GigamonDriver (ResourceDriverInterface):
                 if portaddr in addr2alias:
                     attributes.append(AutoLoadAttribute(portaddr, "Alias", addr2alias[portaddr]))
                     self._fulladdr2alias[context.resource.address + '/' + portaddr] = addr2alias[portaddr]
+                else:
+                    attributes.append(AutoLoadAttribute(portaddr, "Alias", ''))
 
                 attributes.append(AutoLoadAttribute(portaddr, "Transceiver Type", d['xcvr_type'].strip()))
 
