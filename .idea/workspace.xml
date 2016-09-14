@@ -110,10 +110,20 @@
         <entry file="file://$PROJECT_DIR$/src/driver.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="348">
-              <caret line="126" column="65" selection-start-line="126" selection-start-column="65" selection-end-line="126" selection-end-column="65" />
+              <caret line="810" column="0" selection-start-line="810" selection-start-column="0" selection-end-line="810" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="driver_context.py" pinned="false" current-in-tab="false">
+        <entry file="file://C:/Python27/Lib/site-packages/cloudshell/shell/core/driver_context.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1449">
+              <caret line="103" column="41" selection-start-line="103" selection-start-column="19" selection-end-line="103" selection-end-column="41" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -963,8 +973,8 @@
     </entry>
     <entry file="file://C:/Python27/Lib/site-packages/cloudshell/shell/core/driver_context.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+        <state relative-caret-position="1449">
+          <caret line="103" column="41" selection-start-line="103" selection-start-column="19" selection-end-line="103" selection-end-column="41" />
           <folding />
         </state>
       </provider>
@@ -972,7 +982,7 @@
     <entry file="file://$PROJECT_DIR$/src/driver.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="348">
-          <caret line="126" column="65" selection-start-line="126" selection-start-column="65" selection-end-line="126" selection-end-column="65" />
+          <caret line="810" column="0" selection-start-line="810" selection-start-column="0" selection-end-line="810" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

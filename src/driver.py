@@ -9,10 +9,12 @@ from cloudshell.shell.core.interfaces.save_restore import OrchestrationRestoreRu
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.driver_context import InitCommandContext
 from cloudshell.shell.core.driver_context import ResourceCommandContext
+from cloudshell.shell.core.driver_context import AutoLoadCommandContext
 from cloudshell.shell.core.driver_context import AutoLoadResource
 from cloudshell.shell.core.driver_context import AutoLoadAttribute
 from cloudshell.shell.core.driver_context import AutoLoadDetails
 from cloudshell.shell.core.driver_context import CancellationContext
+
 
 import os
 from cloudshell.api.cloudshell_api import CloudShellAPISession
@@ -805,7 +807,7 @@ class GigamonDriver (ResourceDriverInterface):
 
                 if portaddr in addr2alias:
                     attributes.append(AutoLoadAttribute(portaddr, "Alias", addr2alias[portaddr]))
-                    self._fulladdr2alias[context.resource.FullAddress + '/' + portaddr] = addr2alias[portaddr]
+                    self._fulladdr2alias[context.resource.address + '/' + portaddr] = addr2alias[portaddr]
 
                 attributes.append(AutoLoadAttribute(portaddr, "Transceiver Type", d['xcvr_type'].strip()))
 
