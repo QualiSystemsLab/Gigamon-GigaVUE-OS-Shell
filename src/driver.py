@@ -30,7 +30,7 @@ class GigamonDriver (ResourceDriverInterface):
         """
         self.fakedata = None
         self._log('__init__ called')
-        self._addr2alias = {}
+        self._fulladdr2alias = {}
 
     def _log(self, message):
         with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
@@ -468,12 +468,12 @@ class GigamonDriver (ResourceDriverInterface):
                                    token_id=context.connectivity.admin_auth_token,
                                    port=context.connectivity.cloudshell_api_port)
 
-        self._addr2alias = {}
+        self._fulladdr2alias = {}
 
         def rtrav(d):
             for attr in d.ResourceAttributes:
                 if attr.Name == 'Alias':
-                    self._addr2alias[d.FullAddress] = attr.Value
+                    self._fulladdr2alias[d.FullAddress] = attr.Value
             for dd in d.ChildResources:
                 rtrav(dd)
 
@@ -488,7 +488,7 @@ class GigamonDriver (ResourceDriverInterface):
         :rtype: str
         """
 
-        if len(self._addr2alias) == 0:
+        if len(self._fulladdr2alias) == 0:
             self._refresh_aliases(context)
 
         vlan2srcdst = {}
@@ -497,7 +497,7 @@ class GigamonDriver (ResourceDriverInterface):
             addr = action['actionTarget']['fullAddress']
             if vlan not in vlan2srcdst:
                 vlan2srcdst[vlan] = {}
-            if self._addr2alias.get(addr, 'none').startswith('To_ESX'):
+            if self._fulladdr2alias.get(addr, 'none').startswith('To_ESX'):
                 vlan2srcdst[vlan]['dst'] = {'addr': addr, 'actionId': action['actionId']}
             else:
                 if 'src' in vlan2srcdst[vlan]:
@@ -559,8 +559,19 @@ class GigamonDriver (ResourceDriverInterface):
                         self._ssh_command(ssh, channel, 'no map alias %s' % alias, '[^[#]# ')
                     except Exception as e:
                         self._log('Ignoring exception: %s' % str(e))
-                    self._ssh_command(ssh, channel, 'port %s type network' % src_port, '[^[#]# ')
-                    self._ssh_command(ssh, channel, 'port %s type network' % dst_port, '[^[#]# ')
+                    # self._ssh_command(ssh, channel, 'port %s type network' % src_port, '[^[#]# ')
+                    try:
+                        found = False
+                        for mapline in self._ssh_command(ssh, channel, 'show map', '[^[#]# ').split('\n'):
+                            if re.match(r'\s*To\s*:\s*%s\s*' % dst_port, mapline):
+                                found = True
+                        if not found:
+                            self._ssh_command(ssh, channel, 'port %s type network' % dst_port, '[^[#]# ')
+                        else:
+                            self._log('Port %s still has mappings, not resetting to network mode' % dst_port)
+                    except Exception as e:
+                        self._log('Ignoring exception: %s' % str(e))
+
                     self._ssh_command(ssh, channel, 'no port %s ingress-vlan-tag' % src_port, '[^[#]# ')
                 finally:
                     self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
@@ -694,6 +705,7 @@ class GigamonDriver (ResourceDriverInterface):
                 d = m.groupdict()
                 addr2alias[d['address']] = d['alias']
 
+        self._fulladdr2alias = {}
         try:
             o = self._ssh_command(ssh, channel, 'show port', '[^[#]# ')
         except Exception as e:
@@ -753,6 +765,7 @@ class GigamonDriver (ResourceDriverInterface):
 
                 if portaddr in addr2alias:
                     attributes.append(AutoLoadAttribute(portaddr, "Alias", addr2alias[portaddr]))
+                    self._fulladdr2alias[context.resource.d.FullAddress + '/' + portaddr] = addr2alias[portaddr]
 
                 attributes.append(AutoLoadAttribute(portaddr, "Transceiver Type", d['xcvr_type'].strip()))
 
