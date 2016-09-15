@@ -140,7 +140,7 @@ class GigamonDriver (ResourceDriverInterface):
                                    port=context.connectivity.cloudshell_api_port,
                                    domain=domain)
 
-        ssh, channel, o = self._ssh_connect(context.resource.address,
+        ssh, channel, o = self._ssh_connect(context, context.resource.address,
                               22,
                               context.resource.attributes['User'],
                               api.DecryptPassword(context.resource.attributes['Password']).Value,
