@@ -37,14 +37,17 @@ class GigamonDriver (ResourceDriverInterface):
 
     def _log(self, context, message):
         try:
-            s = context.reservation.reservation_id
-        except:
-            s = 'out-of-reservation'
+            try:
+                s = context.reservation.reservation_id
+            except:
+                s = 'out-of-reservation'
 
-        logger = get_qs_logger(s, 'GigaVUE-OS-L2', context.resource.fullname)
-        logger.info(message)
-        # with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-        #     f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + message+'\r\n')
+            logger = get_qs_logger(s, 'GigaVUE-OS-L2', context.resource.fullname)
+            logger.info(message)
+        except Exception as e:
+            with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+                f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' get_qs_logger failed: ' + str(e)+'\r\n')
+                f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + message+'\r\n')
 
     def _ssh_disconnect(self, context, ssh, channel):
         self._log(context, 'disconnnect')

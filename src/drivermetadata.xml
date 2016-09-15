@@ -8,24 +8,24 @@
                                Description="The command to run. Note that commands that require a response are not supported."/>
                 </Parameters>
             </Command>
+            <Command Name="orchestration_save" >
+                <Parameters>
+                    <Parameter Name="mode" Type="Lookup" Mandatory = "True" AllowedValues="shallow,deep"  DefaultValue="shallow"
+                               Description="Snapshot save mode, can be one of two values 'shallow' (default) or 'deep'"/>
+                    <Parameter Name="custom_params" Type="String" Mandatory = "False"  DefaultValue=""
+                               Description=" Set of custom parameters for the save operation"/>
+
+                </Parameters>
+            </Command>
+            <Command Name="orchestration_restore" >
+                <Parameters>
+                    <Parameter Name="saved_details" Type="String" Mandatory = "True" DefaultValue=""
+                               Description="A JSON string representing the state to restore including saved artifacts and info"/>
+                </Parameters>
+            </Command>
+            <Command Name="health_check"  Tags="" Description="Checks if the device is up and connectable"/>
 
         </Category>
-        <Command Name="orchestration_save" >
-            <Parameters>
-                <Parameter Name="mode" Type="Lookup" Mandatory = "True" AllowedValues="shallow,deep"  DefaultValue="shallow"
-                           Description="Snapshot save mode, can be one of two values 'shallow' (default) or 'deep'"/>
-                <Parameter Name="custom_params" Type="String" Mandatory = "False"  DefaultValue=""
-                           Description=" Set of custom parameters for the save operation"/>
-
-            </Parameters>
-        </Command>
-        <Command Name="orchestration_restore" >
-            <Parameters>
-                <Parameter Name="saved_details" Type="String" Mandatory = "True" DefaultValue=""
-                           Description="A JSON string representing the state to restore including saved artifacts and info"/>
-            </Parameters>
-        </Command>
-        <Command Name="health_check"  Tags="" Description="Checks if the device is up and connectable"/>
         <!--<Command Name="ApplyConnectivityChanges" DisplayName="ApplyConnectivityChanges" Tags="allow_unreserved">-->
             <!--<Parameters>-->
                 <!--<Parameter Name="request" Type="String" Mandatory = "True" DefaultValue="" Description=""/>-->
