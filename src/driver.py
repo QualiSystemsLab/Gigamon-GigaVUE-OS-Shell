@@ -133,9 +133,15 @@ class GigamonDriver (ResourceDriverInterface):
         if self.fakedata:
             return None, None, None
 
+        try:
+            domain = context.reservation.domain
+        except:
+            domain = 'Global'
+
         api = CloudShellAPISession(context.connectivity.server_address,
                                    token_id=context.connectivity.admin_auth_token,
-                                   port=context.connectivity.cloudshell_api_port)
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=domain)
 
         ssh, channel, o = self._ssh_connect(context.resource.address,
                               22,
@@ -185,8 +191,9 @@ class GigamonDriver (ResourceDriverInterface):
         path = path.replace('.cfg', '.txt')
 
         api = CloudShellAPISession(context.connectivity.server_address,
-                           token_id=context.connectivity.admin_auth_token,
-                           port=context.connectivity.cloudshell_api_port)
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=context.reservation.domain)
 
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Restoring config')
 
@@ -255,7 +262,8 @@ class GigamonDriver (ResourceDriverInterface):
 
         api = CloudShellAPISession(context.connectivity.server_address,
                                    token_id=context.connectivity.admin_auth_token,
-                                   port=context.connectivity.cloudshell_api_port)
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=context.reservation.domain)
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Saving config')
 
         ssh, channel, _ = self._connect(context)
@@ -289,7 +297,8 @@ class GigamonDriver (ResourceDriverInterface):
         """
         api = CloudShellAPISession(context.connectivity.server_address,
                                    token_id=context.connectivity.admin_auth_token,
-                                   port=context.connectivity.cloudshell_api_port)
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=context.reservation.domain)
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Loading firmware %s' % file_path)
         ssh, channel, _ = self._connect(context)
         try:
@@ -357,7 +366,8 @@ class GigamonDriver (ResourceDriverInterface):
         """
         api = CloudShellAPISession(context.connectivity.server_address,
                                    token_id=context.connectivity.admin_auth_token,
-                                   port=context.connectivity.cloudshell_api_port)
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=context.reservation.domain)
 
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Resetting switch')
 
@@ -508,7 +518,8 @@ class GigamonDriver (ResourceDriverInterface):
         """
         api = CloudShellAPISession(context.connectivity.server_address,
                                    token_id=context.connectivity.admin_auth_token,
-                                   port=context.connectivity.cloudshell_api_port)
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=context.reservation.domain)
 
         self._fulladdr2alias = {}
 
@@ -843,7 +854,8 @@ class GigamonDriver (ResourceDriverInterface):
         """
         api = CloudShellAPISession(context.connectivity.server_address,
                                    token_id=context.connectivity.admin_auth_token,
-                                   port=context.connectivity.cloudshell_api_port)
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=context.reservation.domain)
 
         rv = 'Health check on resource %s passed' % context.resource.fullname
         api.SetResourceLiveStatus(context.resource.fullname,  'Online', rv)
