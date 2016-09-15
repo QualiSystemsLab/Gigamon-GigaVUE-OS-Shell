@@ -34,23 +34,26 @@ class GigamonDriver (ResourceDriverInterface):
         """
         self.fakedata = None
         self._fulladdr2alias = {}
-        self._qs_logger = None
 
-    def _log(self, message):
-        if self._qs_logger:
-            self._qs_logger.info(message)
-        else:
-            with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-                f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + message+'\r\n')
+    def _log(self, context, message):
+        try:
+            s = context.reservation.reservation_id
+        except:
+            s = 'out-of-reservation'
 
-    def _ssh_disconnect(self, ssh, channel):
-        self._log('disconnnect')
+        logger = get_qs_logger(s, 'GigaVUE-OS-L2', context.resource.fullname)
+        logger.info(message)
+        # with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+        #     f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + message+'\r\n')
+
+    def _ssh_disconnect(self, context, ssh, channel):
+        self._log(context, 'disconnnect')
         if self.fakedata:
             return
         ssh.close()
 
-    def _ssh_connect(self, host, port, username, password, prompt_regex):
-        self._log('connect %s %d %s %s %s' % (host, port, username, password, prompt_regex))
+    def _ssh_connect(self, context, host, port, username, password, prompt_regex):
+        self._log(context, 'connect %s %d %s %s %s' % (host, port, username, password, prompt_regex))
         if self.fakedata:
             return
         ssh = paramiko.SSHClient()
@@ -62,26 +65,26 @@ class GigamonDriver (ResourceDriverInterface):
                     password=password,
                     look_for_keys=True)
         channel = ssh.invoke_shell()
-        return ssh, channel, self._ssh_read(ssh, channel, prompt_regex)  # eat banner
+        return ssh, channel, self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner
 
-    def _ssh_write(self, ssh, channel, command):
-        self._log('sending: <<<' + command + '>>>')
+    def _ssh_write(self, context, ssh, channel, command):
+        self._log(context, 'sending: <<<' + command + '>>>')
         if self.fakedata:
             print command
             return
         channel.send(command)
-        self._log('send complete')
+        self._log(context, 'send complete')
 
-    def _ssh_read(self, ssh, channel, prompt_regex):
+    def _ssh_read(self, context, ssh, channel, prompt_regex):
         if self.fakedata:
             return
         rv = ''
-        self._log('read...')
+        self._log(context, 'read...')
         while True:
             # self.channel.settimeout(30)
-            self._log('recv')
+            self._log(context, 'recv')
             r = channel.recv(2048)
-            self._log('recv returned: <<<' + str(r) + '>>>')
+            self._log(context, 'recv returned: <<<' + str(r) + '>>>')
             if r:
                 rv += r
             if rv:
@@ -95,10 +98,10 @@ class GigamonDriver (ResourceDriverInterface):
                 rv = t
                 if rv:
                     rv = rv.replace('\r', '\n')
-                self._log('read complete: <<<' + str(rv) + '>>>')
+                self._log(context, 'read complete: <<<' + str(rv) + '>>>')
                 return rv
 
-    def _ssh_command(self, ssh, channel, command, prompt_regex):
+    def _ssh_command(self, context, ssh, channel, command, prompt_regex):
         if self.fakedata:
             print command
             if command in self.fakedata:
@@ -107,11 +110,11 @@ class GigamonDriver (ResourceDriverInterface):
             else:
                 return ''
         else:
-            self._ssh_write(ssh, channel, command + '\n')
-            rv = self._ssh_read(ssh, channel, prompt_regex)
+            self._ssh_write(context, ssh, channel, command + '\n')
+            rv = self._ssh_read(context, ssh, channel, prompt_regex)
             if '\n%' in rv.replace('\r', '\n'):
                 es = 'CLI error message: ' + rv
-                self._log(es)
+                self._log(context, es)
                 raise Exception(es)
             return rv
 
@@ -124,12 +127,6 @@ class GigamonDriver (ResourceDriverInterface):
         pass
 
     def _connect(self, context):
-        if not self._qs_logger:
-            try:
-                self._qs_logger = get_qs_logger(context.reservation.reservation_id, 'GigaVUE-OS', context.resource.fullname)
-            except:
-                self._qs_logger = get_qs_logger('out-of-reservation', 'GigaVUE-OS', context.resource.fullname)
-
         if self.fakedata:
             return None, None, None
 
@@ -152,18 +149,18 @@ class GigamonDriver (ResourceDriverInterface):
         if 'security purposes' in o:
             raise Exception('Switch password needs to be initialized: %s' % o)
 
-        e = self._ssh_command(ssh, channel, 'enable', '[#:]')
+        e = self._ssh_command(context, ssh, channel, 'enable', '[#:]')
         if ':' in e:
-            self._ssh_command(ssh, channel, api.DecryptPassword(context.resource.attributes['Enable Password']).Value,
+            self._ssh_command(context, ssh, channel, api.DecryptPassword(context.resource.attributes['Enable Password']).Value,
                               '[^[#]# ')
-        # self._ssh_command(ssh, channel, 'cli session terminal type dumb', '[^[#]# ')
-        self._ssh_command(ssh, channel, 'cli session terminal length 999', '[^[#]# ')
+        # self._ssh_command(context, ssh, channel, 'cli session terminal type dumb', '[^[#]# ')
+        self._ssh_command(context, ssh, channel, 'cli session terminal length 999', '[^[#]# ')
         return ssh, channel, o
 
-    def _disconnect(self, ssh, channel):
+    def _disconnect(self, context, ssh, channel):
         if self.fakedata:
             return
-        self._ssh_disconnect(ssh, channel)
+        self._ssh_disconnect(context, ssh, channel)
 
     # <editor-fold desc="Networking Standard Commands">
     def restore(self, context, cancellation_context, path, restore_method, configuration_type, vrf_management_name):
@@ -176,7 +173,7 @@ class GigamonDriver (ResourceDriverInterface):
         :param str configuration_type: Specify whether the file should update the startup or running config.
         :param str vrf_management_name: Optional. Virtual routing and Forwarding management name
         """
-        self._log('restore called with inputs path=%s restore_method=%s configuration_type=%s vrf_management_name=%s' % (path, restore_method, configuration_type, vrf_management_name))
+        self._log(context, 'restore called with inputs path=%s restore_method=%s configuration_type=%s vrf_management_name=%s' % (path, restore_method, configuration_type, vrf_management_name))
 
         running_saved = 'running' if configuration_type.lower() == 'running' else 'saved'
         if running_saved != 'running':
@@ -199,39 +196,39 @@ class GigamonDriver (ResourceDriverInterface):
 
         ssh, channel, _ = self._connect(context)
         m = []
-        m.append(self._ssh_command(ssh, channel, 'configure terminal', '[^[#]# '))
+        m.append(self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# '))
         try:
-            m.append(self._ssh_command(ssh, channel, 'configuration fetch ' + path, '[^[#]# '))
+            m.append(self._ssh_command(context, ssh, channel, 'configuration fetch ' + path, '[^[#]# '))
             try:
-                m.append(self._ssh_command(ssh, channel, 'configuration copy Active.txt tmp.txt', '[^[#]# '))
+                m.append(self._ssh_command(context, ssh, channel, 'configuration copy Active.txt tmp.txt', '[^[#]# '))
             except Exception as e:
                 m.append(str(e))
             try:
-                m.append(self._ssh_command(ssh, channel, 'configuration switch-to tmp.txt', '[^[#]# '))
+                m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to tmp.txt', '[^[#]# '))
             except Exception as e:
                 m.append(str(e))
             try:
-                m.append(self._ssh_command(ssh, channel, 'configuration delete Active.txt', '[^[#]# '))
+                m.append(self._ssh_command(context, ssh, channel, 'configuration delete Active.txt', '[^[#]# '))
             except Exception as e:
                 m.append(str(e))
 
-            m.append(self._ssh_command(ssh, channel, 'configuration move %s Active.txt ' % (os.path.basename(path)), '[^[#]# '))
+            m.append(self._ssh_command(context, ssh, channel, 'configuration move %s Active.txt ' % (os.path.basename(path)), '[^[#]# '))
 
             try:
-                m.append(self._ssh_command(ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
+                m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
             except Exception as e:
                 m.append(str(e))
                 # switch-to failed, tmp.txt still active
                 try:
                     # get rid of new bad Active.txt
-                    m.append(self._ssh_command(ssh, channel, 'configuration delete Active.txt', '[^[#]# '))
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration delete Active.txt', '[^[#]# '))
                 except Exception as e:
                     m.append(str(e))
                 # make tmp.txt the Active.txt again
-                m.append(self._ssh_command(ssh, channel, 'configuration copy tmp.txt Active.txt', '[^[#]# '))
-                m.append(self._ssh_command(ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
+                m.append(self._ssh_command(context, ssh, channel, 'configuration copy tmp.txt Active.txt', '[^[#]# '))
+                m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
             try:
-                m.append(self._ssh_command(ssh, channel, 'configuration delete tmp.txt', '[^[#]# '))
+                m.append(self._ssh_command(context, ssh, channel, 'configuration delete tmp.txt', '[^[#]# '))
             except Exception as e:
                 m.append(str(e))
             api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
@@ -239,8 +236,8 @@ class GigamonDriver (ResourceDriverInterface):
             m.append(str(e2))
             api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % '\n'.join(m))
         finally:
-            self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
-            self._disconnect(ssh, channel)
+            self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
+            self._disconnect(context, ssh, channel)
 
     def save(self, context, cancellation_context, configuration_type, folder_path, vrf_management_name):
         """
@@ -267,26 +264,26 @@ class GigamonDriver (ResourceDriverInterface):
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Saving config')
 
         ssh, channel, _ = self._connect(context)
-        self._ssh_command(ssh, channel, 'configure terminal', '[^[#]# ')
+        self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# ')
         try:
             if self.fakedata:
                 path = 'fakepath/fakename_fakemodel.txt'
             else:
-                self._log('Attributes: %s' % str(context.resource.attributes))
+                self._log(context, 'Attributes: %s' % str(context.resource.attributes))
                 model = context.resource.attributes.get('Model', '')
                 if not model:
                     model = context.resource.model
                 path = '%s/%s_%s.txt' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
                                         context.resource.name.replace(' ', '-'),
                                         model.replace(' ', '-'))
-            self._ssh_command(ssh, channel, 'configuration upload %s %s' % (running_saved, path), '[^[#]# ')
+            self._ssh_command(context, ssh, channel, 'configuration upload %s %s' % (running_saved, path), '[^[#]# ')
             api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config saved at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
             return path
         except Exception as e:
             api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to save config: %s' % str(e))
         finally:
-            self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
-            self._disconnect(ssh, channel)
+            self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
+            self._disconnect(context, ssh, channel)
 
     def load_firmware(self, context, cancellation_context, file_path, remote_host):
         """
@@ -303,18 +300,21 @@ class GigamonDriver (ResourceDriverInterface):
         ssh, channel, _ = self._connect(context)
         try:
             if '://' in file_path:
-                self._ssh_command(ssh, channel, 'image fetch %s' % file_path, '[^[#]# ')
+                self._ssh_command(context, ssh, channel, 'image fetch %s' % file_path, '[^[#]# ')
             elif remote_host == 'none':
                 pass
             else:
-                self._ssh_command(ssh, channel, 'image fetch tftp://%s/%s' % (remote_host, file_path), '[^[#]# ')
-            self._ssh_command(ssh, channel, 'image install %s' % (os.path.basename(file_path)), '[^[#]# ')
-            self._ssh_command(ssh, channel, 'image boot next', '[^[#]# ')
+                self._ssh_command(context, ssh, channel, 'image fetch tftp://%s/%s' % (remote_host, file_path), '[^[#]# ')
+            self._ssh_command(context, ssh, channel, 'image install %s' % (os.path.basename(file_path)), '[^[#]# ')
+            self._ssh_command(context, ssh, channel, 'image boot next', '[^[#]# ')
+
+            self._ssh_command(context, ssh, channel, 'image delete %s' % (os.path.basename(file_path)), '[^[#]# ')
+
             api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Loaded firmware %s at %s' % (file_path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())))
         except Exception as e:
             api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load firmware: %s' % str(e))
         finally:
-            self._disconnect(ssh, channel)
+            self._disconnect(context, ssh, channel)
 
     def run_custom_command(self, context, cancellation_context, custom_command):
         """
@@ -327,9 +327,9 @@ class GigamonDriver (ResourceDriverInterface):
         """
         ssh, channel, _ = self._connect(context)
         try:
-            self._ssh_command(ssh, channel, custom_command, '[^[#]# ')
+            self._ssh_command(context, ssh, channel, custom_command, '[^[#]# ')
         finally:
-            self._disconnect(ssh, channel)
+            self._disconnect(context, ssh, channel)
 
     def run_custom_config_command(self, context, cancellation_context, custom_command):
         """
@@ -343,12 +343,12 @@ class GigamonDriver (ResourceDriverInterface):
 
         ssh, channel, _ = self._connect(context)
         try:
-            self._ssh_command(ssh, channel, 'configure terminal', '[^[#]# ')
-            rv = self._ssh_command(ssh, channel, custom_command, '[^[#]# ')
-            self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
+            self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# ')
+            rv = self._ssh_command(context, ssh, channel, custom_command, '[^[#]# ')
+            self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
             return rv
         finally:
-            self._disconnect(ssh, channel)
+            self._disconnect(context, ssh, channel)
 
     def shutdown(self, context, cancellation_context):
         """
@@ -372,29 +372,29 @@ class GigamonDriver (ResourceDriverInterface):
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Resetting switch')
 
         ssh, channel, _ = self._connect(context)
-        self._ssh_command(ssh, channel, 'configure terminal', '[^[#]# ')
+        self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# ')
 
-        self._ssh_command(ssh, channel, 'reset factory only-traffic', ': ')
-        self._ssh_command(ssh, channel, 'YES', '.')
+        self._ssh_command(context, ssh, channel, 'reset factory only-traffic', ': ')
+        self._ssh_command(context, ssh, channel, 'YES', '.')
         try:
-            self._disconnect(ssh, channel)
+            self._disconnect(context, ssh, channel)
         except:
             pass
-        self._log('Waiting 30 seconds...')
+        self._log(context, 'Waiting 30 seconds...')
         time.sleep(30)
 
         retries = 0
         while retries < 30:
             try:
-                self._log('Trying to connect...')
+                self._log(context, 'Trying to connect...')
                 ssh, channel, _ = self._connect(context)
-                self._log('Reconnected to device')
-                self._disconnect(ssh, channel)
+                self._log(context, 'Reconnected to device')
+                self._disconnect(context, ssh, channel)
                 api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Switch finished resetting at %s ' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
                 return
             except Exception as e:
-                self._log('Not ready: ' + str(e))
-                self._log('Waiting 10 seconds...')
+                self._log(context, 'Not ready: ' + str(e))
+                self._log(context, 'Waiting 10 seconds...')
                 time.sleep(10)
                 retries += 1
         api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Switch did not come up within 5 minutes after reset')
@@ -532,108 +532,6 @@ class GigamonDriver (ResourceDriverInterface):
 
         rtrav(api.GetResourceDetails(context.resource.fullname))
 
-    def _disabledApplyConnectivityChanges(self, context, request):
-        """
-        Configures VLANs on multiple ports or port-channels
-        :param ResourceCommandContext context: The context object for the command with resource and reservation info
-        :param str request: A JSON object with the list of requested connectivity changes
-        :return: a json object with the list of connectivity changes which were carried out by the switch
-        :rtype: str
-        """
-
-        if len(self._fulladdr2alias) == 0:
-            self._refresh_aliases(context)
-
-        vlan2srcdst = {}
-        for action in json.loads(request)['driverRequest']['actions']:
-            vlan = action['connectionParams']['vlanId']
-            addr = action['actionTarget']['fullAddress']
-            if vlan not in vlan2srcdst:
-                vlan2srcdst[vlan] = {}
-            if self._fulladdr2alias.get(addr, 'none').startswith('To_ESX'):
-                vlan2srcdst[vlan]['dst'] = {'addr': addr, 'actionId': action['actionId']}
-            else:
-                if 'src' in vlan2srcdst[vlan]:
-                    raise Exception('Neither port (%s, %s) was marked on the switch with alias prefix "To_ESX". '
-                                    'Ensure that one of the ports has an alias with prefix "To_ESX" '
-                                    'and run Autoload again in Resource Manager.' %
-                                    (addr, vlan2srcdst[vlan]['src']['addr']))
-                vlan2srcdst[vlan]['src'] = {'addr': addr, 'actionId': action['actionId']}
-            if action['type'] in ['setVlan', 'removeVlan']:
-                vlan2srcdst[vlan]['type'] = action['type']
-
-        rv = {
-            'driverResponse': {
-                'actionResults': []
-            }
-        }
-        ssh, channel, _ = self._connect(context)
-
-        for vlan in vlan2srcdst:
-            src_port = vlan2srcdst[vlan]['src']['addr']
-            src_action_id = vlan2srcdst[vlan]['src']['actionId']
-            dst_port = vlan2srcdst[vlan]['dst']['addr']
-            dst_action_id = vlan2srcdst[vlan]['dst']['actionId']
-
-            src_port = '/'.join(src_port.split('/')[1:])
-            dst_port = '/'.join(dst_port.split('/')[1:])
-
-            command = vlan2srcdst[vlan]['type']
-
-            alias = 'quali_%s_to_%s' % (src_port.replace('/', '_'), dst_port.replace('/', '_'))
-
-            try:
-                self._ssh_command(ssh, channel, 'configure terminal', '[^[#]# ')
-            except Exception as e:
-                self._log('Ignoring exception: %s' % str(e))
-
-            if command == 'setVlan':
-                try:
-                    self._ssh_command(ssh, channel, 'port %s type network' % src_port, '[^[#]# ')
-                    self._ssh_command(ssh, channel, 'port %s type tool' % dst_port, '[^[#]# ')
-                    self._ssh_command(ssh, channel, 'map alias %s' % alias, '[^[#]# ')
-                    try:
-                        self._ssh_command(ssh, channel, 'type regular byRule', '[^[#]# ')
-                        self._ssh_command(ssh, channel, 'roles replace admin to owner_roles', '[^[#]# ')
-                        self._ssh_command(ssh, channel, 'rule add pass macsrc 0000.0000.0000 0000.0000.0000', '[^[#]# ')
-                        self._ssh_command(ssh, channel, 'to %s' % dst_port, '[^[#]# ')
-                        self._ssh_command(ssh, channel, 'from %s' % src_port, '[^[#]# ')
-                    finally:
-                        self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
-                    o = self._ssh_command(ssh, channel, 'show map', '[^[#]# ')
-                    if alias not in o:
-                        raise Exception('Connection %s - %s failed: %s' % (src_port, dst_port, o))
-                    self._ssh_command(ssh, channel, 'port %s ingress-vlan-tag %s' % (src_port, vlan), '[^[#]# ')
-                finally:
-                    self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
-            else:
-                try:
-                    try:
-                        self._ssh_command(ssh, channel, 'no map alias %s' % alias, '[^[#]# ')
-                    except Exception as e:
-                        self._log('Ignoring exception: %s' % str(e))
-                    # self._ssh_command(ssh, channel, 'port %s type network' % src_port, '[^[#]# ')
-                    try:
-                        found = False
-                        for mapline in self._ssh_command(ssh, channel, 'show map', '[^[#]# ').split('\n'):
-                            if re.match(r'\s*To\s*:\s*%s\s*' % dst_port, mapline):
-                                found = True
-                        if not found:
-                            self._ssh_command(ssh, channel, 'port %s type network' % dst_port, '[^[#]# ')
-                        else:
-                            self._log('Port %s still has mappings, not resetting to network mode' % dst_port)
-                    except Exception as e:
-                        self._log('Ignoring exception: %s' % str(e))
-
-                    self._ssh_command(ssh, channel, 'no port %s ingress-vlan-tag' % src_port, '[^[#]# ')
-                finally:
-                    self._ssh_command(ssh, channel, 'exit', '[^[#]# ')
-
-            rv['driverResponse']['actionResults'].append({'actionId': src_action_id, 'errorMessage': '', 'infoMessage': '', 'success': 'True', 'type': command, 'updateInterface': 'None'})
-            rv['driverResponse']['actionResults'].append({'actionId': dst_action_id, 'errorMessage': '', 'infoMessage': '', 'success': 'True', 'type': command, 'updateInterface': 'None'})
-
-        self._disconnect(ssh, channel)
-        return json.dumps(rv)
 
     # </editor-fold>
 
@@ -682,7 +580,7 @@ class GigamonDriver (ResourceDriverInterface):
         sub_resources = []
         attributes = [AutoLoadAttribute('', "Vendor", 'Gigamon')]
 
-        for line in self._ssh_command(ssh, channel, 'show version', '[^[#]# ').split('\n'):
+        for line in self._ssh_command(context, ssh, channel, 'show version', '[^[#]# ').split('\n'):
             if 'Version summary:' in line:
                 attributes.append(AutoLoadAttribute('', "OS Version", line.replace('Version summary:', '').strip()))
             if 'Product model:' in line:
@@ -690,7 +588,7 @@ class GigamonDriver (ResourceDriverInterface):
 
         chassisaddr = 'bad_chassis_addr'
         patt2attr = {}
-        for line in self._ssh_command(ssh, channel, 'show chassis', '[^[#]# ').split('\n'):
+        for line in self._ssh_command(context, ssh, channel, 'show chassis', '[^[#]# ').split('\n'):
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
                 if chassisaddr == '-':
@@ -710,7 +608,7 @@ class GigamonDriver (ResourceDriverInterface):
                     patt2attr.pop(patt, None)
 
         chassisaddr = 'bad_chassis_addr'
-        for line in self._ssh_command(ssh, channel, 'show card', '[^[#]# ').split('\n'):
+        for line in self._ssh_command(context, ssh, channel, 'show card', '[^[#]# ').split('\n'):
             if 'Oper Status' in line:
                 continue
             if 'Box ID' in line:
@@ -738,7 +636,7 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute(cardaddr, "Serial Number", d['serial_num']))
 
         try:
-            o = self._ssh_command(ssh, channel, 'show port alias', '[^[#]# ')
+            o = self._ssh_command(context, ssh, channel, 'show port alias', '[^[#]# ')
         except Exception as e:
             if 'no port alias configured' not in str(e) and 'no chassis configured' not in str(e):
                 raise e
@@ -760,7 +658,7 @@ class GigamonDriver (ResourceDriverInterface):
 
         self._fulladdr2alias = {}
         try:
-            o = self._ssh_command(ssh, channel, 'show port', '[^[#]# ')
+            o = self._ssh_command(context, ssh, channel, 'show port', '[^[#]# ')
         except Exception as e:
             if 'no chassis configured' not in str(e):
                 raise e
@@ -801,7 +699,7 @@ class GigamonDriver (ResourceDriverInterface):
                                  portline)
                     if not m:
                         if portline:
-                            self._log('regex failure on line <<<' + portline + '>>>')
+                            self._log(context, 'regex failure on line <<<' + portline + '>>>')
                         continue
                     # raise Exception('Failed to parse "show port" data: Line: <<<%s>>> All output: <<<%s>>>' % (portline, o))
 
@@ -809,7 +707,7 @@ class GigamonDriver (ResourceDriverInterface):
 
                 portaddr = d['address']
                 portnum = portaddr.split('/')[-1]
-                self._log('Port ' + portaddr)
+                self._log(context, 'Port ' + portaddr)
                 sub_resources.append(AutoLoadResource(model='Generic Port',
                                                       name='Port ' + portnum,
                                                       relative_address=portaddr))
@@ -836,10 +734,10 @@ class GigamonDriver (ResourceDriverInterface):
 
         rv = AutoLoadDetails(sub_resources, attributes)
         for res in rv.resources:
-            self._log('model=%s name=%s address=%s uniqueid=%s' % (res.model, res.name, res.relative_address, res.unique_identifier))
+            self._log(context, 'model=%s name=%s address=%s uniqueid=%s' % (res.model, res.name, res.relative_address, res.unique_identifier))
         for attr in rv.attributes:
-            self._log('%s: %s = %s' % (attr.relative_address, attr.attribute_name, attr.attribute_value))
-        self._disconnect(ssh, channel)
+            self._log(context, '%s: %s = %s' % (attr.relative_address, attr.attribute_name, attr.attribute_value))
+        self._disconnect(context, ssh, channel)
         return rv
 
     # </editor-fold>
