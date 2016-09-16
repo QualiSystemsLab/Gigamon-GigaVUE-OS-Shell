@@ -511,7 +511,11 @@ class GigamonDriver (ResourceDriverInterface):
 
 
         saved_details_object = json.loads(saved_details)
-        url = saved_details_object['saved_artifact']['identifier']
+        try:
+            url = saved_details_object['saved_artifact']['identifier']
+        except:
+            url = saved_details_object['saved_artifacts_info']['saved_artifact']['identifier']
+
         self.restore(
             context=context,
             cancellation_context=cancellation_context,
