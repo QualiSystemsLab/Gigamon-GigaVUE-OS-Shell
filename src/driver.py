@@ -454,6 +454,8 @@ class GigamonDriver (ResourceDriverInterface):
 
         return OrchestrationSaveResult(saved_artifacts_info)
         '''
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_save called\r\n')
 
         p = json.loads(custom_params)
         if 'folder_path' not in p:
