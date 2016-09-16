@@ -505,6 +505,11 @@ class GigamonDriver (ResourceDriverInterface):
         saved_details_object = json.loads(saved_details)
         return saved_details_object[u'saved_artifact'][u'identifier']
         '''
+
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_restore called with input <<<%s>>>\r\n' % saved_details)
+
+
         saved_details_object = json.loads(saved_details)
         url = saved_details_object['saved_artifact']['identifier']
         self.restore(
