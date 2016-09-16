@@ -34,8 +34,12 @@ class GigamonDriver (ResourceDriverInterface):
         """
         self.fakedata = None
         self._fulladdr2alias = {}
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver __init__ called\r\n')
 
     def _log(self, context, message):
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver _log called\r\n')
         try:
             try:
                 s = context.reservation.reservation_id
@@ -127,9 +131,12 @@ class GigamonDriver (ResourceDriverInterface):
         This is a good place to load and cache the driver configuration, initiate sessions etc.
         :param InitCommandContext context: the context the command runs on
         """
-        pass
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver initialize called\r\n')
 
     def _connect(self, context):
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver _connect called\r\n')
         if self.fakedata:
             return None, None, None
 
