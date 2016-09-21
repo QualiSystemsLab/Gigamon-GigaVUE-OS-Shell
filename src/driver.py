@@ -605,7 +605,11 @@ class GigamonDriver (ResourceDriverInterface):
             if 'Version summary:' in line:
                 attributes.append(AutoLoadAttribute('', "OS Version", line.replace('Version summary:', '').strip()))
             if 'Product model:' in line:
-                attributes.append(AutoLoadAttribute('', "Model", line.replace('Product model:', '').strip()))
+                m = line.replace('Product model:', '').strip()
+                m = {
+                    'gvcc2': 'GigaVUE-HD8',
+                }.get(m, m)
+                attributes.append(AutoLoadAttribute('', "Model", m))
 
         chassisaddr = 'bad_chassis_addr'
         patt2attr = {}
