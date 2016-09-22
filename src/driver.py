@@ -208,6 +208,12 @@ class GigamonDriver (ResourceDriverInterface):
         m = []
         m.append(self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# '))
         try:
+            try:
+                # delete existing file if it exists
+                m.append(self._ssh_command(context, ssh, channel, 'configuration delete %s' % (os.path.basename(path)), '[^[#]# '))
+            except Exception as e:
+                m.append(str(e))
+
             m.append(self._ssh_command(context, ssh, channel, 'configuration fetch ' + path, '[^[#]# '))
             try:
                 m.append(self._ssh_command(context, ssh, channel, 'configuration copy Active.txt tmp.txt', '[^[#]# '))
