@@ -38,8 +38,8 @@ class GigamonDriver (ResourceDriverInterface):
             f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver __init__ called\r\n')
 
     def _log(self, context, message):
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver _log called\r\n')
+        # with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+        #     f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver _log called\r\n')
         # try:
         #     try:
         #         s = context.reservation.reservation_id
