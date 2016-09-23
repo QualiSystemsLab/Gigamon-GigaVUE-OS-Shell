@@ -292,6 +292,7 @@ class GigamonDriver (ResourceDriverInterface):
                 path = '%s/%s_%s.txt' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
                                         context.resource.name.replace(' ', '-'),
                                         model.replace(' ', '-'))
+            self._ssh_command(context, ssh, channel, 'configuration write', '[^[#]# ')
             self._ssh_command(context, ssh, channel, 'configuration upload %s %s' % (running_saved, path), '[^[#]# ')
             api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config saved at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
             return path
