@@ -465,7 +465,7 @@ class GigamonDriver (ResourceDriverInterface):
         return OrchestrationSaveResult(saved_artifacts_info)
         '''
         with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_save called\r\n')
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_save called: %s\r\n' % custom_params)
 
         p = json.loads(custom_params)
         if 'folder_path' not in p:
@@ -485,6 +485,10 @@ class GigamonDriver (ResourceDriverInterface):
             created_date=created_date,
             restore_rules=OrchestrationRestoreRules(requires_same_resource=True),
             saved_artifact=orchestration_saved_artifact)
+
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_save returning\r\n')
+
         return OrchestrationSaveResult(saved_artifacts_info)
 
     def orchestration_restore(self, context, cancellation_context, saved_details):
