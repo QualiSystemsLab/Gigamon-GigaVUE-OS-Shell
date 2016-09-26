@@ -251,6 +251,7 @@ class GigamonDriver (ResourceDriverInterface):
         except Exception as e2:
             m.append(str(e2))
             api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % '\n'.join(m))
+            raise e2
         finally:
             self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
             self._disconnect(context, ssh, channel)
@@ -301,6 +302,7 @@ class GigamonDriver (ResourceDriverInterface):
             return path
         except Exception as e:
             api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to save config: %s' % str(e))
+            raise e
         finally:
             self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
             self._disconnect(context, ssh, channel)
