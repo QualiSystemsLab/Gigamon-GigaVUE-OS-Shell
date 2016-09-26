@@ -268,6 +268,9 @@ class GigamonDriver (ResourceDriverInterface):
         :return The configuration file name.
         :rtype: str
         """
+        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver save called\r\n')
+
         running_saved = 'active' if configuration_type.lower() == 'running' else 'initial'
 
         if '://' not in folder_path:
