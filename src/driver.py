@@ -34,24 +34,29 @@ class GigamonDriver (ResourceDriverInterface):
         """
         self.fakedata = None
         self._fulladdr2alias = {}
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver __init__ called\r\n')
+        self._log(None, 'GigamonDriver __init__ called\r\n')
 
     def _log(self, context, message):
         # with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
         #     f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver _log called\r\n')
-        # try:
-        #     try:
-        #         s = context.reservation.reservation_id
-        #     except:
-        #         s = 'out-of-reservation'
-        #
-        #     logger = get_qs_logger(s, 'GigaVUE-OS-L2', context.resource.fullname)
-        #     logger.info(message)
-        # except Exception as e:
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-        #         f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' get_qs_logger failed: ' + str(e)+'\r\n')
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + message+'\r\n')
+        try:
+            try:
+                resid = context.reservation.reservation_id
+            except:
+                resid = 'out-of-reservation'
+            try:
+                resourcename = context.resource.fullname
+            except:
+                resourcename = 'no-resource'
+            logger = get_qs_logger(resid, 'GigaVUE-OS-L2', resourcename)
+            logger.info(message)
+        except Exception as e:
+            try:
+                with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+                    f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' qs_logger failed: ' + str(e)+'\r\n')
+                    f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + message+'\r\n')
+            except:
+                pass
 
     def _ssh_disconnect(self, context, ssh, channel):
         self._log(context, 'disconnnect')
@@ -131,12 +136,10 @@ class GigamonDriver (ResourceDriverInterface):
         This is a good place to load and cache the driver configuration, initiate sessions etc.
         :param InitCommandContext context: the context the command runs on
         """
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver initialize called\r\n')
+        self._log(context, 'GigamonDriver initialize called\r\n')
 
     def _connect(self, context):
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver _connect called\r\n')
+        self._log(context, 'GigamonDriver _connect called\r\n')
         if self.fakedata:
             return None, None, None
 
@@ -269,8 +272,7 @@ class GigamonDriver (ResourceDriverInterface):
         :return The configuration file name.
         :rtype: str
         """
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver save called\r\n')
+        self._log(context, 'GigamonDriver save called\r\n')
 
         running_saved = 'active' if configuration_type.lower() == 'running' else 'initial'
 
@@ -466,8 +468,7 @@ class GigamonDriver (ResourceDriverInterface):
 
         return OrchestrationSaveResult(saved_artifacts_info)
         '''
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_save called: %s\r\n' % custom_params)
+        self._log(context, 'GigamonDriver orchestration_save called: %s\r\n' % custom_params)
 
         p = json.loads(custom_params)
         if 'folder_path' not in p:
@@ -488,8 +489,7 @@ class GigamonDriver (ResourceDriverInterface):
             restore_rules=OrchestrationRestoreRules(requires_same_resource=True),
             saved_artifact=orchestration_saved_artifact)
 
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_save returning\r\n')
+        self._log(context, 'GigamonDriver orchestration_save returning\r\n')
 
         return OrchestrationSaveResult(saved_artifacts_info)
 
@@ -522,8 +522,7 @@ class GigamonDriver (ResourceDriverInterface):
         return saved_details_object[u'saved_artifact'][u'identifier']
         '''
 
-        with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-            f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver orchestration_restore called with input <<<%s>>>\r\n' % saved_details)
+        self._log(context, 'GigamonDriver orchestration_restore called with input <<<%s>>>\r\n' % saved_details)
 
 
         saved_details_object = json.loads(saved_details)
