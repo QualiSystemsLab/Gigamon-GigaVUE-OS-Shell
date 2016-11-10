@@ -24,6 +24,31 @@ import time
 
 # paramiko = None
 import paramiko
+import traceback
+import sys
+
+def myexcepthook(exctype, value, tb):
+    x = []
+    if issubclass(exctype, Exception):
+        x.append("Exception type: " + str(exctype))
+        x.append("Value called: " + str(value))
+        x.append("Stacktrace: ")
+        for trace in traceback.format_tb(tb):
+            x.append(trace)
+        try:
+            logger = get_qs_logger('out-of-reservation', 'GigaVUE-OS-L2', 'no-resource')
+            logger.error('\r\n'.join(x))
+        except Exception as e:
+            try:
+                with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
+                    f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' qs_logger failed: ' + str(e)+'\r\n')
+                    f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' (QS LOGGER NOT WORKING): ' + '\r\n'.join(x)+'\r\n')
+            except:
+                pass
+    sys.__excepthook__(exctype, value, traceback)
+
+
+sys.excepthook = myexcepthook
 
 
 class GigamonDriver (ResourceDriverInterface):
@@ -71,13 +96,26 @@ class GigamonDriver (ResourceDriverInterface):
         ssh = paramiko.SSHClient()
         ssh.load_system_host_keys()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(host,
-                    port=port,
-                    username=username,
-                    password=password,
-                    look_for_keys=True)
-        channel = ssh.invoke_shell()
-        return ssh, channel, self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner
+        errors = []
+        retries = 0
+        while True:
+            try:
+                ssh.connect(host,
+                            port=port,
+                            username=username,
+                            password=password,
+                            look_for_keys=True)
+                channel = ssh.invoke_shell()
+                return ssh, channel, self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner
+            except Exception as e:
+                errors.append(e)
+                retries += 1
+                if retries > 2:
+                    raise e
+                self._log(context, 'Connection failed: %s\nSleeping 10 seconds and retrying' % str(e))
+                time.sleep(10)
+
+
 
     def _ssh_write(self, context, ssh, channel, command):
         self._log(context, 'sending: <<<' + command + '>>>')
@@ -209,54 +247,56 @@ class GigamonDriver (ResourceDriverInterface):
 
         ssh, channel, _ = self._connect(context)
         m = []
-        m.append(self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# '))
         try:
+            m.append(self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# '))
             try:
-                # delete existing file if it exists
-                m.append(self._ssh_command(context, ssh, channel, 'configuration delete %s' % (os.path.basename(path)), '[^[#]# '))
-            except Exception as e:
-                m.append(str(e))
-
-            m.append(self._ssh_command(context, ssh, channel, 'configuration fetch ' + path, '[^[#]# '))
-            try:
-                m.append(self._ssh_command(context, ssh, channel, 'configuration copy Active.txt tmp.txt', '[^[#]# '))
-            except Exception as e:
-                m.append(str(e))
-            try:
-                m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to tmp.txt', '[^[#]# '))
-            except Exception as e:
-                m.append(str(e))
-            try:
-                m.append(self._ssh_command(context, ssh, channel, 'configuration delete Active.txt', '[^[#]# '))
-            except Exception as e:
-                m.append(str(e))
-
-            m.append(self._ssh_command(context, ssh, channel, 'configuration move %s Active.txt ' % (os.path.basename(path)), '[^[#]# '))
-
-            try:
-                m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
-            except Exception as e:
-                m.append(str(e))
-                # switch-to failed, tmp.txt still active
                 try:
-                    # get rid of new bad Active.txt
+                    # delete existing file if it exists
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration delete %s' % (os.path.basename(path)), '[^[#]# '))
+                except Exception as e:
+                    m.append(str(e))
+
+                m.append(self._ssh_command(context, ssh, channel, 'configuration fetch ' + path, '[^[#]# '))
+                try:
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration copy Active.txt tmp.txt', '[^[#]# '))
+                except Exception as e:
+                    m.append(str(e))
+                try:
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to tmp.txt', '[^[#]# '))
+                except Exception as e:
+                    m.append(str(e))
+                try:
                     m.append(self._ssh_command(context, ssh, channel, 'configuration delete Active.txt', '[^[#]# '))
                 except Exception as e:
                     m.append(str(e))
-                # make tmp.txt the Active.txt again
-                m.append(self._ssh_command(context, ssh, channel, 'configuration copy tmp.txt Active.txt', '[^[#]# '))
-                m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
-            try:
-                m.append(self._ssh_command(context, ssh, channel, 'configuration delete tmp.txt', '[^[#]# '))
-            except Exception as e:
-                m.append(str(e))
-            api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
-        except Exception as e2:
-            m.append(str(e2))
-            api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % '\n'.join(m))
-            raise e2
+
+                m.append(self._ssh_command(context, ssh, channel, 'configuration move %s Active.txt ' % (os.path.basename(path)), '[^[#]# '))
+
+                try:
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
+                except Exception as e:
+                    m.append(str(e))
+                    # switch-to failed, tmp.txt still active
+                    try:
+                        # get rid of new bad Active.txt
+                        m.append(self._ssh_command(context, ssh, channel, 'configuration delete Active.txt', '[^[#]# '))
+                    except Exception as e:
+                        m.append(str(e))
+                    # make tmp.txt the Active.txt again
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration copy tmp.txt Active.txt', '[^[#]# '))
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration switch-to Active.txt', '[^[#]# '))
+                try:
+                    m.append(self._ssh_command(context, ssh, channel, 'configuration delete tmp.txt', '[^[#]# '))
+                except Exception as e:
+                    m.append(str(e))
+                api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config loaded at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+            except Exception as e2:
+                m.append(str(e2))
+                api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to load config: %s' % '\n'.join(m))
+                raise e2
+            finally:
+                self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
         finally:
-            self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
             self._disconnect(context, ssh, channel)
 
     def save(self, context, cancellation_context, configuration_type, folder_path, vrf_management_name):
@@ -286,27 +326,29 @@ class GigamonDriver (ResourceDriverInterface):
         api.SetResourceLiveStatus(context.resource.fullname,  'Progress 10', 'Saving config')
 
         ssh, channel, _ = self._connect(context)
-        self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# ')
         try:
-            if self.fakedata:
-                path = 'fakepath/fakename_fakemodel.txt'
-            else:
-                self._log(context, 'Attributes: %s' % str(context.resource.attributes))
-                model = context.resource.attributes.get('Model', '')
-                if not model:
-                    model = context.resource.model
-                path = '%s/%s_%s.txt' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
-                                        context.resource.name.replace(' ', '-'),
-                                        model.replace(' ', '-'))
-            self._ssh_command(context, ssh, channel, 'configuration write', '[^[#]# ')
-            self._ssh_command(context, ssh, channel, 'configuration upload %s %s' % (running_saved, path), '[^[#]# ')
-            api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config saved at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
-            return path
-        except Exception as e:
-            api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to save config: %s' % str(e))
-            raise e
+            self._ssh_command(context, ssh, channel, 'configure terminal', '[^[#]# ')
+            try:
+                if self.fakedata:
+                    path = 'fakepath/fakename_fakemodel.txt'
+                else:
+                    self._log(context, 'Attributes: %s' % str(context.resource.attributes))
+                    model = context.resource.attributes.get('Model', '')
+                    if not model:
+                        model = context.resource.model
+                    path = '%s/%s_%s.txt' % (folder_path if not folder_path.endswith('/') else folder_path[0:-1],
+                                            context.resource.name.replace(' ', '-'),
+                                            model.replace(' ', '-'))
+                self._ssh_command(context, ssh, channel, 'configuration write', '[^[#]# ')
+                self._ssh_command(context, ssh, channel, 'configuration upload %s %s' % (running_saved, path), '[^[#]# ')
+                api.SetResourceLiveStatus(context.resource.fullname,  'Online', 'Config saved at %s' % time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()))
+                return path
+            except Exception as e:
+                api.SetResourceLiveStatus(context.resource.fullname,  'Error', 'Failed to save config: %s' % str(e))
+                raise e
+            finally:
+                self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
         finally:
-            self._ssh_command(context, ssh, channel, 'exit', '[^[#]# ')
             self._disconnect(context, ssh, channel)
 
     def load_firmware(self, context, cancellation_context, file_path, remote_host):
