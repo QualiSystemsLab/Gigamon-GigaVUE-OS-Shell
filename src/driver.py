@@ -107,7 +107,7 @@ class GigamonDriver (ResourceDriverInterface):
                             look_for_keys=True)
                 channel = ssh.invoke_shell()
                 return ssh, channel, self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner
-            except paramiko.BadAuthenticationType as e:
+            except Exception as e:
                 if retries >= 3:
                     self._log(context, 'Connection failed after 3 tries')
                     raise e
