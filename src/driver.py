@@ -96,10 +96,10 @@ class GigamonDriver (ResourceDriverInterface):
         ssh = paramiko.SSHClient()
         ssh.load_system_host_keys()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        retries = 0
+        tries = 0
         while True:
             try:
-                retries += 1
+                tries += 1
                 ssh.connect(host,
                             port=port,
                             username=username,
@@ -108,10 +108,10 @@ class GigamonDriver (ResourceDriverInterface):
                 channel = ssh.invoke_shell()
                 return ssh, channel, self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner
             except Exception as e:
-                if retries >= 3:
-                    self._log(context, 'Connection failed after 3 tries')
+                if tries >= 4:
+                    self._log(context, 'Connection failed after 4 tries')
                     raise e
-                self._log(context, 'Connection failed: %s\nSleeping 10 seconds and retrying' % str(e))
+                self._log(context, 'Password rejected or other connectivity error: %s\nsleeping 10 seconds and retrying...' % str(e))
                 time.sleep(10)
 
 
