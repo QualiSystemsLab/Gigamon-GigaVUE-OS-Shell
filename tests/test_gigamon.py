@@ -7,7 +7,9 @@ Tests for `GigamonDriver`
 
 import unittest
 
-from driver import GigamonDriver
+from cloudshell.shell.core.context import AutoLoadCommandContext, ResourceContextDetails
+
+from src.driver import GigamonDriver
 
 fakedata = {
     'terminal length 999': '',
@@ -653,11 +655,14 @@ Legend : Power THld :  ++ High Alarm    + High Alert    -- Low Alarm    - Low Al
 d = GigamonDriver()
 d.fakedata = fakedata
 
-inv = d.get_inventory(None)
+context = AutoLoadCommandContext()
+context.resource = ResourceContextDetails()
+context.resource.address = '123.123.123.123'
+inv = d.get_inventory(context)
 
 print 'Resources:'
 for res in inv.resources:
-    print '%s %s %s' % (res.model, res.name, res.relative_address)
+    print '%s %s %s %s' % (res.model, res.name, res.relative_address, res.unique_identifier)
 
 print 'Attributes:'
 for attr in inv.attributes:
