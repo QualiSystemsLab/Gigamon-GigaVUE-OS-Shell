@@ -668,25 +668,22 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute('', "Model", m))
 
         chassisaddr = 'bad_chassis_addr'
-        patt2attr = {}
         for line in self._ssh_command(context, ssh, channel, 'show chassis', '[^[#]# ').split('\n'):
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
                 if chassisaddr == '-':
-                    continue
-                sub_resources.append(AutoLoadResource(model='Generic Chassis',
-                                                      name='Chassis ' + chassisaddr,
-                                                      relative_address=chassisaddr))
-                patt2attr = {
-                    'HW Type': 'Model',
-                    'Serial Num': 'Serial Number'
-                }
+                    chassisaddr = 'bad_chassis_addr'
 
-            for patt in list(patt2attr.keys()):
-                if patt in line:
-                    attributes.append(AutoLoadAttribute(chassisaddr, patt2attr[patt],
-                                                    line.replace(patt, '').replace(':', '').strip()))
-                    patt2attr.pop(patt, None)
+            if chassisaddr != 'bad_chassis_addr':
+                if 'HW Type' in line:
+                    attributes.append(AutoLoadAttribute(chassisaddr, 'Model', line.replace('HW Type', '').replace(':', '').strip()))
+                if 'Serial Num' in line:
+                    serial = line.replace('Serial Num', '').replace(':', '').strip()
+                    attributes.append(AutoLoadAttribute(chassisaddr, 'Serial Number', serial))
+                    sub_resources.append(AutoLoadResource(model='Generic Chassis',
+                                                          name='Chassis ' + chassisaddr,
+                                                          relative_address=chassisaddr,
+                                                          unique_identifier='gigamon_%s' % serial))
 
         chassisaddr = 'bad_chassis_addr'
         for line in self._ssh_command(context, ssh, channel, 'show card', '[^[#]# ').split('\n'):
@@ -710,7 +707,8 @@ class GigamonDriver (ResourceDriverInterface):
                 cardaddr = chassisaddr + '/' + d['slot']
                 sub_resources.append(AutoLoadResource(model='Generic Module',
                                                       name='Card ' + d['slot'],
-                                                      relative_address=cardaddr))
+                                                      relative_address=cardaddr,
+                                                      unique_identifier='gigamon_%s' % d['serial_num']))
 
                 attributes.append(AutoLoadAttribute(cardaddr, "Model", d['hw_type'] + ' - ' + d['product_code']))
                 attributes.append(AutoLoadAttribute(cardaddr, "Version", d['hw_rev']))
