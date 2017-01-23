@@ -15,7 +15,344 @@ fakedata = {
     'terminal length 999': '',
     'enable': '',
     'configure terminal': '',
-    'show version': '''Product name:      GigaVUE-OS
+    'show version': '''show version
+
+
+
+Product name:      GigaVUE-OS
+
+Product release:   4.7.01
+
+Build ID:          25890
+
+Build date:        2016-09-20 16:37:30
+
+Target arch:       ppc
+
+Target hw:         gvhc2
+
+Built by:          build_master@jenkins-slave036
+
+Git full hash:     bab7b08ed7bc5c083f35bb641d119b851e2920db
+
+Version summary:   GigaVUE-OS 4.7.01 Build 25890 2016-09-20 16:37:30 ppc gvhc2 build_master@jenkins-slave036:git:bab7b08ed7bc
+
+
+
+U-Boot version:    2011.06.6
+
+CPLD version:      25
+
+TS version:
+
+
+
+Product model:     GigaVUE-HC2
+
+Product hw:        gvhc2
+
+Host ID:           1bb98f4f2eb3
+
+
+
+Uptime:            42m 31.810s
+
+CPU load averages: 1.08 / 1.08 / 0.96
+
+Number of CPUs:    4
+
+System memory:     236 MB used / 3378 MB free / 3614 MB total
+
+Swap:              0 MB used / 0 MB free / 0 MB total
+
+
+
+CSE-HC2-4 #
+''',
+    'show chassis': '''show chassis
+
+
+
+
+
+Chassis:
+
+  Box ID            : 6*
+
+  Hostname          : CSE-HC2-4
+
+  Config            : yes
+
+  Mode              : normal
+
+  Oper Status       : up
+
+  HW Type           : CHS-HC2
+
+  Vendor            : Gigamon
+
+  Product Code      : 132-00AZ
+
+  Serial Num        : C16C9
+
+  HW Rev            : D1
+
+  SW Rev            : 4.7.01
+
+
+
+Backplane: 
+
+  HW type           : CHS-HC2/MP
+
+  Product Code      : 132-00AM
+
+  Serial Num        : 1AM0-4335
+
+  HW Rev            : A0
+
+
+
+Fan Tray: 
+
+  HW type           : FAN-HC200
+
+  Product Code      : 132-00B0
+
+  Serial Num        : 1B00-15A2
+
+  HW Rev            : A1
+
+  Status            : on
+
+
+
+Power Module: 
+
+  HW type           : HC2-Power-Supply-PDB
+
+  Product Code      : 132-00CH
+
+  Serial Num        : 1CH0-0899
+
+  HW Rev            : 1.0
+
+  Status            : top=on bottom=on
+
+
+
+CSE-HC2-4 # 
+''',
+    'show card': '''show card
+
+
+
+
+
+Box ID: 6
+
+Slot  Config  Oper Status      HW Type     Product Code  Serial Num  HW Rev
+
+---------------------------------------------------------------------------
+
+cc1   yes     up           HC2-Main-Board  132-00AN      1AN0-0FDC   C0-25 
+
+1     yes     up           BPS-HC0-D25A4G  132-00BQ      1BQ0-08B2   A3-1  
+
+2     yes     up           SMT-HC0-X16     132-00BK      1BK0-0181   A0-3  
+
+3     yes     up           PRT-HC0-Q06     132-00BE      1BE0-0300   B1-a3 
+
+4     yes     up           SMT-HC0-X16     132-00BK      1BK0-016F   A0-3  
+
+
+
+CSE-HC2-4 # 
+''',
+    'show port alias': '''show port alias
+
+
+
+=========================================================================================
+
+Port       Type     Aliases
+
+-----------------------------------------------------------------------------------------
+
+6/4/x1     network  To-HC2-3_bid5-slot4-x1
+
+6/4/x2     network  To-HC2-3_bid5-slot4-x2
+
+6/4/x3     network  To-HC2-3_bid5-slot4-x3
+
+6/4/x4     network  To-HC2-3_bid5-slot4-x4
+
+6/4/x5     network  To-HC2-3_bid5-slot4-x5
+
+6/4/x6     network  To-HC2-3_bid5-slot4-x6
+
+-----------------------------------------------------------------------------------------
+
+
+
+CSE-HC2-4 # 
+''',
+    'show port': '''show port
+
+
+
+===============================================================================================================================================
+
+                                                Link    Xcvr Pwr (dBm)  Pwr       Xcvr         Auto                      Force  Port           
+
+Port      Type        Alias        Admin        Status  (min     max )  THld      Type         Neg        Speed  Duplex  LnkUp  Relay    Dscvry
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+6/1/x1    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x2    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x3    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x4    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x5    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x6    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x7    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x8    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x9    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x10   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x11   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x12   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x13   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x14   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x15   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x16   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/1/x17   inline-net  -            disabled     -               -40.00  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/1/x18   inline-net  -            disabled     -               -40.00  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/1/x19   inline-net  -            disabled     -               -36.99  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/1/x20   inline-net  -            disabled     -               -40.00  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/1/x21   inline-net  -            disabled     -               -33.01  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/1/x22   inline-net  -            disabled     -               -40.00  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/1/x23   inline-net  -            disabled     -               -40.00  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/1/x24   inline-net  -            disabled     -               -40.00  --        bps sx/sr    off            -  -       off    N/A      off   
+
+6/2/e1    gs          N/A          enabled      up                   -            N/A          N/A        40000  full    off    N/A            
+
+6/2/x1    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x2    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x3    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x4    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x5    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x6    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x7    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x8    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x9    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x10   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x11   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x12   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x13   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x14   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x15   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/2/x16   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/3/q1    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/3/q2    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/3/q3    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/3/q4    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/3/q5    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/3/q6    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/e1    gs          N/A          enabled      up                   -            N/A          N/A        40000  full    off    N/A            
+
+6/4/x1    network     To-HC2-...   enabled      up               -2.64            sfp+ sr      off        10000  full    off    N/A      off   
+
+6/4/x2    network     To-HC2-...   enabled      up               -2.21            sfp+ sr      off        10000  full    off    N/A      off   
+
+6/4/x3    network     To-HC2-...   enabled      up               -2.39            sfp+ sr      off        10000  full    off    N/A      off   
+
+6/4/x4    network     To-HC2-...   enabled      up               -2.13            sfp+ sr      off        10000  full    off    N/A      off   
+
+6/4/x5    network     To-HC2-...   enabled      up               -2.70            sfp+ sr      off        10000  full    off    N/A      off   
+
+6/4/x6    network     To-HC2-...   enabled      up               -2.48            sfp+ sr      off        10000  full    off    N/A      off   
+
+6/4/x7    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x8    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x9    network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x10   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x11   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x12   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x13   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x14   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x15   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+6/4/x16   network     -            disabled     -                    -            none         off            -  -       off    N/A      off   
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Legend : Power THld :  ++ High Alarm    + High Alert    -- Low Alarm    - Low Alert
+
+
+
+
+
+
+
+CSE-HC2-4 # 
+''',
+
+    'show version7873': '''Product name:      GigaVUE-OS
 Product release:   4.6.02
 Build ID:          #19704
 Build date:        2016-05-19 04:34:43
@@ -63,7 +400,7 @@ Swap:              0 MB used / 0 MB free / 0 MB total
 
 
     ''',
-    'show card': '''
+    'show card7873': '''
 Box ID: 1
 Slot  Config  Oper Status        HW Type        Product Code  Serial Num  HW Rev
 --------------------------------------------------------------------------------
@@ -72,7 +409,7 @@ Slot  Config  Oper Status        HW Type        Product Code  Serial Num  HW Rev
 cc1   yes     up           H-CCv2               132-0089      1890-1699   D0-df
 4     yes     down         H-GigaSMART          132-00AD      1AD0-1584   B4-a2
 ''',
-    'show chassis': '''
+    'show chassis7873': '''
 Chassis:
   Box ID            : 1*
   Hostname          : CSE-HD4-1
@@ -457,7 +794,7 @@ Legend : Power THld :  ++ High Alarm    + High Alert    -- Low Alarm    - Low Al
 
 HB1-C01-38 #
 ''',
-    'show port alias': '''=========================================================================================
+    'show port alias7873': '''=========================================================================================
 Port       Type     Aliases
 -----------------------------------------------------------------------------------------
 1/1/x17    network  Ostinato-Traff-Gen-Tool
@@ -472,7 +809,7 @@ Port       Type     Aliases
 1/2/x28    tool     To-HC2-1_bid3-slot4-x12
 -----------------------------------------------------------------------------------------
 ''',
-    'show port': '''===============================================================================================================================================
+    'show port7873': '''===============================================================================================================================================
                                                 Link    Xcvr Pwr (dBm)  Pwr       Xcvr         Auto                      Force  Port
 Port      Type        Alias        Admin        Status  (min     max )  THld      Type         Neg        Speed  Duplex  LnkUp  Relay    Dscvry
 -----------------------------------------------------------------------------------------------------------------------------------------------

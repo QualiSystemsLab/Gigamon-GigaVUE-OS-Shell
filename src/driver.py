@@ -36,7 +36,7 @@ def myexcepthook(exctype, value, tb):
         for trace in traceback.format_tb(tb):
             x.append(trace)
         try:
-            logger = get_qs_logger('out-of-reservation', 'GigaVUE-OS-L2', 'no-resource')
+            logger = get_qs_logger('out-of-reservation', 'GigaVUE-OS', 'no-resource')
             logger.error('\r\n'.join(x))
         except Exception as e:
             try:
@@ -683,16 +683,19 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute('', "Model", m))
 
         chassisaddr = 'bad_chassis_addr'
+        gotserial = False
         for line in self._ssh_command(context, ssh, channel, 'show chassis', '[^[#]# ').split('\n'):
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
                 if chassisaddr == '-':
                     chassisaddr = 'bad_chassis_addr'
+                gotserial = False
 
             if chassisaddr != 'bad_chassis_addr':
                 if 'HW Type' in line:
                     attributes.append(AutoLoadAttribute(chassisaddr, 'Model', line.replace('HW Type', '').replace(':', '').strip()))
-                if 'Serial Num' in line:
+                if 'Serial Num' in line and not gotserial:
+                    gotserial = True
                     serial = line.replace('Serial Num', '').replace(':', '').strip()
                     attributes.append(AutoLoadAttribute(chassisaddr, 'Serial Number', serial))
                     sub_resources.append(AutoLoadResource(model='Generic Chassis',
