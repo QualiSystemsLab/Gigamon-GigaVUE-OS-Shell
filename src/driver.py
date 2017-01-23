@@ -681,19 +681,20 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute('', "Model", m))
 
         chassisaddr = 'bad_chassis_addr'
-        gotserial = False
+        already = set()
         for line in self._ssh_command(context, ssh, channel, 'show chassis', '[^[#]# ').split('\n'):
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
                 if chassisaddr == '-':
                     chassisaddr = 'bad_chassis_addr'
-                gotserial = False
+                already = set()
 
             if chassisaddr != 'bad_chassis_addr':
-                if 'HW Type' in line:
+                if 'HW Type' in line and 'HW Type' not in already:
+                    already.add('HW Type')
                     attributes.append(AutoLoadAttribute(chassisaddr, 'Model', line.replace('HW Type', '').replace(':', '').strip()))
-                if 'Serial Num' in line and not gotserial:
-                    gotserial = True
+                if 'Serial Num' in line and 'Serial Num' not in already:
+                    already.add('Serial Num')
                     serial = line.replace('Serial Num', '').replace(':', '').strip()
                     attributes.append(AutoLoadAttribute(chassisaddr, 'Serial Number', serial))
                     sub_resources.append(AutoLoadResource(model='Generic Chassis',
