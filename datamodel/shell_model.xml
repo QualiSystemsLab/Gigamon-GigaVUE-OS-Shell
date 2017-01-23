@@ -29,6 +29,9 @@
                 <AttachedAttribute Name="Password" IsOverridable="true" IsLocal="true">
                     <AllowedValues />
                 </AttachedAttribute>
+                <AttachedAttribute Name="Alternate Password" IsOverridable="true" IsLocal="true">
+                    <AllowedValues />
+                </AttachedAttribute>
                 <AttachedAttribute Name="Power Management" IsOverridable="true" IsLocal="true">
                     <AllowedValues />
                 </AttachedAttribute>
@@ -104,6 +107,7 @@
 
                 <AttributeValue Name="User" Value="" />
                 <AttributeValue Name="Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
+                <AttributeValue Name="Alternate Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
                 <AttributeValue Name="Enable Password" Value="3M3u7nkDzxWb0aJ/IZYeWw==" />
                 <AttributeValue Name="System Name" Value="" />
                 <AttributeValue Name="Contact Name" Value="" />
