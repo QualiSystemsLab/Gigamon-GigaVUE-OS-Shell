@@ -111,12 +111,10 @@ class GigamonDriver (ResourceDriverInterface):
                 s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner and first prompt, or detect new password prompt
                 rv += s
                 if password_change_string in s:  # we are being required to enter a new password
-                    s = self._ssh_read(context, ssh, channel, 'Admin Password:')  # prompt for new password
+                    self._ssh_write(context, ssh, channel, password + '\n')  # enter new password
+                    s = self._ssh_read(context, ssh, channel, ':')
                     rv += s
-                    self._ssh_write(context, ssh, channel, password + '\n')
-                    s = self._ssh_read(context, ssh, channel, 'Confirm:')
-                    rv += s
-                    self._ssh_write(context, ssh, channel, password + '\n')
+                    self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password
                     s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner and first prompt
                     rv += s
                 return ssh, channel, rv
@@ -212,7 +210,7 @@ class GigamonDriver (ResourceDriverInterface):
                               context.resource.attributes['User'],
                               api.DecryptPassword(context.resource.attributes['Password']).Value,
                               api.DecryptPassword(context.resource.attributes['Alternate Password']).Value,
-                              '>|security purposes', 'security purposes')
+                              '>|Admin Password:', 'Admin Password:')
 
         e = self._ssh_command(context, ssh, channel, 'enable', '[#:]')
         if ':' in e:
