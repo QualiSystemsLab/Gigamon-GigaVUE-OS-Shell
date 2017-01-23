@@ -111,12 +111,10 @@ class GigamonDriver (ResourceDriverInterface):
                 s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner and first prompt, or detect new password prompt
                 rv += s
                 if password_change_string in s:  # we are being required to enter a new password
-                    self._ssh_write(context, ssh, channel, password + '\n')
-                    s = self._ssh_read(context, ssh, channel, prompt_regex)
+                    self._ssh_write(context, ssh, channel, password + '\n')  # enter password
+                    s = self._ssh_read(context, ssh, channel, ':')  # prompt to reenter
                     rv += s
-                    self._ssh_write(context, ssh, channel, password + '\n')  # reenter
-                    s = self._ssh_read(context, ssh, channel, prompt_regex)
-                    rv += s
+                    self._ssh_write(context, ssh, channel, password + '\n')  # reenter password
                     s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner
                     rv += s
                 return ssh, channel, rv
