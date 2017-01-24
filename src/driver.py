@@ -89,8 +89,8 @@ class GigamonDriver (ResourceDriverInterface):
             return
         ssh.close()
 
-    def _ssh_connect(self, context, host, port, username, password, alternate_password, prompt_regex, password_change_string):
-        self._log(context, 'connect %s %d %s %s %s %s %s' % (host, port, username, password, alternate_password, prompt_regex, password_change_string))
+    def _ssh_connect(self, context, host, port, username, password, alternate_password, prompt_regex):
+        self._log(context, 'connect %s %d %s %s %s %s %s' % (host, port, username, password, alternate_password, prompt_regex))
         if self.fakedata:
             return
         ssh = paramiko.SSHClient()
@@ -108,15 +108,21 @@ class GigamonDriver (ResourceDriverInterface):
                             look_for_keys=True)
                 channel = ssh.invoke_shell()
                 rv = ''
-                s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner and first prompt, or detect new password prompt
+                s = self._ssh_read(context, ssh, channel, prompt_regex + '|Admin Password:')  # eat banner and first prompt, or detect new password prompt
                 rv += s
-                if password_change_string in s:  # we are being required to enter a new password
+                if 'Admin Password:' in s:  # we are being required to enter a new password
                     self._ssh_write(context, ssh, channel, password + '\n')  # enter new password
-                    s = self._ssh_read(context, ssh, channel, ':')
+                    s = self._ssh_read(context, ssh, channel, 'Admin Password:|Confirm:')
                     rv += s
                     self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password
-                    s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner and first prompt
+                    s = self._ssh_read(context, ssh, channel, prompt_regex + '|Admin Password:')  # eat banner and first prompt, or detect new password prompt
                     rv += s
+                    if 'Admin Password:' in s:
+                        self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password yet again
+                        s = self._ssh_read(context, ssh, channel, 'Confirm:')
+                        rv += s
+                        s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat first prompt
+                        rv += s
                 return ssh, channel, rv
             except Exception as e:
                 if tries >= 8:
@@ -210,7 +216,7 @@ class GigamonDriver (ResourceDriverInterface):
                               context.resource.attributes['User'],
                               api.DecryptPassword(context.resource.attributes['Password']).Value,
                               api.DecryptPassword(context.resource.attributes['Alternate Password']).Value,
-                              '>|Admin Password:', 'Admin Password:')
+                              '>')
 
         e = self._ssh_command(context, ssh, channel, 'enable', '[#:]')
         if ':' in e:
