@@ -90,7 +90,7 @@ class GigamonDriver (ResourceDriverInterface):
         ssh.close()
 
     def _ssh_connect(self, context, host, port, username, password, alternate_password, prompt_regex):
-        self._log(context, 'connect %s %d %s %s %s %s %s' % (host, port, username, password, alternate_password, prompt_regex))
+        self._log(context, 'connect %s %d %s %s %s %s' % (host, port, username, password, alternate_password, prompt_regex))
         if self.fakedata:
             return
         ssh = paramiko.SSHClient()
