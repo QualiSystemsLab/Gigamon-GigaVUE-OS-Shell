@@ -111,18 +111,13 @@ class GigamonDriver (ResourceDriverInterface):
                 s = self._ssh_read(context, ssh, channel, prompt_regex + '|Admin Password:')  # eat banner and first prompt, or detect new password prompt
                 rv += s
                 if 'Admin Password:' in s:  # we are being required to enter a new password
+                    time.sleep(5)
                     self._ssh_write(context, ssh, channel, password + '\n')  # enter new password
-                    s = self._ssh_read(context, ssh, channel, 'Admin Password:|Confirm:')
+                    s = self._ssh_read(context, ssh, channel, 'Confirm:')
                     rv += s
                     self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password
-                    s = self._ssh_read(context, ssh, channel, prompt_regex + '|Admin Password:')  # eat banner and first prompt, or detect new password prompt
+                    s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat first prompt
                     rv += s
-                    if 'Admin Password:' in s:
-                        self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password yet again
-                        s = self._ssh_read(context, ssh, channel, 'Confirm:')
-                        rv += s
-                        s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat first prompt
-                        rv += s
                 return ssh, channel, rv
             except Exception as e:
                 if tries >= 8:
