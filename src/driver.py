@@ -113,8 +113,12 @@ class GigamonDriver (ResourceDriverInterface):
                 if 'Admin Password:' in s:  # we are being required to enter a new password
                     time.sleep(5)
                     self._ssh_write(context, ssh, channel, password + '\n')  # enter new password
-                    s = self._ssh_read(context, ssh, channel, 'Confirm:')
+                    s = self._ssh_read(context, ssh, channel, 'Admin Password:|Confirm:')
                     rv += s
+                    if 'Admin Password:' in s:
+                        self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password
+                        s = self._ssh_read(context, ssh, channel, 'Confirm:')
+                        rv += s
                     self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password
                     s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat first prompt
                     rv += s
