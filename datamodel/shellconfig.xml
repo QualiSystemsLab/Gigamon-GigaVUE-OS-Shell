@@ -9,6 +9,7 @@
             <Attributes>
                 <Attribute Name="User" Value="" />
                 <Attribute Name="Password" Value="" />
+                <Attribute Name="Alternate Password" Value="" />
             </Attributes>
         </ResourceTemplate>
     </ResourceTemplates>

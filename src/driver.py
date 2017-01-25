@@ -36,7 +36,7 @@ def myexcepthook(exctype, value, tb):
         for trace in traceback.format_tb(tb):
             x.append(trace)
         try:
-            logger = get_qs_logger('out-of-reservation', 'GigaVUE-OS-L2', 'no-resource')
+            logger = get_qs_logger('out-of-reservation', 'GigaVUE-OS', 'no-resource')
             logger.error('\r\n'.join(x))
         except Exception as e:
             try:
@@ -89,28 +89,48 @@ class GigamonDriver (ResourceDriverInterface):
             return
         ssh.close()
 
-    def _ssh_connect(self, context, host, port, username, password, prompt_regex):
-        self._log(context, 'connect %s %d %s %s %s' % (host, port, username, password, prompt_regex))
+    def _ssh_connect(self, context, host, port, username, password, alternate_password, prompt_regex):
+        self._log(context, 'connect %s %d %s %s %s %s' % (host, port, username, password, alternate_password, prompt_regex))
         if self.fakedata:
             return
         ssh = paramiko.SSHClient()
         ssh.load_system_host_keys()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         tries = 0
+        pw = password
         while True:
             try:
                 tries += 1
                 ssh.connect(host,
                             port=port,
                             username=username,
-                            password=password,
+                            password=pw,
                             look_for_keys=True)
                 channel = ssh.invoke_shell()
-                return ssh, channel, self._ssh_read(context, ssh, channel, prompt_regex)  # eat banner
+                rv = ''
+                s = self._ssh_read(context, ssh, channel, prompt_regex + '|Admin Password:')  # eat banner and first prompt, or detect new password prompt
+                rv += s
+                if 'Admin Password:' in s:  # we are being required to enter a new password
+                    time.sleep(5)
+                    self._ssh_write(context, ssh, channel, password + '\n')  # enter new password
+                    s = self._ssh_read(context, ssh, channel, 'Admin Password:|Confirm:')
+                    rv += s
+                    if 'Admin Password:' in s:
+                        self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password
+                        s = self._ssh_read(context, ssh, channel, 'Confirm:')
+                        rv += s
+                    self._ssh_write(context, ssh, channel, password + '\n')  # reenter new password
+                    s = self._ssh_read(context, ssh, channel, prompt_regex)  # eat first prompt
+                    rv += s
+                return ssh, channel, rv
             except Exception as e:
-                if tries >= 4:
-                    self._log(context, 'Connection failed after 4 tries')
+                if tries >= 8:
+                    self._log(context, 'SSH connection failed after 4 tries of normal and alternate passwords')
                     raise e
+                if pw == password:
+                    pw = alternate_password
+                else:
+                    pw = password
                 self._log(context, 'Password rejected or other connectivity error: %s\nsleeping 10 seconds and retrying...' % str(e))
                 time.sleep(10)
 
@@ -194,10 +214,8 @@ class GigamonDriver (ResourceDriverInterface):
                               22,
                               context.resource.attributes['User'],
                               api.DecryptPassword(context.resource.attributes['Password']).Value,
-                              '>|security purposes')
-
-        if 'security purposes' in o:
-            raise Exception('Switch password needs to be initialized: %s' % o)
+                              api.DecryptPassword(context.resource.attributes['Alternate Password']).Value,
+                              '>')
 
         e = self._ssh_command(context, ssh, channel, 'enable', '[#:]')
         if ':' in e:
@@ -668,16 +686,20 @@ class GigamonDriver (ResourceDriverInterface):
                 attributes.append(AutoLoadAttribute('', "Model", m))
 
         chassisaddr = 'bad_chassis_addr'
+        already = set()
         for line in self._ssh_command(context, ssh, channel, 'show chassis', '[^[#]# ').split('\n'):
             if 'Box ID' in line:
                 chassisaddr = line.replace('Box ID', '').replace(':', '').replace('*', '').strip()
                 if chassisaddr == '-':
                     chassisaddr = 'bad_chassis_addr'
+                already = set()
 
             if chassisaddr != 'bad_chassis_addr':
-                if 'HW Type' in line:
+                if 'HW Type' in line and 'HW Type' not in already:
+                    already.add('HW Type')
                     attributes.append(AutoLoadAttribute(chassisaddr, 'Model', line.replace('HW Type', '').replace(':', '').strip()))
-                if 'Serial Num' in line:
+                if 'Serial Num' in line and 'Serial Num' not in already:
+                    already.add('Serial Num')
                     serial = line.replace('Serial Num', '').replace(':', '').strip()
                     attributes.append(AutoLoadAttribute(chassisaddr, 'Serial Number', serial))
                     sub_resources.append(AutoLoadResource(model='Generic Chassis',
