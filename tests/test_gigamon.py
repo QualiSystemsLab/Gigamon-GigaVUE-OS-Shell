@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-Tests for `GigamonDriver`
+Tests for `GigamonDriverPortUniqueId`
 """
 
 import unittest
 
 from cloudshell.shell.core.context import AutoLoadCommandContext, ResourceContextDetails
 
-from src.driver import GigamonDriver
+from src.driver import GigamonDriverPortUniqueId
 
 fakedata = {
     'terminal length 999': '',
@@ -989,7 +989,7 @@ Legend : Power THld :  ++ High Alarm    + High Alert    -- Low Alarm    - Low Al
     '''
 }
 
-d = GigamonDriver()
+d = GigamonDriverPortUniqueId()
 d.fakedata = fakedata
 
 context = AutoLoadCommandContext()
@@ -1039,7 +1039,7 @@ print 'End'
 # for path, host in firmware_path_host:
 #     d.load_firmware(None, None, path, host)
 
-# class TestGigamonDriver(unittest.TestCase):
+# class TestGigamonDriverPortUniqueId(unittest.TestCase):
 #
 #     def setUp(self):
 #         pass

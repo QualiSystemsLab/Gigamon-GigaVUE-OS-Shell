@@ -4,4 +4,4 @@ shell:
     email: info@quali.com
     description: Autoload and configuration management for GigaVUE-OS devices
     version: 0.1.0
-    driver_name: GigamonDriver
+    driver_name: GigamonDriverPortUniqueId

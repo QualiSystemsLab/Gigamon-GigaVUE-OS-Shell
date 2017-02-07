@@ -125,7 +125,7 @@
             </AttributeValues>
             <ParentModels />
             <Drivers>
-                <DriverName>GigamonDriver</DriverName>
+                <DriverName>GigamonDriverPortUniqueId</DriverName>
             </Drivers>
             <Scripts />
         </ResourceModel>

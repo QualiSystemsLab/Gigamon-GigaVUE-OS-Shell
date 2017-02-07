@@ -1,4 +1,4 @@
-<Driver Description="Autoload and configuration management for GigaVUE-OS devices" MainClass="driver.GigamonDriver" Name="GigamonDriver" Version="1.0.0">
+<Driver Description="Autoload and configuration management for GigaVUE-OS devices" MainClass="driver.GigamonDriverPortUniqueId" Name="GigamonDriverPortUniqueId" Version="1.0.0">
     <Layout>
         <Category Name="Hidden Commands">
             <Command Name="shutdown" DisplayName="Shutdown" Tags="" Description="Sends a graceful shutdown to the device"/>

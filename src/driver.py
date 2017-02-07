@@ -51,7 +51,7 @@ def myexcepthook(exctype, value, tb):
 sys.excepthook = myexcepthook
 
 
-class GigamonDriver (ResourceDriverInterface):
+class GigamonDriverPortUniqueId (ResourceDriverInterface):
 
     def __init__(self):
         """
@@ -59,11 +59,11 @@ class GigamonDriver (ResourceDriverInterface):
         """
         self.fakedata = None
         self._fulladdr2alias = {}
-        self._log(None, 'GigamonDriver __init__ called\r\n')
+        self._log(None, 'GigamonDriverPortUniqueId __init__ called\r\n')
 
     def _log(self, context, message):
         # with open(r'c:\programdata\qualisystems\gigamon.log', 'a') as f:
-        #     f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriver _log called\r\n')
+        #     f.write(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) + ' GigamonDriverPortUniqueId _log called\r\n')
         try:
             try:
                 resid = context.reservation.reservation_id
@@ -193,10 +193,10 @@ class GigamonDriver (ResourceDriverInterface):
         This is a good place to load and cache the driver configuration, initiate sessions etc.
         :param InitCommandContext context: the context the command runs on
         """
-        self._log(context, 'GigamonDriver initialize called\r\n')
+        self._log(context, 'GigamonDriverPortUniqueId initialize called\r\n')
 
     def _connect(self, context):
-        self._log(context, 'GigamonDriver _connect called\r\n')
+        self._log(context, 'GigamonDriverPortUniqueId _connect called\r\n')
         if self.fakedata:
             return None, None, None
 
@@ -329,7 +329,7 @@ class GigamonDriver (ResourceDriverInterface):
         :return The configuration file name.
         :rtype: str
         """
-        self._log(context, 'GigamonDriver save called\r\n')
+        self._log(context, 'GigamonDriverPortUniqueId save called\r\n')
 
         running_saved = 'active' if configuration_type.lower() == 'running' else 'initial'
 
@@ -527,7 +527,7 @@ class GigamonDriver (ResourceDriverInterface):
 
         return OrchestrationSaveResult(saved_artifacts_info)
         '''
-        self._log(context, 'GigamonDriver orchestration_save called: %s\r\n' % custom_params)
+        self._log(context, 'GigamonDriverPortUniqueId orchestration_save called: %s\r\n' % custom_params)
 
         p = json.loads(custom_params)
         if 'folder_path' not in p:
@@ -548,7 +548,7 @@ class GigamonDriver (ResourceDriverInterface):
             restore_rules=OrchestrationRestoreRules(requires_same_resource=True),
             saved_artifact=orchestration_saved_artifact)
 
-        self._log(context, 'GigamonDriver orchestration_save returning\r\n')
+        self._log(context, 'GigamonDriverPortUniqueId orchestration_save returning\r\n')
 
         return OrchestrationSaveResult(saved_artifacts_info)
 
@@ -581,7 +581,7 @@ class GigamonDriver (ResourceDriverInterface):
         return saved_details_object[u'saved_artifact'][u'identifier']
         '''
 
-        self._log(context, 'GigamonDriver orchestration_restore called with input <<<%s>>>\r\n' % saved_details)
+        self._log(context, 'GigamonDriverPortUniqueId orchestration_restore called with input <<<%s>>>\r\n' % saved_details)
 
 
         saved_details_object = json.loads(saved_details)
@@ -707,6 +707,7 @@ class GigamonDriver (ResourceDriverInterface):
                                                           relative_address=chassisaddr,
                                                           unique_identifier='gigamon_%s' % serial))
 
+        cardaddr2card_uniqueid = {}
         chassisaddr = 'bad_chassis_addr'
         for line in self._ssh_command(context, ssh, channel, 'show card', '[^[#]# ').split('\n'):
             if 'Oper Status' in line:
@@ -727,10 +728,12 @@ class GigamonDriver (ResourceDriverInterface):
             if m and chassisaddr != 'bad_chassis_addr':
                 d = m.groupdict()
                 cardaddr = chassisaddr + '/' + d['slot']
+                card_uniqueid = 'gigamon_%s' % d['serial_num']
+                cardaddr2card_uniqueid[cardaddr] = card_uniqueid
                 sub_resources.append(AutoLoadResource(model='Generic Module',
                                                       name='Card ' + d['slot'],
                                                       relative_address=cardaddr,
-                                                      unique_identifier='gigamon_%s' % d['serial_num']))
+                                                      unique_identifier=card_uniqueid))
 
                 attributes.append(AutoLoadAttribute(cardaddr, "Model", d['hw_type'] + ' - ' + d['product_code']))
                 attributes.append(AutoLoadAttribute(cardaddr, "Version", d['hw_rev']))
@@ -807,11 +810,15 @@ class GigamonDriver (ResourceDriverInterface):
                 d = m.groupdict()
 
                 portaddr = d['address']
+                cardaddr = '/'.join(portaddr.split('/')[0:-1])
+                cardserial = cardaddr2card_uniqueid[cardaddr]
                 portnum = portaddr.split('/')[-1]
+                port_uniqueid = 'gigamon_%s_%s' % (cardserial, portnum)
                 self._log(context, 'Port ' + portaddr)
                 sub_resources.append(AutoLoadResource(model='Generic Port',
                                                       name='Port ' + portnum,
-                                                      relative_address=portaddr))
+                                                      relative_address=portaddr,
+                                                      unique_identifier=port_uniqueid))
 
                 attributes.append(AutoLoadAttribute(portaddr, "Port Role", d['type'].strip()))
 

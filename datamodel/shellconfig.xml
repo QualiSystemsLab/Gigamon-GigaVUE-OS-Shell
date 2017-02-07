@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ShellsConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.qualisystems.com/ResourceManagement/ShellsConfigurationSchema.xsd">
     <ResourceTemplates>
-        <ResourceTemplate Name="GigaVUE-OS" Model="GigaVUE-OS" Driver="GigamonDriver">
+        <ResourceTemplate Name="GigaVUE-OS" Model="GigaVUE-OS" Driver="GigamonDriverPortUniqueId">
             <Description></Description>
             <AutoLoad Enable="true">
                 <Description>Automatically import the attributes and structure of the device</Description>

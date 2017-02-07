@@ -510,7 +510,7 @@
         </ResourceFamily>
     </ResourceFamilies>
     <DriverDescriptors>
-        <DriverDescriptor Name="GigamonDriver" DriverType="PythonDriver" />
+        <DriverDescriptor Name="GigamonDriverPortUniqueId" DriverType="PythonDriver" />
 
     </DriverDescriptors>
 
