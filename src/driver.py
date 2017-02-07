@@ -813,7 +813,7 @@ class GigamonDriverPortUniqueId (ResourceDriverInterface):
                 cardaddr = '/'.join(portaddr.split('/')[0:-1])
                 cardserial = cardaddr2card_uniqueid[cardaddr]
                 portnum = portaddr.split('/')[-1]
-                port_uniqueid = 'gigamon_%s_%s' % (cardserial, portnum)
+                port_uniqueid = '%s_%s' % (cardserial, portnum)
                 self._log(context, 'Port ' + portaddr)
                 sub_resources.append(AutoLoadResource(model='Generic Port',
                                                       name='Port ' + portnum,
