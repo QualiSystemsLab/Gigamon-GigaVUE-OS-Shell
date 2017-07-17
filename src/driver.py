@@ -749,16 +749,17 @@ class GigamonDriver (ResourceDriverInterface):
                          line)
             if m and chassisaddr != 'bad_chassis_addr':
                 d = m.groupdict()
-                if not d['slot'].startswith('cc'):
-                    cardaddr = chassisaddr + '/' + d['slot']
-                    sub_resources.append(AutoLoadResource(model='Generic Module',
-                                                          name='Card ' + d['slot'],
-                                                          relative_address=cardaddr,
-                                                          unique_identifier='gigamon_%s' % d['serial_num']))
+                if d['slot'].startswith('cc'):
+                    continue
+                cardaddr = chassisaddr + '/' + d['slot']
+                sub_resources.append(AutoLoadResource(model='Generic Module',
+                                                      name='Card ' + d['slot'],
+                                                      relative_address=cardaddr,
+                                                      unique_identifier='gigamon_%s' % d['serial_num']))
 
-                    attributes.append(AutoLoadAttribute(cardaddr, "Model", d['hw_type'] + ' - ' + d['product_code']))
-                    attributes.append(AutoLoadAttribute(cardaddr, "Version", d['hw_rev']))
-                    attributes.append(AutoLoadAttribute(cardaddr, "Serial Number", d['serial_num']))
+                attributes.append(AutoLoadAttribute(cardaddr, "Model", d['hw_type'] + ' - ' + d['product_code']))
+                attributes.append(AutoLoadAttribute(cardaddr, "Version", d['hw_rev']))
+                attributes.append(AutoLoadAttribute(cardaddr, "Serial Number", d['serial_num']))
 
         try:
             o = self._ssh_command(context, ssh, channel, 'show port alias', PROMPT)
