@@ -726,6 +726,8 @@ class GigamonDriver (ResourceDriverInterface):
                          line)
             if m and chassisaddr != 'bad_chassis_addr':
                 d = m.groupdict()
+                if d['slot'].startswith('cc'):
+                    continue
                 cardaddr = chassisaddr + '/' + d['slot']
                 sub_resources.append(AutoLoadResource(model='Generic Module',
                                                       name='Card ' + d['slot'],
